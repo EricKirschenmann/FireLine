@@ -1,9 +1,11 @@
 package com.erickirschenmann.fireline.models;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /** Created by eric on 3/4/17. */
-class Incident {
+public class Incident {
 
   // instance variables that will contain all the details for a specific incident
   private String address; // the street not full address
@@ -60,7 +62,7 @@ class Incident {
       double longitude,
       String responseDate,
       String status,
-      String[] units) {
+      String units) {
     this.address = address;
     this.block = block;
     this.city = city;
@@ -71,7 +73,32 @@ class Incident {
     this.longitude = longitude;
     this.responseDate = responseDate;
     this.status = status;
-    this.units = units;
+    getUnitsArray(units); // hopefully will get the units
+  }
+
+  /**
+   * Probably the worst way to do this
+   *
+   * @param units The {@code String} containing comma separated values
+   */
+  private void getUnitsArray(String units) {
+    ArrayList<String> unitsArray = new ArrayList<>();
+    Scanner scanner = new Scanner(units);
+    scanner.useDelimiter(",");
+
+    // go through and get every unit within the list
+    while (scanner.hasNext()) {
+      String unit = scanner.next();
+      unitsArray.add(unit.trim());
+    }
+
+    // copy contents
+    if (unitsArray.size() != 0) {
+      this.units = new String[unitsArray.size()];
+      for (int x = 0; x < units.length(); x++) {
+        this.units[x] = unitsArray.get(x);
+      }
+    }
   }
 
   //getters and setters which will most likely never be used but just in case
