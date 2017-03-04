@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
   private TextView mEmergencyTextView;
+  private TextView mErrorMessageTextView;
+  private ProgressBar mProgressBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     mEmergencyTextView = (TextView) findViewById(R.id.tv_fireline_results);
+    mErrorMessageTextView = (TextView) findViewById(R.id.tv_error_message);
+    mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+    // initial load of data
     loadEmergencyData();
   }
 
@@ -36,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     // check which item was selected
     switch (item.getItemId()) {
       case R.id.action_refresh:
-        // when the refresh selected display a placeholder Toast message
-        Toast.makeText(this, getString(R.string.action_refresh), Toast.LENGTH_SHORT).show();
+        // when the refresh selected refresh the data
+        loadEmergencyData();
         return true;
       default:
         return super.onOptionsItemSelected(item);
@@ -52,7 +59,33 @@ public class MainActivity extends AppCompatActivity {
     new FetchEmergencyTask().execute(NetworkUtils.getUrl());
   }
 
-  class FetchEmergencyTask extends AsyncTask<URL, Void, String> {
+  /**
+   * This method will make the View for the JSON data visible and hide the error message. Since it
+   * is okay to redundantly set the visibility of a View, we don't need to check whether each view
+   * is currently visible or invisible.
+   */
+  void showEmergencyData() {
+    mEmergencyTextView.setVisibility(View.VISIBLE);
+    mErrorMessageTextView.setVisibility(View.INVISIBLE);
+  }
+
+  /**
+   * This method will make the error message visible and hide the JSON View. Since it is okay to
+   * redundantly set the visibility of a View, we don't need to check whether each view is currently
+   * visible or invisible.
+   */
+  void showErrorMessage() {
+    mEmergencyTextView.setVisibility(View.INVISIBLE);
+    mErrorMessageTextView.setVisibility(View.VISIBLE);
+  }
+
+  private class FetchEmergencyTask extends AsyncTask<URL, Void, String> {
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      mProgressBar.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected String doInBackground(URL... params) {
@@ -60,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
       }
 
+      // get the URL from the parameters
       URL url = params[0];
       String results = null;
 
@@ -75,8 +109,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPostExecute(String s) {
+      // hiding progress bar
+      mProgressBar.setVisibility(View.INVISIBLE);
+      // if the data returned exists apply it within the TextView
       if (s != null && !s.equals("")) {
+        showEmergencyData();
         mEmergencyTextView.setText(s);
+      } else {
+        showErrorMessage();
       }
     }
   }
