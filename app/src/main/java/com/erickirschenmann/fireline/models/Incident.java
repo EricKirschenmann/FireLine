@@ -76,14 +76,10 @@ public class Incident {
     getUnitsArray(units); // hopefully will get the units
   }
 
-  /**
-   * Probably the worst way to do this
-   *
-   * @param units The {@code String} containing comma separated values
-   */
-  private void getUnitsArray(String units) {
+  /** Probably the worst way to do this */
+  private void getUnitsArray(String unitString) {
     ArrayList<String> unitsArray = new ArrayList<>();
-    Scanner scanner = new Scanner(units);
+    Scanner scanner = new Scanner(unitString);
     scanner.useDelimiter(",");
 
     // go through and get every unit within the list
@@ -95,7 +91,8 @@ public class Incident {
     // copy contents
     if (unitsArray.size() != 0) {
       this.units = new String[unitsArray.size()];
-      for (int x = 0; x < units.length(); x++) {
+      for (int x = 0; x < this.units.length; x++) {
+        System.out.println(x + ": " + unitsArray.get(x));
         this.units[x] = unitsArray.get(x);
       }
     }
@@ -190,6 +187,20 @@ public class Incident {
     this.units = units;
   }
 
+  private String getUnitsString() {
+    String units = "";
+
+    for (int x = 0; x < this.units.length; x++) {
+      if (x != this.units.length - 1) {
+        units += this.units[x] + ", ";
+      } else {
+        units += this.units[x];
+      }
+    }
+
+    return units;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -263,37 +274,17 @@ public class Incident {
 
   @Override
   public String toString() {
-    return "Incident{"
-        + "address='"
-        + address
-        + '\''
-        + ", block='"
-        + block
-        + '\''
-        + ", city='"
-        + city
-        + '\''
-        + ", comment='"
-        + comment
-        + '\''
-        + ", incidentNumber='"
-        + incidentNumber
-        + '\''
-        + ", incidentType='"
-        + incidentType
-        + '\''
-        + ", latitude="
-        + latitude
-        + ", longitude="
-        + longitude
-        + ", responseDate='"
-        + responseDate
-        + '\''
-        + ", status='"
-        + status
-        + '\''
-        + ", units="
-        + Arrays.toString(units)
-        + '}';
+
+    return this.responseDate
+        + "\nType: "
+        + this.incidentType
+        + "\nAddress: "
+        + this.block
+        + " "
+        + this.address
+        + "\nUnits: "
+        + this.getUnitsString()
+        + "\nStatus: "
+        + this.status;
   }
 }
