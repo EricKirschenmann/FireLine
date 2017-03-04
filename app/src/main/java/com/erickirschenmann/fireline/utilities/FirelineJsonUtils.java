@@ -10,12 +10,12 @@ import org.json.JSONObject;
 public class FirelineJsonUtils {
 
   // will contain the current Incident objects
-  private ArrayList<Incident> incidents;
+  // private ArrayList<Incident> incidents;
 
-  String[] getIncidentsFromJson(String json) {
+  public static String[] getIncidentsFromJson(String json) {
 
     String[] formattedIncidents;
-    incidents = new ArrayList<>();
+    ArrayList<Incident> incidents = new ArrayList<>();
 
     try {
       // create an array of json objects
@@ -53,7 +53,7 @@ public class FirelineJsonUtils {
                 responseDate,
                 status,
                 units);
-        this.incidents.add(incident);
+        incidents.add(incident);
       }
 
     } catch (JSONException e) {
@@ -61,9 +61,9 @@ public class FirelineJsonUtils {
     }
 
     // using the incident objects get the toString()
-    formattedIncidents = new String[this.incidents.size()];
+    formattedIncidents = new String[incidents.size()];
     for (int x = 0; x < formattedIncidents.length; x++) {
-      formattedIncidents[x] = this.incidents.get(x).toString();
+      formattedIncidents[x] = incidents.get(x).toString();
     }
 
     return formattedIncidents;

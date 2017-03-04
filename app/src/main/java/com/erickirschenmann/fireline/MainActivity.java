@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     mErrorMessageTextView.setVisibility(View.VISIBLE);
   }
 
-  private class FetchEmergencyTask extends AsyncTask<URL, Void, String> {
+  private class FetchEmergencyTask extends AsyncTask<URL, Void, String[]> {
 
     @Override
     protected void onPreExecute() {
@@ -88,33 +89,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected String doInBackground(URL... params) {
+    protected String[] doInBackground(URL... params) {
       if (params == null) {
         return null;
       }
 
       // get the URL from the parameters
       URL url = params[0];
-      String results = null;
+      String results;
+      String[] formattedResults = null;
 
       try {
         // attempt to retrieve the JSON data from the server
         results = NetworkUtils.getResponseFromHttpUrl(url);
+        formattedResults = FirelineJsonUtils.getIncidentsFromJson(results);
       } catch (IOException e) {
         e.printStackTrace();
       }
 
-      return results;
+      return formattedResults;
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(String[] data) {
       // hiding progress bar
       mProgressBar.setVisibility(View.INVISIBLE);
       // if the data returned exists apply it within the TextView
-      if (s != null && !s.equals("")) {
+      if (data != null) {
         showEmergencyData();
-        mEmergencyTextView.setText(s);
+        mEmergencyTextView.setText("");
+
+        // create temporary list within TextView, will be replaced with RecyclerView eventually
+        for (String s : data) {
+          mEmergencyTextView.append(s + "\n\n\n");
+        }
+
       } else {
         showErrorMessage();
       }
