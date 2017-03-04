@@ -20,7 +20,7 @@ public class NetworkUtils {
    *
    * @return The {@code URL} containing the Fireline address
    */
-  public static URL buildUrl() {
+  public static URL getUrl() {
     Uri firelineUri = Uri.parse(FIRELINE_JSON_URL).buildUpon().build();
     Log.v(TAG, "Built Uri: " + firelineUri.toString());
 
