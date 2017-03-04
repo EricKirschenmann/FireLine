@@ -2,12 +2,10 @@ package com.erickirschenmann.fireline.utilities;
 
 import android.net.Uri;
 import android.util.Log;
+import com.erickirschenmann.fireline.data.FirelineTestJson;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 /** Created by eric on 3/3/17. */
 public class NetworkUtils {
@@ -40,21 +38,18 @@ public class NetworkUtils {
    * @throws IOException Related to network and stream reading
    */
   public static String getResponseFromHttpUrl(URL url) throws IOException {
-    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-    try {
-      InputStream in = urlConnection.getInputStream();
 
-      Scanner scanner = new Scanner(in);
-      scanner.useDelimiter("\\A");
+    // instead of constantly downloading from their server, use test data
+    return FirelineTestJson.getFIRELINE_TEST_JSON();
 
-      boolean hasInput = scanner.hasNext();
-      if (hasInput) {
-        return scanner.next();
-      } else {
-        return null;
-      }
-    } finally {
-      urlConnection.disconnect();
-    }
+    /**
+     * HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); try { InputStream
+     * in = urlConnection.getInputStream();
+     *
+     * <p>Scanner scanner = new Scanner(in); scanner.useDelimiter("\\A");
+     *
+     * <p>boolean hasInput = scanner.hasNext(); if (hasInput) { return scanner.next(); } else {
+     * return null; } } finally { urlConnection.disconnect(); } *
+     */
   }
 }
