@@ -14,7 +14,18 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
 
   private String[] mIncidentData;
 
-  IncidentAdapter() {}
+  // TODO (3) Create a final private ForecastAdapterOnClickHandler called mClickHandler
+
+  // TODO (1) Add an interface called ForecastAdapterOnClickHandler
+  // TODO (2) Within that interface, define a void method that access a String as a parameter
+
+  // TODO (4) Add a ForecastAdapterOnClickHandler as a parameter to the constructor and store it in mClickHandler
+
+
+  IncidentAdapter() {
+  }
+
+  // TODO (5) Implement OnClickListener in the ForecastAdapterViewHolder class
 
   /**
    * This gets called when each new ViewHolder is created. This happens when the RecyclerView is
@@ -22,8 +33,8 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    *
    * @param parent The ViewGroup that these ViewHolders are contained within.
    * @param viewType If your RecyclerView has more than one type of item (which ours doesn't) you
-   *     can use this viewType integer to provide a different layout. See {@link
-   *     android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)} for more details.
+   * can use this viewType integer to provide a different layout. See {@link
+   * android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)} for more details.
    * @return A new IncidentAdapterViewHolder that holds the View for each list item
    */
   @Override
@@ -40,7 +51,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    * this particular position, using the "position" argument that is conveniently passed into us.
    *
    * @param holder The ViewHolder which should be updated to represent the contents of the item at
-   *     the given position in the data set.
+   * the given position in the data set.
    * @param position The position of the item within the adapter's data set.
    */
   @Override
@@ -75,13 +86,21 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     notifyDataSetChanged();
   }
 
-  /** Cache of the children views for an incident list item. */
+  /**
+   * Cache of the children views for an incident list item.
+   */
   class IncidentAdapterViewHolder extends RecyclerView.ViewHolder {
+
     final TextView mIncidentTextView;
 
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
       mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
+      // TODO (7) Call setOnClickListener on the view passed into the constructor (use 'this' as the OnClickListener)
+
     }
+
+    // TODO (6) Override onClick, passing the clicked day's data to mClickHandler via its onClick method
+
   }
 }

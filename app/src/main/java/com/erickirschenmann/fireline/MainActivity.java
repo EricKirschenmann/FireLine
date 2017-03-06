@@ -15,6 +15,7 @@ import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
+// TODO (8) Implement ForecastAdapterOnClickHandler from the MainActivity
 public class MainActivity extends AppCompatActivity {
 
   private RecyclerView mRecyclerView;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     // all of the items are the same size
     mRecyclerView.setHasFixedSize(true);
 
+    // TODO (11) Pass in 'this' as the ForecastAdapterOnClickHandler
     // responsible for linking the data to the ViewHolders
     mIncidentAdapter = new IncidentAdapter();
 
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
   void loadEmergencyData() {
     new FetchEmergencyTask().execute(NetworkUtils.getUrl());
   }
+
+  // TODO (9) Override ForecastAdapterOnClickHandler's onClick method
+  // TODO (10) Show a Toast when an item is clicked, displaying that item's weather data
 
   /**
    * This method will make the View for the JSON data visible and hide the error message. Since it
