@@ -1,5 +1,7 @@
 package com.erickirschenmann.fireline;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
 import com.erickirschenmann.fireline.models.Incident;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
@@ -87,9 +88,20 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     new FetchEmergencyTask().execute(NetworkUtils.getUrl());
   }
 
+  /**
+   * Handles the click on one of the RecyclerView items
+   *
+   * @param incidentData The Google Maps intent location of the Incident
+   */
   @Override
   public void onClick(String incidentData) {
-    Toast.makeText(this, incidentData, Toast.LENGTH_SHORT).show();
+    // convert to a valid Uri
+    Uri gmmIntentUri = Uri.parse(incidentData);
+    // create the intent
+    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+    // start the Google Maps activity
+    mapIntent.setPackage("com.google.android.apps.maps");
+    startActivity(mapIntent);
   }
 
   /**

@@ -119,9 +119,14 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
       int position = getAdapterPosition();
 
       // test that the correct incident data is being grabbed
-      String incidentNumber = mIncidents.get(position).getIncidentNumber();
+      String latitude = Double.toString(mIncidents.get(position).getLatitude());
+      String longitude = Double.toString(mIncidents.get(position).getLongitude());
+      String address = mIncidents.get(position).getStreetAddress();
 
-      mClickHandler.onClick(incidentNumber);
+      // this will be converted into a google maps intent
+      String gmmIntent = "geo:" + latitude + "," + longitude + "?q=" + address;
+
+      mClickHandler.onClick(gmmIntent);
     }
   }
 }
