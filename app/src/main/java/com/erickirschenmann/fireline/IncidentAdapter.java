@@ -16,7 +16,8 @@ public class IncidentAdapter
   // COMPLETED (23) Create a private string array called mWeatherData
   private String[] mIncidentData;
 
-  // TODO (47) Create the default constructor (we will pass in parameters in a later lesson)
+  // COMPLETED (47) Create the default constructor (we will pass in parameters in a later lesson)
+  public IncidentAdapter() {}
 
   // COMPLETED (24) Override onCreateViewHolder
   @Override

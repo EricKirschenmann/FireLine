@@ -3,6 +3,8 @@ package com.erickirschenmann.fireline;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +17,12 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-  // TODO (33) Delete mEmergencyTextView
-  private TextView mEmergencyTextView;
+  // COMPLETED (33) Delete mEmergencyTextView
 
-  // TODO (34) Add a private RecyclerView variable called mRecyclerView
-  // TODO (35) Add a private ForecastAdapter variable called mForecastAdapter
+  // COMPLETED (34) Add a private RecyclerView variable called mRecyclerView
+  private RecyclerView mRecyclerView;
+  // COMPLETED (35) Add a private ForecastAdapter variable called mForecastAdapter
+  private IncidentAdapter mIncidentAdapter;
 
   private TextView mErrorMessageTextView;
   private ProgressBar mProgressBar;
@@ -29,22 +32,28 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // TODO (36) Delete the line where you get a reference to mWeatherTextView
-    mEmergencyTextView = (TextView) findViewById(R.id.tv_fireline_results);
+    // COMPLETED (36) Delete the line where you get a reference to mWeatherTextView
 
-    // TODO (37) Use findViewById to get a reference to the RecyclerView
+    // COMPLETED (37) Use findViewById to get a reference to the RecyclerView
+    mRecyclerView = (RecyclerView) findViewById(R.id.rv_incident);
 
     mErrorMessageTextView = (TextView) findViewById(R.id.tv_error_message);
 
-    // TODO (38) Create layoutManager, a LinearLayoutManager with VERTICAL orientation and shouldReverseLayout == false
+    // COMPLETED (38) Create layoutManager, a LinearLayoutManager with VERTICAL orientation and shouldReverseLayout == false
+    LinearLayoutManager layoutManager =
+        new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-    // TODO (39) Set the layoutManager on mRecyclerView
+    // COMPLETED (39) Set the layoutManager on mRecyclerView
+    mRecyclerView.setLayoutManager(layoutManager);
 
-    // TODO (40) Use setHasFixedSize(true) on mRecyclerView to designate that all items in the list will have the same size
+    // COMPLETED (40) Use setHasFixedSize(true) on mRecyclerView to designate that all items in the list will have the same size
+    mRecyclerView.setHasFixedSize(true);
 
-    // TODO (41) set mForecastAdapter equal to a new ForecastAdapter
+    // COMPLETED (41) set mForecastAdapter equal to a new ForecastAdapter
+    mIncidentAdapter = new IncidentAdapter();
 
-    // TODO (42) Use mRecyclerView.setAdapter and pass in mForecastAdapter
+    // COMPLETED (42) Use mRecyclerView.setAdapter and pass in mForecastAdapter
+    mRecyclerView.setAdapter(mIncidentAdapter);
 
     mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
@@ -64,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
     // check which item was selected
     switch (item.getItemId()) {
       case R.id.action_refresh:
-        // TODO (46) Instead of setting the text to "", set the adapter to null before refreshing
+        // COMPLETED (46) Instead of setting the text to "", set the adapter to null before refreshing
         // when the refresh selected refresh the data
+        mIncidentAdapter.setIncidentData(null);
         loadEmergencyData();
         return true;
       default:
@@ -87,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
    * is currently visible or invisible.
    */
   void showEmergencyData() {
-    // TODO (43) Show mRecyclerView, not mWeatherTextView
-    mEmergencyTextView.setVisibility(View.VISIBLE);
+    // COMPLETED (43) Show mRecyclerView, not mWeatherTextView
+    mRecyclerView.setVisibility(View.VISIBLE);
     mErrorMessageTextView.setVisibility(View.INVISIBLE);
   }
 
@@ -98,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
    * visible or invisible.
    */
   void showErrorMessage() {
-    // TODO (44) Hide mRecyclerView, not mWeatherTextView
-    mEmergencyTextView.setVisibility(View.INVISIBLE);
+    // COMPLETED (44) Hide mRecyclerView, not mWeatherTextView
+    mRecyclerView.setVisibility(View.INVISIBLE);
     mErrorMessageTextView.setVisibility(View.VISIBLE);
   }
 
@@ -140,13 +150,9 @@ public class MainActivity extends AppCompatActivity {
       // if the data returned exists apply it within the TextView
       if (data != null) {
         showEmergencyData();
-        mEmergencyTextView.setText("");
-        // TODO (45) Instead of iterating through every string, use mForecastAdapter.setWeatherData and pass in the weather data
+        // COMPLETED (45) Instead of iterating through every string, use mForecastAdapter.setWeatherData and pass in the weather data
         // create temporary list within TextView, will be replaced with RecyclerView eventually
-        for (String s : data) {
-          mEmergencyTextView.append(s + "\n\n\n");
-        }
-
+        mIncidentAdapter.setIncidentData(data);
       } else {
         showErrorMessage();
       }
