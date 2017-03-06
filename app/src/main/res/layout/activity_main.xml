@@ -5,11 +5,7 @@
   android:layout_height="match_parent"
   tools:context="com.erickirschenmann.fireline.MainActivity">
 
-
-  <!--COMPLETED (2) Replace ScrollView and TextView with RecyclerView-->
-  <!--COMPLETED (3) Give the RecyclerView an id of @+id/recyclerview_forecast-->
-  <!--COMPLETED (4) Set the width and the height of the RecyclerView to match_parent-->
-  <!--will contain the JSON data returned by the server for now-->
+  <!--will contain the JSON data returned by the server-->
   <android.support.v7.widget.RecyclerView
     android:id="@+id/rv_incident"
     android:layout_width="match_parent"
