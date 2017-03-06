@@ -77,19 +77,20 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    * one. This is handy when we get new data from the web but don't want to create a new
    * IncidentAdapter to display it.
    *
-   * @param incidentData The new incident data to be displayed.
+   * @param incidents The new ArrayList of Incidents.
    */
-  void setIncidentData(String[] incidentData, int p) {
-    mIncidentData = incidentData;
-    notifyDataSetChanged();
-  }
-
   void setIncidentData(ArrayList<Incident> incidents) {
     mIncidents = incidents;
-    // using the incident objects get the toString()
-    String[] formattedIncidents = new String[mIncidents.size()];
-    for (int x = 0; x < formattedIncidents.length; x++) {
-      formattedIncidents[x] = mIncidents.get(x).toString();
+    String[] formattedIncidents;
+
+    if (incidents != null) {
+      // using the incident objects get the toString()
+      formattedIncidents = new String[mIncidents.size()];
+      for (int x = 0; x < formattedIncidents.length; x++) {
+        formattedIncidents[x] = mIncidents.get(x).toString();
+      }
+    } else {
+      formattedIncidents = null;
     }
 
     // now store the updated data
@@ -125,6 +126,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     public void onClick(View v) {
       int position = getAdapterPosition();
 
+      // test that the correct incident data is being grabbed
       String incidentNumber = mIncidents.get(position).getIncidentNumber();
 
       mClickHandler.onClick(incidentNumber);
