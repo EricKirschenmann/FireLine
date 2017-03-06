@@ -15,12 +15,10 @@ import java.util.ArrayList;
  */
 class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapterViewHolder> {
 
-  // COMPLETED (3) Create a final private ForecastAdapterOnClickHandler called mClickHandler
   private final IncidentAdapterOnClickHandler mClickHandler;
   private String[] mIncidentData;
   private ArrayList<Incident> mIncidents;
 
-  // COMPLETED (4) Add a ForecastAdapterOnClickHandler as a parameter to the constructor and store it in mClickHandler
   IncidentAdapter(IncidentAdapterOnClickHandler onClickHandler) {
     mClickHandler = onClickHandler;
   }
@@ -98,14 +96,10 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     notifyDataSetChanged();
   }
 
-  // COMPLETED (1) Add an interface called ForecastAdapterOnClickHandler
   interface IncidentAdapterOnClickHandler {
 
-    // COMPLETED (2) Within that interface, define a void method that access a String as a parameter
     void onClick(String incidentData);
   }
-
-  // COMPLETED (5) Implement OnClickListener in the ForecastAdapterViewHolder class
 
   /**
    * Cache of the children views for an incident list item.
@@ -117,11 +111,9 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
       mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
-      // COMPLETED (7) Call setOnClickListener on the view passed into the constructor (use 'this' as the OnClickListener)
       itemView.setOnClickListener(this);
     }
 
-    // COMPLETED (6) Override onClick, passing the clicked day's data to mClickHandler via its onClick method
     @Override
     public void onClick(View v) {
       int position = getAdapterPosition();
