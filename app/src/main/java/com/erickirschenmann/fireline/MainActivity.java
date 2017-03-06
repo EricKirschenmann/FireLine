@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
-
   private TextView mErrorMessageTextView;
   private ProgressBar mProgressBar;
 
@@ -28,18 +27,21 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-
+    // allows us to manipulate the RecyclerView based on this reference
     mRecyclerView = (RecyclerView) findViewById(R.id.rv_incident);
 
     mErrorMessageTextView = (TextView) findViewById(R.id.tv_error_message);
 
+    // specifies the direction of the layout as VERTICAL as opposed to HORIZONTAL
     LinearLayoutManager layoutManager =
         new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
     mRecyclerView.setLayoutManager(layoutManager);
 
+    // all of the items are the same size
     mRecyclerView.setHasFixedSize(true);
 
+    // responsible for linking the data to the ViewHolders
     mIncidentAdapter = new IncidentAdapter();
 
     mRecyclerView.setAdapter(mIncidentAdapter);
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
       // if the data returned exists apply it within the TextView
       if (data != null) {
         showEmergencyData();
-        // create temporary list within TextView, will be replaced with RecyclerView eventually
+        // provide the new data to the IncidentAdapter to be bound to the ViewHolder
         mIncidentAdapter.setIncidentData(data);
       } else {
         showErrorMessage();
