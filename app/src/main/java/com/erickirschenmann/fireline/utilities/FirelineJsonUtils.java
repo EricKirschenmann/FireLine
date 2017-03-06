@@ -12,7 +12,7 @@ public class FirelineJsonUtils {
   // will contain the current Incident objects
   // private ArrayList<Incident> incidents;
 
-  public static String[] getIncidentsFromJson(String json) {
+  public static ArrayList<Incident> getIncidentsFromJson(String json) {
 
     String[] formattedIncidents;
     ArrayList<Incident> incidents = new ArrayList<>();
@@ -60,12 +60,12 @@ public class FirelineJsonUtils {
       e.printStackTrace();
     }
 
-    // using the incident objects get the toString()
-    formattedIncidents = new String[incidents.size()];
-    for (int x = 0; x < formattedIncidents.length; x++) {
-      formattedIncidents[x] = incidents.get(x).toString();
-    }
+//    // using the incident objects get the toString()
+//    formattedIncidents = new String[incidents.size()];
+//    for (int x = 0; x < formattedIncidents.length; x++) {
+//      formattedIncidents[x] = incidents.get(x).toString();
+//    }
 
-    return formattedIncidents;
+    return incidents;
   }
 }

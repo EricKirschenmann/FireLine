@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.erickirschenmann.fireline.models.Incident;
+import java.util.ArrayList;
 
 /**
  * {@link IncidentAdapter} exposes a list of incident details to a {@link
@@ -16,6 +18,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
   // COMPLETED (3) Create a final private ForecastAdapterOnClickHandler called mClickHandler
   private final IncidentAdapterOnClickHandler mClickHandler;
   private String[] mIncidentData;
+  private ArrayList<Incident> mIncidents;
 
   // COMPLETED (4) Add a ForecastAdapterOnClickHandler as a parameter to the constructor and store it in mClickHandler
   IncidentAdapter(IncidentAdapterOnClickHandler onClickHandler) {
@@ -76,8 +79,21 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    *
    * @param incidentData The new incident data to be displayed.
    */
-  void setIncidentData(String[] incidentData) {
+  void setIncidentData(String[] incidentData, int p) {
     mIncidentData = incidentData;
+    notifyDataSetChanged();
+  }
+
+  void setIncidentData(ArrayList<Incident> incidents) {
+    mIncidents = incidents;
+    // using the incident objects get the toString()
+    String[] formattedIncidents = new String[mIncidents.size()];
+    for (int x = 0; x < formattedIncidents.length; x++) {
+      formattedIncidents[x] = mIncidents.get(x).toString();
+    }
+
+    // now store the updated data
+    mIncidentData = formattedIncidents;
     notifyDataSetChanged();
   }
 
@@ -108,7 +124,10 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     @Override
     public void onClick(View v) {
       int position = getAdapterPosition();
-      mClickHandler.onClick(mIncidentData[position]);
+
+      String incidentNumber = mIncidents.get(position).getIncidentNumber();
+
+      mClickHandler.onClick(incidentNumber);
     }
   }
 }

@@ -276,6 +276,8 @@ public class Incident {
   public String toString() {
 
     return this.responseDate
+        + "\nIncident Number: "
+        + this.incidentNumber
         + "\nType: "
         + this.incidentType
         + "\nAddress: "

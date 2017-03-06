@@ -12,13 +12,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
+import com.erickirschenmann.fireline.models.Incident;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 // COMPLETED (8) Implement ForecastAdapterOnClickHandler from the MainActivity
 public class MainActivity extends AppCompatActivity implements IncidentAdapterOnClickHandler {
+
+  private ArrayList<Incident> incidents;
 
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     mErrorMessageTextView.setVisibility(View.VISIBLE);
   }
 
-  private class FetchEmergencyTask extends AsyncTask<URL, Void, String[]> {
+  private class FetchEmergencyTask extends AsyncTask<URL, Void, ArrayList<Incident>> {
 
     @Override
     protected void onPreExecute() {
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     }
 
     @Override
-    protected String[] doInBackground(URL... params) {
+    protected ArrayList<Incident> doInBackground(URL... params) {
       if (params == null) {
         return null;
       }
@@ -129,21 +133,21 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
       // get the URL from the parameters
       URL url = params[0];
       String results;
-      String[] formattedResults = null;
+      //String[] formattedResults = null;
 
       try {
         // attempt to retrieve the JSON data from the server
         results = NetworkUtils.getResponseFromHttpUrl(url);
-        formattedResults = FirelineJsonUtils.getIncidentsFromJson(results);
+        incidents = FirelineJsonUtils.getIncidentsFromJson(results);
       } catch (IOException e) {
         e.printStackTrace();
       }
 
-      return formattedResults;
+      return incidents;
     }
 
     @Override
-    protected void onPostExecute(String[] data) {
+    protected void onPostExecute(ArrayList<Incident> data) {
       // hiding progress bar
       mProgressBar.setVisibility(View.INVISIBLE);
       // if the data returned exists apply it within the TextView
