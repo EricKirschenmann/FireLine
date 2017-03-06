@@ -10,13 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
-// TODO (8) Implement ForecastAdapterOnClickHandler from the MainActivity
-public class MainActivity extends AppCompatActivity {
+// COMPLETED (8) Implement ForecastAdapterOnClickHandler from the MainActivity
+public class MainActivity extends AppCompatActivity implements IncidentAdapterOnClickHandler {
 
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
@@ -42,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     // all of the items are the same size
     mRecyclerView.setHasFixedSize(true);
 
-    // TODO (11) Pass in 'this' as the ForecastAdapterOnClickHandler
+    // COMPLETED (11) Pass in 'this' as the ForecastAdapterOnClickHandler
     // responsible for linking the data to the ViewHolders
-    mIncidentAdapter = new IncidentAdapter();
+    mIncidentAdapter = new IncidentAdapter(this);
 
     mRecyclerView.setAdapter(mIncidentAdapter);
 
@@ -83,8 +85,12 @@ public class MainActivity extends AppCompatActivity {
     new FetchEmergencyTask().execute(NetworkUtils.getUrl());
   }
 
-  // TODO (9) Override ForecastAdapterOnClickHandler's onClick method
-  // TODO (10) Show a Toast when an item is clicked, displaying that item's weather data
+  // COMPLETED (9) Override ForecastAdapterOnClickHandler's onClick method
+  @Override
+  public void onClick(String incidentData) {
+    // COMPLETED (10) Show a Toast when an item is clicked, displaying that item's weather data
+    Toast.makeText(this, incidentData, Toast.LENGTH_SHORT).show();
+  }
 
   /**
    * This method will make the View for the JSON data visible and hide the error message. Since it

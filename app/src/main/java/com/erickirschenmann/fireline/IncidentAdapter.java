@@ -3,6 +3,7 @@ package com.erickirschenmann.fireline;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -12,20 +13,14 @@ import android.widget.TextView;
  */
 class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapterViewHolder> {
 
+  // COMPLETED (3) Create a final private ForecastAdapterOnClickHandler called mClickHandler
+  private final IncidentAdapterOnClickHandler mClickHandler;
   private String[] mIncidentData;
 
-  // TODO (3) Create a final private ForecastAdapterOnClickHandler called mClickHandler
-
-  // TODO (1) Add an interface called ForecastAdapterOnClickHandler
-  // TODO (2) Within that interface, define a void method that access a String as a parameter
-
-  // TODO (4) Add a ForecastAdapterOnClickHandler as a parameter to the constructor and store it in mClickHandler
-
-
-  IncidentAdapter() {
+  // COMPLETED (4) Add a ForecastAdapterOnClickHandler as a parameter to the constructor and store it in mClickHandler
+  IncidentAdapter(IncidentAdapterOnClickHandler onClickHandler) {
+    mClickHandler = onClickHandler;
   }
-
-  // TODO (5) Implement OnClickListener in the ForecastAdapterViewHolder class
 
   /**
    * This gets called when each new ViewHolder is created. This happens when the RecyclerView is
@@ -86,21 +81,34 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     notifyDataSetChanged();
   }
 
+  // COMPLETED (1) Add an interface called ForecastAdapterOnClickHandler
+  interface IncidentAdapterOnClickHandler {
+
+    // COMPLETED (2) Within that interface, define a void method that access a String as a parameter
+    void onClick(String incidentData);
+  }
+
+  // COMPLETED (5) Implement OnClickListener in the ForecastAdapterViewHolder class
+
   /**
    * Cache of the children views for an incident list item.
    */
-  class IncidentAdapterViewHolder extends RecyclerView.ViewHolder {
+  class IncidentAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
     final TextView mIncidentTextView;
 
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
       mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
-      // TODO (7) Call setOnClickListener on the view passed into the constructor (use 'this' as the OnClickListener)
-
+      // COMPLETED (7) Call setOnClickListener on the view passed into the constructor (use 'this' as the OnClickListener)
+      itemView.setOnClickListener(this);
     }
 
-    // TODO (6) Override onClick, passing the clicked day's data to mClickHandler via its onClick method
-
+    // COMPLETED (6) Override onClick, passing the clicked day's data to mClickHandler via its onClick method
+    @Override
+    public void onClick(View v) {
+      int position = getAdapterPosition();
+      mClickHandler.onClick(mIncidentData[position]);
+    }
   }
 }
