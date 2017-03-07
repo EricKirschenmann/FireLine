@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * Created by eric on 3/4/17.
- */
+/** Created by eric on 3/4/17. */
 public class Incident {
 
   // instance variables that will contain all the details for a specific incident
@@ -78,9 +76,7 @@ public class Incident {
     getUnitsArray(units); // hopefully will get the units
   }
 
-  /**
-   * Probably the worst way to do this
-   */
+  /** Probably the worst way to do this */
   private void getUnitsArray(String unitString) {
     ArrayList<String> unitsArray = new ArrayList<>();
     Scanner scanner = new Scanner(unitString);

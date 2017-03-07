@@ -60,12 +60,6 @@ public class FirelineJsonUtils {
       e.printStackTrace();
     }
 
-//    // using the incident objects get the toString()
-//    formattedIncidents = new String[incidents.size()];
-//    for (int x = 0; x < formattedIncidents.length; x++) {
-//      formattedIncidents[x] = incidents.get(x).toString();
-//    }
-
     return incidents;
   }
 }
