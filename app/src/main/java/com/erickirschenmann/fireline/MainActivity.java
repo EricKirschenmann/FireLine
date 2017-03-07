@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+// TODO (1) Implement the proper LoaderCallbacks interface and the methods of that interface
 public class MainActivity extends AppCompatActivity implements IncidentAdapterOnClickHandler {
 
   private ArrayList<Incident> incidents;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
 
     mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
+    // TODO (7) Remove the code for the AsyncTask and initialize the AsyncTaskLoader
     // initial load of data
     loadEmergencyData();
   }
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
+    // TODO (5) Refactor the refresh functionality to work with our AsyncTaskLoader
     // check which item was selected
     switch (item.getItemId()) {
       case R.id.action_refresh:
@@ -87,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
   void loadEmergencyData() {
     new FetchEmergencyTask().execute(NetworkUtils.getUrl());
   }
+
+  // TODO (2) Within onCreateLoader, return a new AsyncTaskLoader that looks a lot like the existing FetchWeatherTask.
+  // TODO (3) Cache the weather data in a member variable and deliver it in onStartLoading.
+
+  // TODO (4) When the load is finished, show either the data or an error message if there is no data
 
   /**
    * Handles the click on one of the RecyclerView items
@@ -124,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     mErrorMessageTextView.setVisibility(View.VISIBLE);
   }
 
+  // TODO (6) Remove any and all code from MainActivity that references FetchWeatherTask
   private class FetchEmergencyTask extends AsyncTask<URL, Void, ArrayList<Incident>> {
 
     @Override
