@@ -293,6 +293,8 @@ public class Incident {
         + this.block
         + " "
         + this.address
+        + ", "
+        + this.city
         + "\nUnits: "
         + this.getUnitsString()
         + "\nStatus: "
