@@ -201,6 +201,15 @@ public class Incident {
     return units;
   }
 
+  /**
+   * Get the block and the street name as a single String
+   *
+   * @return The full street address of this Incident
+   */
+  public String getStreetAddress() {
+    return this.block + " " + this.address;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -276,12 +285,16 @@ public class Incident {
   public String toString() {
 
     return this.responseDate
+        + "\nIncident Number: "
+        + this.incidentNumber
         + "\nType: "
         + this.incidentType
         + "\nAddress: "
         + this.block
         + " "
         + this.address
+        + ", "
+        + this.city
         + "\nUnits: "
         + this.getUnitsString()
         + "\nStatus: "

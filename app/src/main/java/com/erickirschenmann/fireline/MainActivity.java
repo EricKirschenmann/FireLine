@@ -1,7 +1,11 @@
 package com.erickirschenmann.fireline;
 
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,16 +14,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
+import com.erickirschenmann.fireline.models.Incident;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
-// COMPLETED (8) Implement ForecastAdapterOnClickHandler from the MainActivity
-public class MainActivity extends AppCompatActivity implements IncidentAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity
+    implements IncidentAdapterOnClickHandler, LoaderCallbacks<ArrayList<Incident>> {
 
+  private static final int INCIDENT_LOADER_ID = 19232;
+  private ArrayList<Incident> incidents;
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
   private TextView mErrorMessageTextView;
@@ -44,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     // all of the items are the same size
     mRecyclerView.setHasFixedSize(true);
 
-    // COMPLETED (11) Pass in 'this' as the ForecastAdapterOnClickHandler
     // responsible for linking the data to the ViewHolders
     mIncidentAdapter = new IncidentAdapter(this);
 
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
     // initial load of data
-    loadEmergencyData();
+    getSupportLoaderManager().initLoader(INCIDENT_LOADER_ID, null, this);
   }
 
   @Override
@@ -69,27 +75,93 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
     switch (item.getItemId()) {
       case R.id.action_refresh:
         // when the refresh selected refresh the data
-        mIncidentAdapter.setIncidentData(null);
-        loadEmergencyData();
+        invalidateData();
+        getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
   }
 
-  /**
-   * Will execute the {@link FetchEmergencyTask} AsyncTask using the URL provided by {@link
-   * NetworkUtils}
-   */
-  void loadEmergencyData() {
-    new FetchEmergencyTask().execute(NetworkUtils.getUrl());
+  public void invalidateData() {
+    mIncidentAdapter.setIncidentData(null);
   }
 
-  // COMPLETED (9) Override ForecastAdapterOnClickHandler's onClick method
+  /**
+   * Instantiate and return a new Loader for the given ID.
+   *
+   * @param id The ID whose loader is to be created.
+   * @param args Any arguments supplied by the caller.
+   * @return Return a new Loader instance that is ready to start loading.
+   */
+  @Override
+  public Loader<ArrayList<Incident>> onCreateLoader(int id, Bundle args) {
+    return new AsyncTaskLoader<ArrayList<Incident>>(this) {
+
+      ArrayList<Incident> mIncidents;
+
+      @Override
+      protected void onStartLoading() {
+        if (mIncidents != null) {
+          deliverResult(mIncidents);
+        } else {
+          mProgressBar.setVisibility(View.VISIBLE);
+          forceLoad();
+        }
+      }
+
+      @Override
+      public ArrayList<Incident> loadInBackground() {
+        String results;
+
+        try {
+          // attempt to retrieve the JSON data from the server
+          URL url = NetworkUtils.getUrl();
+          results = NetworkUtils.getResponseFromHttpUrl(url);
+          incidents = FirelineJsonUtils.getIncidentsFromJson(results);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+        return incidents;
+      }
+
+      @Override
+      public void deliverResult(ArrayList<Incident> data) {
+        mIncidents = data;
+        super.deliverResult(data);
+      }
+    };
+  }
+
+  @Override
+  public void onLoadFinished(Loader<ArrayList<Incident>> loader, ArrayList<Incident> data) {
+    mProgressBar.setVisibility(View.INVISIBLE);
+    mIncidentAdapter.setIncidentData(data);
+    if (data == null) {
+      showErrorMessage();
+    } else {
+      showEmergencyData();
+    }
+  }
+
+  @Override
+  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {}
+
+  /**
+   * Handles the click on one of the RecyclerView items
+   *
+   * @param incidentData The Google Maps intent location of the Incident
+   */
   @Override
   public void onClick(String incidentData) {
-    // COMPLETED (10) Show a Toast when an item is clicked, displaying that item's weather data
-    Toast.makeText(this, incidentData, Toast.LENGTH_SHORT).show();
+    // convert to a valid Uri
+    Uri gmmIntentUri = Uri.parse(incidentData);
+    // create the intent
+    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+    // start the Google Maps activity
+    mapIntent.setPackage("com.google.android.apps.maps");
+    startActivity(mapIntent);
   }
 
   /**
@@ -110,50 +182,5 @@ public class MainActivity extends AppCompatActivity implements IncidentAdapterOn
   void showErrorMessage() {
     mRecyclerView.setVisibility(View.INVISIBLE);
     mErrorMessageTextView.setVisibility(View.VISIBLE);
-  }
-
-  private class FetchEmergencyTask extends AsyncTask<URL, Void, String[]> {
-
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
-      mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected String[] doInBackground(URL... params) {
-      if (params == null) {
-        return null;
-      }
-
-      // get the URL from the parameters
-      URL url = params[0];
-      String results;
-      String[] formattedResults = null;
-
-      try {
-        // attempt to retrieve the JSON data from the server
-        results = NetworkUtils.getResponseFromHttpUrl(url);
-        formattedResults = FirelineJsonUtils.getIncidentsFromJson(results);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-
-      return formattedResults;
-    }
-
-    @Override
-    protected void onPostExecute(String[] data) {
-      // hiding progress bar
-      mProgressBar.setVisibility(View.INVISIBLE);
-      // if the data returned exists apply it within the TextView
-      if (data != null) {
-        showEmergencyData();
-        // provide the new data to the IncidentAdapter to be bound to the ViewHolder
-        mIncidentAdapter.setIncidentData(data);
-      } else {
-        showErrorMessage();
-      }
-    }
   }
 }
