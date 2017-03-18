@@ -81,7 +81,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     mIncidents = incidents;
     String[] formattedIncidents;
 
-    if (incidents != null) {
+    if (mIncidents != null && mIncidents.size() != 0) {
       // using the incident objects get the toString()
       formattedIncidents = new String[mIncidents.size()];
       for (int x = 0; x < formattedIncidents.length; x++) {

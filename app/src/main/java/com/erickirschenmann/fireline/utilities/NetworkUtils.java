@@ -2,6 +2,7 @@ package com.erickirschenmann.fireline.utilities;
 
 import android.net.Uri;
 import android.util.Log;
+import com.erickirschenmann.fireline.data.FirelineTestJson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -11,6 +12,8 @@ import java.util.Scanner;
 
 /** Created by eric on 3/3/17. */
 public class NetworkUtils {
+
+  private static final boolean DEBUG = false;
   private static final String TAG = NetworkUtils.class.getSimpleName();
   private static final String FIRELINE_JSON_URL = "http://fireline.ventura.org/data/fireline.json";
 
@@ -41,24 +44,26 @@ public class NetworkUtils {
    */
   public static String getResponseFromHttpUrl(URL url) throws IOException {
 
-    // instead of constantly downloading from their server, use test data
-    //return FirelineTestJson.getFIRELINE_TEST_JSON();
+    if (DEBUG) {
+      // instead of constantly downloading from their server, use test data
+      return FirelineTestJson.getFIRELINE_TEST_JSON();
+    } else {
+      HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+      try {
+        InputStream in = urlConnection.getInputStream();
 
-    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-    try {
-      InputStream in = urlConnection.getInputStream();
+        Scanner scanner = new Scanner(in);
+        scanner.useDelimiter("\\A");
 
-      Scanner scanner = new Scanner(in);
-      scanner.useDelimiter("\\A");
-
-      boolean hasInput = scanner.hasNext();
-      if (hasInput) {
-        return scanner.next();
-      } else {
-        return null;
+        boolean hasInput = scanner.hasNext();
+        if (hasInput) {
+          return scanner.next();
+        } else {
+          return null;
+        }
+      } finally {
+        urlConnection.disconnect();
       }
-    } finally {
-      urlConnection.disconnect();
     }
   }
 }
