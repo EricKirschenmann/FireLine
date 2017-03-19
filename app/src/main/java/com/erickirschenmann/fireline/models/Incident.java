@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/** Created by eric on 3/4/17. */
+/**
+ * Created by eric on 3/4/17.
+ */
 public class Incident implements Parcelable {
 
   public static final Creator<Incident> CREATOR =
@@ -36,9 +38,9 @@ public class Incident implements Parcelable {
 
   // should never be used
   public Incident() {
-    this.address = "Hill St / S C St";
+    this.address = "";
     this.block = "";
-    this.city = "Oxnard";
+    this.city = "";
     this.comment = "";
     this.incidentNumber = "";
     this.incidentType = "";
@@ -77,7 +79,7 @@ public class Incident implements Parcelable {
       String responseDate,
       String status,
       String units) {
-    this.address = address.trim();
+    setAddress(address.trim(), block.trim());
     this.block = block.trim();
     this.city = city.trim();
     this.comment = comment.trim();
@@ -119,7 +121,9 @@ public class Incident implements Parcelable {
     }
   }
 
-  /** Probably the worst way to do this */
+  /**
+   * Probably the worst way to do this
+   */
   private void getUnitsArray(String unitString) {
     ArrayList<String> unitsArray = new ArrayList<>();
     Scanner scanner = new Scanner(unitString);
@@ -146,8 +150,18 @@ public class Incident implements Parcelable {
     return address;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  private void setAddress(String address, String block) {
+    // remove the block info from the address since it's in it's own variable
+    if (address.contains(block)) {
+      address = address.replace(block, "");
+    }
+
+    // remove weird characters
+    if (address.contains("-")) {
+      address = address.replace("-", " ");
+    }
+
+    this.address = address.trim();
   }
 
   public String getBlock() {
