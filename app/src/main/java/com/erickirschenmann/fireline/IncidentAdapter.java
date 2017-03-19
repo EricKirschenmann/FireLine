@@ -17,6 +17,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
 
   private final IncidentAdapterOnClickHandler mClickHandler;
   private String[] mIncidentData;
+  private String[] mIncidentType;
   private ArrayList<Incident> mIncidents;
 
   IncidentAdapter(IncidentAdapterOnClickHandler onClickHandler) {
@@ -53,7 +54,10 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
   @Override
   public void onBindViewHolder(IncidentAdapterViewHolder holder, int position) {
     String incidentData = mIncidentData[position];
+    String incidentType = mIncidentType[position];
+
     holder.mIncidentTextView.setText(incidentData);
+    holder.mIncidentTypeTextView.setText(incidentType);
   }
 
   /**
@@ -80,19 +84,24 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
   void setIncidentData(ArrayList<Incident> incidents) {
     mIncidents = incidents;
     String[] formattedIncidents;
+    String[] incidentTypes;
 
     if (mIncidents != null && mIncidents.size() != 0) {
       // using the incident objects get the toString()
       formattedIncidents = new String[mIncidents.size()];
+      incidentTypes = new String[mIncidents.size()];
       for (int x = 0; x < formattedIncidents.length; x++) {
         formattedIncidents[x] = mIncidents.get(x).toString();
+        incidentTypes[x] = mIncidents.get(x).getIncidentType();
       }
     } else {
       formattedIncidents = null;
+      incidentTypes = null;
     }
 
     // now store the updated data
     mIncidentData = formattedIncidents;
+    mIncidentType = incidentTypes;
     notifyDataSetChanged();
   }
 
@@ -105,10 +114,12 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
   class IncidentAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
     final TextView mIncidentTextView;
+    final TextView mIncidentTypeTextView;
 
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
       mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
+      mIncidentTypeTextView = (TextView) itemView.findViewById(R.id.tv_incident_type);
       itemView.setOnClickListener(this);
     }
 

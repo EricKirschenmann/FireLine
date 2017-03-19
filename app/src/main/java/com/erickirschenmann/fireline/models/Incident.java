@@ -68,12 +68,27 @@ public class Incident {
     this.city = city;
     this.comment = comment;
     this.incidentNumber = incidentNumber;
-    this.incidentType = incidentType;
+    // this.incidentType = incidentType;
+    setType(incidentType);
     this.latitude = latitude;
     this.longitude = longitude;
     this.responseDate = responseDate;
     this.status = status;
     getUnitsArray(units); // hopefully will get the units
+  }
+
+  /**
+   * Sets the incident type to a more readable version for those that are abbreviated currently only
+   * TC -> Traffic Collision more added later if they exist
+   *
+   * @param incidentType The {@code String} containing the provided incident type
+   */
+  private void setType(String incidentType) {
+    if (incidentType.equals("TC")) {
+      this.setIncidentType("Traffic Collision");
+    } else {
+      this.setIncidentType(incidentType);
+    }
   }
 
   /** Probably the worst way to do this */
@@ -143,7 +158,7 @@ public class Incident {
     return incidentType;
   }
 
-  public void setIncidentType(String incidentType) {
+  private void setIncidentType(String incidentType) {
     this.incidentType = incidentType;
   }
 
@@ -190,11 +205,15 @@ public class Incident {
   private String getUnitsString() {
     String units = "";
 
-    for (int x = 0; x < this.units.length; x++) {
-      if (x != this.units.length - 1) {
-        units += this.units[x] + ", ";
-      } else {
-        units += this.units[x];
+    // hopefully fix crashing issue by not returning some sort of null pointer
+    if (this.units != null && this.units.length != 0) {
+
+      for (int x = 0; x < this.units.length; x++) {
+        if (x != this.units.length - 1) {
+          units += this.units[x] + ", ";
+        } else {
+          units += this.units[x];
+        }
       }
     }
 
@@ -287,13 +306,11 @@ public class Incident {
     return this.responseDate
         + "\nIncident Number: "
         + this.incidentNumber
-        + "\nType: "
-        + this.incidentType
         + "\nAddress: "
         + this.block
         + " "
         + this.address
-        + ", "
+        + "\nCity: "
         + this.city
         + "\nUnits: "
         + this.getUnitsString()
