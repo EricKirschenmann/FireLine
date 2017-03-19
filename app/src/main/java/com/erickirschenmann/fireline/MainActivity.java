@@ -1,7 +1,6 @@
 package com.erickirschenmann.fireline;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -155,13 +154,15 @@ public class MainActivity extends AppCompatActivity
    */
   @Override
   public void onClick(String incidentData) {
-    // convert to a valid Uri
-    Uri gmmIntentUri = Uri.parse(incidentData);
-    // create the intent
-    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-    // start the Google Maps activity
-    mapIntent.setPackage("com.google.android.apps.maps");
-    startActivity(mapIntent);
+//    // convert to a valid Uri
+//    Uri gmmIntentUri = Uri.parse(incidentData);
+//    // create the intent
+//    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//    // start the Google Maps activity
+//    mapIntent.setPackage("com.google.android.apps.maps");
+//    startActivity(mapIntent);
+    startActivity(
+        (new Intent(this, DetailActivity.class)).putExtra("INCIDENT_DETAILS", incidentData));
   }
 
   /**

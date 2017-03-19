@@ -115,16 +115,17 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
     @Override
     public void onClick(View v) {
       int position = getAdapterPosition();
+      String details = mIncidents.get(position).toString();
 
       // test that the correct incident data is being grabbed
-      String latitude = Double.toString(mIncidents.get(position).getLatitude());
-      String longitude = Double.toString(mIncidents.get(position).getLongitude());
-      String address = mIncidents.get(position).getStreetAddress();
+      // String latitude = Double.toString(mIncidents.get(position).getLatitude());
+      // String longitude = Double.toString(mIncidents.get(position).getLongitude());
+      // String address = mIncidents.get(position).getStreetAddress();
 
       // this will be converted into a google maps intent
-      String gmmIntent = "geo:" + latitude + "," + longitude + "?q=" + address;
+      // String gmmIntent = "geo:" + latitude + "," + longitude + "?q=" + address;
 
-      mClickHandler.onClick(gmmIntent);
+      mClickHandler.onClick(details);
     }
   }
 }
