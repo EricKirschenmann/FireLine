@@ -150,19 +150,13 @@ public class MainActivity extends AppCompatActivity
   /**
    * Handles the click on one of the RecyclerView items
    *
-   * @param incidentData The Google Maps intent location of the Incident
+   * @param incident The Parcelable Incident object representing the selected Incident
    */
   @Override
-  public void onClick(String incidentData) {
-//    // convert to a valid Uri
-//    Uri gmmIntentUri = Uri.parse(incidentData);
-//    // create the intent
-//    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//    // start the Google Maps activity
-//    mapIntent.setPackage("com.google.android.apps.maps");
-//    startActivity(mapIntent);
-    startActivity(
-        (new Intent(this, DetailActivity.class)).putExtra("INCIDENT_DETAILS", incidentData));
+  public void onClick(Incident incident) {
+    Intent detailsIntent = new Intent(this, DetailActivity.class);
+    detailsIntent.putExtra("INCIDENT_EXTRA", incident);
+    startActivity(detailsIntent);
   }
 
   /**

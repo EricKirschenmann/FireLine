@@ -1,12 +1,26 @@
 package com.erickirschenmann.fireline.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /** Created by eric on 3/4/17. */
-public class Incident {
+public class Incident implements Parcelable {
 
+  public static final Creator<Incident> CREATOR =
+      new Creator<Incident>() {
+        @Override
+        public Incident createFromParcel(Parcel source) {
+          return new Incident(source);
+        }
+
+        @Override
+        public Incident[] newArray(int size) {
+          return new Incident[size];
+        }
+      };
   // instance variables that will contain all the details for a specific incident
   private String address; // the street not full address
   private String block; // closest block, will not be an exact location
@@ -22,9 +36,9 @@ public class Incident {
 
   // should never be used
   public Incident() {
-    this.address = "";
+    this.address = "Hill St / S C St";
     this.block = "";
-    this.city = "";
+    this.city = "Oxnard";
     this.comment = "";
     this.incidentNumber = "";
     this.incidentType = "";
@@ -63,11 +77,11 @@ public class Incident {
       String responseDate,
       String status,
       String units) {
-    this.address = address;
-    this.block = block;
-    this.city = city;
-    this.comment = comment;
-    this.incidentNumber = incidentNumber;
+    this.address = address.trim();
+    this.block = block.trim();
+    this.city = city.trim();
+    this.comment = comment.trim();
+    this.incidentNumber = incidentNumber.trim();
     // this.incidentType = incidentType;
     setType(incidentType);
     this.latitude = latitude;
@@ -75,6 +89,20 @@ public class Incident {
     this.responseDate = responseDate;
     this.status = status;
     getUnitsArray(units); // hopefully will get the units
+  }
+
+  private Incident(Parcel in) {
+    this.address = in.readString();
+    this.block = in.readString();
+    this.city = in.readString();
+    this.comment = in.readString();
+    this.incidentNumber = in.readString();
+    this.incidentType = in.readString();
+    this.latitude = in.readDouble();
+    this.longitude = in.readDouble();
+    this.responseDate = in.readString();
+    this.status = in.readString();
+    this.units = in.createStringArray();
   }
 
   /**
@@ -107,7 +135,7 @@ public class Incident {
     if (unitsArray.size() != 0) {
       this.units = new String[unitsArray.size()];
       for (int x = 0; x < this.units.length; x++) {
-        System.out.println(x + ": " + unitsArray.get(x));
+        //System.out.println(x + ": " + unitsArray.get(x));
         this.units[x] = unitsArray.get(x);
       }
     }
@@ -226,7 +254,7 @@ public class Incident {
    * @return The full street address of this Incident
    */
   public String getStreetAddress() {
-    return this.block + " " + this.address;
+    return this.block + " " + this.address + ", " + this.city;
   }
 
   @Override
@@ -303,18 +331,52 @@ public class Incident {
   @Override
   public String toString() {
 
-    return this.responseDate
-        + "\nIncident Number: "
-        + this.incidentNumber
-        + "\nAddress: "
-        + this.block
-        + " "
-        + this.address
-        + "\nCity: "
-        + this.city
-        + "\nUnits: "
-        + this.getUnitsString()
-        + "\nStatus: "
-        + this.status;
+    if (this.block.equals("")) {
+      return this.responseDate
+          + "\nIncident Number: "
+          + this.incidentNumber
+          + "\nAddress: "
+          + this.address
+          + "\nCity: "
+          + this.city
+          + "\nUnits: "
+          + this.getUnitsString()
+          + "\nStatus: "
+          + this.status;
+    } else {
+      return this.responseDate
+          + "\nIncident Number: "
+          + this.incidentNumber
+          + "\nAddress: "
+          + this.block
+          + " "
+          + this.address
+          + "\nCity: "
+          + this.city
+          + "\nUnits: "
+          + this.getUnitsString()
+          + "\nStatus: "
+          + this.status;
+    }
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.address);
+    dest.writeString(this.block);
+    dest.writeString(this.city);
+    dest.writeString(this.comment);
+    dest.writeString(this.incidentNumber);
+    dest.writeString(this.incidentType);
+    dest.writeDouble(this.latitude);
+    dest.writeDouble(this.longitude);
+    dest.writeString(this.responseDate);
+    dest.writeString(this.status);
+    dest.writeStringArray(this.units);
   }
 }
