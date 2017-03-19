@@ -62,7 +62,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
   /** Sets the details TextView, will be filled in separately at a later point */
   void setDetails() {
-    mDetailsTextView.setText(mIncident.toString());
+    mDetailsTextView.setText(mIncident.getDetails());
   }
 
   @Override

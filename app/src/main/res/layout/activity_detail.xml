@@ -32,14 +32,14 @@
       android:orientation="vertical">
 
       <TextView
-        style="@style/ListTitle"
+        style="@style/DetailsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/details_title" />
 
       <TextView
         android:id="@+id/tv_details"
-        style="@style/ListItem"
+        style="@style/DetailsItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/details_error" />

@@ -24,4 +24,20 @@
     <item name="android:paddingRight">@dimen/padding</item>
   </style>
 
+  <style name="DetailsList" parent="AppTheme">
+    <item name="android:textSize">@dimen/detail_tile</item>
+    <item name="android:textColor">@color/primary_text</item>
+    <item name="android:paddingTop">@dimen/padding</item>
+    <item name="android:paddingLeft">@dimen/padding</item>
+    <item name="android:paddingRight">@dimen/padding</item>
+  </style>
+
+  <style name="DetailsItem" parent="AppTheme">
+    <item name="android:textSize">@dimen/detail_tile</item>
+    <item name="android:textColor">@color/secondary_text</item>
+    <item name="android:paddingBottom">@dimen/padding</item>
+    <item name="android:paddingLeft">@dimen/padding</item>
+    <item name="android:paddingRight">@dimen/padding</item>
+  </style>
+
 </resources>

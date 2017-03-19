@@ -180,8 +180,12 @@ public class Incident implements Parcelable {
     this.city = city;
   }
 
-  public String getComment() {
-    return comment;
+  private String getComment() {
+    if (comment.equals("")) {
+      return "No comments.";
+    } else {
+      return comment;
+    }
   }
 
   public void setComment(String comment) {
@@ -268,7 +272,11 @@ public class Incident implements Parcelable {
    * @return The full street address of this Incident
    */
   public String getStreetAddress() {
-    return this.block + " " + this.address + ", " + this.city;
+    if (this.block.equals("")) {
+      return this.address;
+    } else {
+      return this.block + " " + this.address;
+    }
   }
 
   @Override
@@ -344,43 +352,24 @@ public class Incident implements Parcelable {
 
   @Override
   public String toString() {
+    return this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city;
+  }
 
-    if (this.block.equals("")) {
-      return this.responseDate + "\n" +
-          this.address + ", " + this.city;
-    } else {
-      return this.responseDate
-          + "\n" + this.getStreetAddress();
-    }
-
-    /**
-     if (this.block.equals("")) {
-     return this.responseDate
-          + "\nIncident Number: "
-          + this.incidentNumber
-          + "\nAddress: "
-          + this.address
-          + "\nCity: "
-          + this.city
-          + "\nUnits: "
-          + this.getUnitsString()
-          + "\nStatus: "
-          + this.status;
-    } else {
-      return this.responseDate
-          + "\nIncident Number: "
-          + this.incidentNumber
-          + "\nAddress: "
-          + this.block
-          + " "
-          + this.address
-          + "\nCity: "
-          + this.city
-          + "\nUnits: "
-          + this.getUnitsString()
-          + "\nStatus: "
-          + this.status;
-     } **/
+  public String getDetails() {
+    return this.responseDate
+        + "\nIncident Number: "
+        + this.incidentNumber
+        + "\nIncident Type: "
+        + this.incidentType
+        + "\nAddress: "
+        + this.getStreetAddress()
+        + "\nCity: "
+        + this.city
+        + "\nUnits: "
+        + this.getUnitsString()
+        + "\nStatus: "
+        + this.status
+        + "\nComments: " + this.getComment();
   }
 
   @Override

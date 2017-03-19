@@ -1,12 +1,11 @@
 <resources>
   <string name="app_name">Fireline</string>
+  <string name="activity_details">Details</string>
 
   <string name="action_refresh">Refresh</string>
   <string name="error_message">Sorry could not fetch data</string>
 
   <string name="details_error">Details not found.</string>
   <string name="details_title">Incident Details:</string>
-
-
   <string name="maps_placeholder">Map Here</string>
 </resources>
