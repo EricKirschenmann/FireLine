@@ -346,7 +346,16 @@ public class Incident implements Parcelable {
   public String toString() {
 
     if (this.block.equals("")) {
+      return this.responseDate + "\n" +
+          this.address + ", " + this.city;
+    } else {
       return this.responseDate
+          + "\n" + this.getStreetAddress();
+    }
+
+    /**
+     if (this.block.equals("")) {
+     return this.responseDate
           + "\nIncident Number: "
           + this.incidentNumber
           + "\nAddress: "
@@ -371,7 +380,7 @@ public class Incident implements Parcelable {
           + this.getUnitsString()
           + "\nStatus: "
           + this.status;
-    }
+     } **/
   }
 
   @Override
