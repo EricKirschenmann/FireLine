@@ -1,4 +1,4 @@
-# FireLine Application
+# Fireline Application
 Fireline is a publicly available utility that displays current events that the Ventura County Emergency Response System has responded to.
 
 This is my Android Application which relies on the freely available JSON data and parses it into user readable information and details.
