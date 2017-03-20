@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context="com.erickirschenmann.fireline.DetailActivity">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1.0"
+    android:orientation="vertical">
+
+    <!-- Placeholder View -->
+    <fragment
+      android:id="@+id/google_map"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+  </LinearLayout>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1.0">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <TextView
+        style="@style/DetailsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/details_title" />
+
+      <TextView
+        android:id="@+id/tv_details"
+        style="@style/DetailsItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/details_error" />
+
+    </LinearLayout>
+  </ScrollView>
+
+
+</LinearLayout>

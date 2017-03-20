@@ -1,12 +1,28 @@
 package com.erickirschenmann.fireline.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/** Created by eric on 3/4/17. */
-public class Incident {
+/**
+ * Created by eric on 3/4/17.
+ */
+public class Incident implements Parcelable {
 
+  public static final Creator<Incident> CREATOR =
+      new Creator<Incident>() {
+        @Override
+        public Incident createFromParcel(Parcel source) {
+          return new Incident(source);
+        }
+
+        @Override
+        public Incident[] newArray(int size) {
+          return new Incident[size];
+        }
+      };
   // instance variables that will contain all the details for a specific incident
   private String address; // the street not full address
   private String block; // closest block, will not be an exact location
@@ -63,12 +79,13 @@ public class Incident {
       String responseDate,
       String status,
       String units) {
-    this.address = address;
-    this.block = block;
-    this.city = city;
-    this.comment = comment;
-    this.incidentNumber = incidentNumber;
-    this.incidentType = incidentType;
+    setAddress(address.trim(), block.trim());
+    this.block = block.trim();
+    this.city = city.trim();
+    this.comment = comment.trim();
+    this.incidentNumber = incidentNumber.trim();
+    // this.incidentType = incidentType;
+    setType(incidentType);
     this.latitude = latitude;
     this.longitude = longitude;
     this.responseDate = responseDate;
@@ -76,7 +93,37 @@ public class Incident {
     getUnitsArray(units); // hopefully will get the units
   }
 
-  /** Probably the worst way to do this */
+  private Incident(Parcel in) {
+    this.address = in.readString();
+    this.block = in.readString();
+    this.city = in.readString();
+    this.comment = in.readString();
+    this.incidentNumber = in.readString();
+    this.incidentType = in.readString();
+    this.latitude = in.readDouble();
+    this.longitude = in.readDouble();
+    this.responseDate = in.readString();
+    this.status = in.readString();
+    this.units = in.createStringArray();
+  }
+
+  /**
+   * Sets the incident type to a more readable version for those that are abbreviated currently only
+   * TC -> Traffic Collision more added later if they exist
+   *
+   * @param incidentType The {@code String} containing the provided incident type
+   */
+  private void setType(String incidentType) {
+    if (incidentType.equals("TC")) {
+      this.setIncidentType("Traffic Collision");
+    } else {
+      this.setIncidentType(incidentType);
+    }
+  }
+
+  /**
+   * Probably the worst way to do this
+   */
   private void getUnitsArray(String unitString) {
     ArrayList<String> unitsArray = new ArrayList<>();
     Scanner scanner = new Scanner(unitString);
@@ -92,7 +139,7 @@ public class Incident {
     if (unitsArray.size() != 0) {
       this.units = new String[unitsArray.size()];
       for (int x = 0; x < this.units.length; x++) {
-        System.out.println(x + ": " + unitsArray.get(x));
+        //System.out.println(x + ": " + unitsArray.get(x));
         this.units[x] = unitsArray.get(x);
       }
     }
@@ -103,8 +150,18 @@ public class Incident {
     return address;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  private void setAddress(String address, String block) {
+    // remove the block info from the address since it's in it's own variable
+    if (address.contains(block)) {
+      address = address.replace(block, "");
+    }
+
+    // remove weird characters
+    if (address.contains("-")) {
+      address = address.replace("-", " ");
+    }
+
+    this.address = address.trim();
   }
 
   public String getBlock() {
@@ -123,8 +180,12 @@ public class Incident {
     this.city = city;
   }
 
-  public String getComment() {
-    return comment;
+  private String getComment() {
+    if (comment.equals("")) {
+      return "No comments.";
+    } else {
+      return comment;
+    }
   }
 
   public void setComment(String comment) {
@@ -143,7 +204,7 @@ public class Incident {
     return incidentType;
   }
 
-  public void setIncidentType(String incidentType) {
+  private void setIncidentType(String incidentType) {
     this.incidentType = incidentType;
   }
 
@@ -190,11 +251,15 @@ public class Incident {
   private String getUnitsString() {
     String units = "";
 
-    for (int x = 0; x < this.units.length; x++) {
-      if (x != this.units.length - 1) {
-        units += this.units[x] + ", ";
-      } else {
-        units += this.units[x];
+    // hopefully fix crashing issue by not returning some sort of null pointer
+    if (this.units != null && this.units.length != 0) {
+
+      for (int x = 0; x < this.units.length; x++) {
+        if (x != this.units.length - 1) {
+          units += this.units[x] + ", ";
+        } else {
+          units += this.units[x];
+        }
       }
     }
 
@@ -207,7 +272,11 @@ public class Incident {
    * @return The full street address of this Incident
    */
   public String getStreetAddress() {
-    return this.block + " " + this.address;
+    if (this.block.equals("")) {
+      return this.address;
+    } else {
+      return this.block + " " + this.address;
+    }
   }
 
   @Override
@@ -283,21 +352,43 @@ public class Incident {
 
   @Override
   public String toString() {
+    return this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city;
+  }
 
+  public String getDetails() {
     return this.responseDate
         + "\nIncident Number: "
         + this.incidentNumber
-        + "\nType: "
+        + "\nIncident Type: "
         + this.incidentType
         + "\nAddress: "
-        + this.block
-        + " "
-        + this.address
-        + ", "
+        + this.getStreetAddress()
+        + "\nCity: "
         + this.city
         + "\nUnits: "
         + this.getUnitsString()
         + "\nStatus: "
-        + this.status;
+        + this.status
+        + "\nComments: " + this.getComment();
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.address);
+    dest.writeString(this.block);
+    dest.writeString(this.city);
+    dest.writeString(this.comment);
+    dest.writeString(this.incidentNumber);
+    dest.writeString(this.incidentType);
+    dest.writeDouble(this.latitude);
+    dest.writeDouble(this.longitude);
+    dest.writeString(this.responseDate);
+    dest.writeString(this.status);
+    dest.writeStringArray(this.units);
   }
 }

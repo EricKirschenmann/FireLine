@@ -1,7 +1,6 @@
 package com.erickirschenmann.fireline;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -151,17 +150,13 @@ public class MainActivity extends AppCompatActivity
   /**
    * Handles the click on one of the RecyclerView items
    *
-   * @param incidentData The Google Maps intent location of the Incident
+   * @param incident The Parcelable Incident object representing the selected Incident
    */
   @Override
-  public void onClick(String incidentData) {
-    // convert to a valid Uri
-    Uri gmmIntentUri = Uri.parse(incidentData);
-    // create the intent
-    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-    // start the Google Maps activity
-    mapIntent.setPackage("com.google.android.apps.maps");
-    startActivity(mapIntent);
+  public void onClick(Incident incident) {
+    Intent detailsIntent = new Intent(this, DetailActivity.class);
+    detailsIntent.putExtra("INCIDENT_EXTRA", incident);
+    startActivity(detailsIntent);
   }
 
   /**
