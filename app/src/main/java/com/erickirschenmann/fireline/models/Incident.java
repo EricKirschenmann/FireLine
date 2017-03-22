@@ -114,8 +114,8 @@ public class Incident implements Parcelable {
    * @param incidentType The {@code String} containing the provided incident type
    */
   private void setType(String incidentType) {
-    if (incidentType.equals("TC")) {
-      this.setIncidentType("Traffic Collision");
+    if (incidentType.contains("TC")) {
+      this.setIncidentType(incidentType.replace("TC", "Traffic Collision"));
     } else {
       this.setIncidentType(incidentType);
     }

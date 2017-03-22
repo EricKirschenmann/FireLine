@@ -13,7 +13,7 @@ import java.util.Scanner;
 /** Created by eric on 3/3/17. */
 public class NetworkUtils {
 
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
   private static final String TAG = NetworkUtils.class.getSimpleName();
   private static final String FIRELINE_JSON_URL = "http://fireline.ventura.org/data/fireline.json";
 
