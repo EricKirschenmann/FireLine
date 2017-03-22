@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity
         invalidateData();
         getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
         return true;
+      case R.id.action_settings:
+        // open settings activity
+        startActivity(new Intent(this, SettingsActivity.class));
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
