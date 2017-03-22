@@ -1,7 +1,11 @@
 package com.erickirschenmann.fireline.utilities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import com.erickirschenmann.fireline.MainActivity;
 import com.erickirschenmann.fireline.data.FirelineTestJson;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,9 +46,11 @@ public class NetworkUtils {
    * @return The contents of the HTTP response.
    * @throws IOException Related to network and stream reading
    */
-  public static String getResponseFromHttpUrl(URL url) throws IOException {
+  public static String getResponseFromHttpUrl(URL url, Context context) throws IOException {
 
-    if (DEBUG) {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+    if (sharedPreferences.getBoolean("show_debug", false)) {
       // instead of constantly downloading from their server, use test data
       return FirelineTestJson.getFIRELINE_TEST_JSON();
     } else {

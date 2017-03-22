@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
   <CheckBoxPreference
-    android:defaultValue="true"
+    android:defaultValue="false"
     android:key="show_debug"
     android:summaryOff="Show Real Data"
     android:summaryOn="Show Fake Data"

@@ -1,7 +1,9 @@
 package com.erickirschenmann.fireline;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         try {
           // attempt to retrieve the JSON data from the server
           URL url = NetworkUtils.getUrl();
-          results = NetworkUtils.getResponseFromHttpUrl(url);
+          results = NetworkUtils.getResponseFromHttpUrl(url, getContext());
           incidents = FirelineJsonUtils.getIncidentsFromJson(results);
         } catch (IOException e) {
           e.printStackTrace();
