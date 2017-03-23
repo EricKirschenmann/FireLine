@@ -24,8 +24,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-    implements IncidentAdapterOnClickHandler, LoaderCallbacks<ArrayList<Incident>>,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    implements IncidentAdapterOnClickHandler,
+        LoaderCallbacks<ArrayList<Incident>>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
   private static final int INCIDENT_LOADER_ID = 19232;
   private ArrayList<Incident> incidents;
@@ -173,8 +174,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {
-  }
+  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {}
 
   /**
    * Handles the click on one of the RecyclerView items

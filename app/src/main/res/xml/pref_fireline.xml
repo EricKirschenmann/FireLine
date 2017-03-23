@@ -6,6 +6,6 @@
     android:key="@string/pref_show_debug_key"
     android:summaryOff="@string/pref_show_debug_false"
     android:summaryOn="@string/pref_show_debug_true"
-    android:title="@string/pref_show_debug_label"/>
+    android:title="@string/pref_show_debug_label" />
 
 </PreferenceScreen>

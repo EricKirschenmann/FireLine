@@ -60,9 +60,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     mapFragment.getMapAsync(this);
   }
 
-  /**
-   * Sets the details TextView, will be filled in separately at a later point
-   */
+  /** Sets the details TextView, will be filled in separately at a later point */
   void setDetails() {
     mDetailsTextView.setText(mIncident.getDetails());
   }
