@@ -11,4 +11,11 @@
   <string name="details_error">Details not found.</string>
   <string name="details_title">Incident Details:</string>
   <string name="maps_placeholder">Map Here</string>
+
+  <!--Preferences-->
+  <string name="pref_show_debug_key">show_debug</string>
+  <string name="pref_show_debug_label">Show Debug Data</string>
+  <string name="pref_show_debug_true">Showing Debug Data</string>
+  <string name="pref_show_debug_false">Showing Live Data</string>
+
 </resources>
