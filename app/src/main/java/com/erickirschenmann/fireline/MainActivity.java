@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-// COMPLETED (1) Implement OnSharedPreferenceChangeListener
 public class MainActivity extends AppCompatActivity
     implements IncidentAdapterOnClickHandler, LoaderCallbacks<ArrayList<Incident>>,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity
     reloadData();
   }
 
-  // COMPLETED (4) Override onDestroy and unregister the listener
   @Override
   protected void onDestroy() {
     PreferenceManager.getDefaultSharedPreferences(this)
