@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+// COMPLETED (1) Implement OnSharedPreferenceChangeListener
 public class MainActivity extends AppCompatActivity
-    implements IncidentAdapterOnClickHandler, LoaderCallbacks<ArrayList<Incident>> {
+    implements IncidentAdapterOnClickHandler, LoaderCallbacks<ArrayList<Incident>>,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
   private static final int INCIDENT_LOADER_ID = 19232;
   private ArrayList<Incident> incidents;
@@ -61,12 +63,35 @@ public class MainActivity extends AppCompatActivity
 
     // initial load of data
     getSupportLoaderManager().initLoader(INCIDENT_LOADER_ID, null, this);
+
+    // register the OnSharedPreferenceChangeListener so the data will update when the user changes a preference
+    PreferenceManager.getDefaultSharedPreferences(this)
+        .registerOnSharedPreferenceChangeListener(this);
+  }
+
+  @Override
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    // reload the data
+    reloadData();
+  }
+
+  // COMPLETED (4) Override onDestroy and unregister the listener
+  @Override
+  protected void onDestroy() {
+    PreferenceManager.getDefaultSharedPreferences(this)
+        .unregisterOnSharedPreferenceChangeListener(this);
+    super.onDestroy();
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
+  }
+
+  private void reloadData() {
+    invalidateData();
+    getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
   }
 
   @Override
@@ -76,8 +101,7 @@ public class MainActivity extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.action_refresh:
         // when the refresh selected refresh the data
-        invalidateData();
-        getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
+        reloadData();
         return true;
       case R.id.action_settings:
         // open settings activity
@@ -151,7 +175,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {}
+  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {
+  }
 
   /**
    * Handles the click on one of the RecyclerView items
