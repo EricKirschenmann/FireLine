@@ -19,23 +19,31 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     addPreferencesFromResource(R.xml.pref_fireline);
 
     SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-    PreferenceScreen prefScreen = getPreferenceScreen();
-    int count = prefScreen.getPreferenceCount();
+    PreferenceScreen preferenceScreen = getPreferenceScreen();
+    int count = preferenceScreen.getPreferenceCount();
 
     // Go through all of the preferences, and set up their preference summary.
     for (int i = 0; i < count; i++) {
-      Preference p = prefScreen.getPreference(i);
-      // You don't need to set up preference summaries for checkbox preferences because
+      Preference preference = preferenceScreen.getPreference(i);
+      // don't need to set up preference summaries for checkbox preferences because
       // they are already set up in xml using summaryOff and summary On
-      if (!(p instanceof CheckBoxPreference)) {
-        String value = sharedPreferences.getString(p.getKey(), "");
-        setPreferenceSummary(p, value);
+      if (!(preference instanceof CheckBoxPreference)) {
+        String value = sharedPreferences.getString(preference.getKey(), "");
+        setPreferenceSummary(preference, value);
       }
     }
   }
 
+  /**
+   * Sets the summary of the provided Preference to the current value
+   *
+   * @param preference The preference to set the summary of
+   * @param value The value of the current preference, if ListPreference need to find entry from
+   * value
+   */
   void setPreferenceSummary(Preference preference, String value) {
     if (preference instanceof EditTextPreference) {
+      // if this is an EditTextPreference you can just use the value for the summary
       preference.setSummary(value);
     }
   }
