@@ -8,4 +8,9 @@
     android:summaryOn="@string/pref_show_debug_true"
     android:title="@string/pref_show_debug_label" />
 
+  <EditTextPreference
+    android:defaultValue="@string/pref_address_default"
+    android:key="@string/pref_address_key"
+    android:title="@string/pref_address_label" />
+
 </PreferenceScreen>

@@ -13,9 +13,14 @@
   <string name="maps_placeholder">Map Here</string>
 
   <!--Preferences-->
+  <!--Debug CheckBox-->
   <string name="pref_show_debug_key">show_debug</string>
   <string name="pref_show_debug_label">Show Debug Data</string>
   <string name="pref_show_debug_true">Showing Debug Data</string>
   <string name="pref_show_debug_false">Showing Live Data</string>
 
+  <!--Address EditText-->
+  <string name="pref_address_key">address</string>
+  <string name="pref_address_label">Your Address</string>
+  <string name="pref_address_default">165 Durley Av., Camarillo, CA 93010</string>
 </resources>
