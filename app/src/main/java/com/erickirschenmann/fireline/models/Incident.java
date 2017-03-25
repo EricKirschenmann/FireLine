@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * Created by eric on 3/4/17.
- */
+/** Created by eric on 3/4/17. */
 public class Incident implements Parcelable {
 
   public static final Creator<Incident> CREATOR =
@@ -114,16 +112,14 @@ public class Incident implements Parcelable {
    * @param incidentType The {@code String} containing the provided incident type
    */
   private void setType(String incidentType) {
-    if (incidentType.equals("TC")) {
-      this.setIncidentType("Traffic Collision");
+    if (incidentType.contains("TC")) {
+      this.setIncidentType(incidentType.replace("TC", "Traffic Collision"));
     } else {
       this.setIncidentType(incidentType);
     }
   }
 
-  /**
-   * Probably the worst way to do this
-   */
+  /** Probably the worst way to do this */
   private void getUnitsArray(String unitString) {
     ArrayList<String> unitsArray = new ArrayList<>();
     Scanner scanner = new Scanner(unitString);
@@ -369,7 +365,8 @@ public class Incident implements Parcelable {
         + this.getUnitsString()
         + "\nStatus: "
         + this.status
-        + "\nComments: " + this.getComment();
+        + "\nComments: "
+        + this.getComment();
   }
 
   @Override

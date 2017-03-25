@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <CheckBoxPreference
+    android:defaultValue="@bool/pref_show_debug_default"
+    android:key="@string/pref_show_debug_key"
+    android:summaryOff="@string/pref_show_debug_false"
+    android:summaryOn="@string/pref_show_debug_true"
+    android:title="@string/pref_show_debug_label" />
+
+  <EditTextPreference
+    android:defaultValue="@string/pref_address_default"
+    android:key="@string/pref_address_key"
+    android:title="@string/pref_address_label" />
+
+</PreferenceScreen>

@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.erickirschenmann.fireline.models.Incident;
@@ -71,8 +72,17 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
       case android.R.id.home:
         NavUtils.navigateUpFromSameTask(this);
         return true;
+      case R.id.action_settings:
+        startActivity(new Intent(this, SettingsActivity.class));
+        return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.details, menu);
+    return true;
   }
 
   /**
