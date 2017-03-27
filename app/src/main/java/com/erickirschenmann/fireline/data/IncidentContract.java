@@ -17,5 +17,6 @@ public class IncidentContract {
     public static final String COLUMN_RESPONSE_DATE = "responseDate";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_UNITS = "units";
+    public static final String COLUMN_DATE = "date";
   }
 }
