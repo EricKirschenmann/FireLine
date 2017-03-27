@@ -11,7 +11,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
   // the name of the actual database file on the system
   public static final String DATABASE_NAME = "incident.db";
   // the current database version
-  public static final int DATABASE_VERSION = 2;
+  private static final int DATABASE_VERSION = 3;
 
   /**
    * Default constructor just calls the constructor for the super class
@@ -31,7 +31,9 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
             + IncidentEntry._ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + IncidentEntry.COLUMN_DATE
-            + " Integer NOT NULL, "
+            + " INTEGER NOT NULL, "
+            + IncidentEntry.COLUMN_INCIDENT_ID
+            + " INTEGER NOT NULL, "
             + IncidentEntry.COLUMN_ADDRESS
             + " TEXT NOT NULL, "
             + IncidentEntry.COLUMN_BLOCK

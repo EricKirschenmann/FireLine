@@ -7,6 +7,7 @@ public class IncidentContract {
   public static final class IncidentEntry implements BaseColumns {
     public static final String TABLE_NAME = "incident";
     public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_INCIDENT_ID = "incident_id";
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_BLOCK = "block";
     public static final String COLUMN_CITY = "city";
