@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 public class IncidentContract {
   public static final class IncidentEntry implements BaseColumns {
     public static final String TABLE_NAME = "incident";
+    public static final String COLUMN_DATE = "date";
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_BLOCK = "block";
     public static final String COLUMN_CITY = "city";
@@ -17,6 +18,5 @@ public class IncidentContract {
     public static final String COLUMN_RESPONSE_DATE = "responseDate";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_UNITS = "units";
-    public static final String COLUMN_DATE = "date";
   }
 }
