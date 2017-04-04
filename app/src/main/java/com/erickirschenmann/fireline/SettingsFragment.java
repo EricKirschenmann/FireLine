@@ -8,11 +8,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 
-/**
- * Created by eric on 3/21/17.
- */
-public class SettingsFragment extends PreferenceFragmentCompat implements
-    SharedPreferences.OnSharedPreferenceChangeListener {
+/** Created by eric on 3/21/17. */
+public class SettingsFragment extends PreferenceFragmentCompat
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
 
   @Override
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -39,7 +37,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
    *
    * @param preference The preference to set the summary of
    * @param value The value of the current preference, if ListPreference need to find entry from
-   * value
+   *     value
    */
   void setPreferenceSummary(Preference preference, String value) {
     if (preference instanceof EditTextPreference) {
@@ -51,15 +49,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    getPreferenceScreen().getSharedPreferences()
-        .registerOnSharedPreferenceChangeListener(this);
+    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    getPreferenceScreen().getSharedPreferences()
-        .unregisterOnSharedPreferenceChangeListener(this);
+    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
   }
 
   @Override
