@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
  * with the same date will overwrite that record.
  * 4) Verify that NON NULL constraints are working properly on record inserts
  * 5) Verify auto increment is working with the ID
- * 6) Test the onUpgrade functionality of the IncidentDbHelper
+ * 6) Test the onUpgrade functionality of the WeatherDbHelper
  */
 @RunWith(AndroidJUnit4.class)
 
