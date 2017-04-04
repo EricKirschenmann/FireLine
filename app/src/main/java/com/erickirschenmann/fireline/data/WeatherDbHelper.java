@@ -44,7 +44,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
    * use-case, we wanted to watch out for it and warn you what could happen if you mistakenly
    * version your databases.
    */
-  public static final int DATABASE_VERSION = 1;
+  public static final int DATABASE_VERSION = 2;
 
   public WeatherDbHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -76,21 +76,21 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
             WeatherEntry._ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + WeatherEntry.COLUMN_DATE
-            + " INTEGER, "
+            + " INTEGER NOT NULL, "
             + WeatherEntry.COLUMN_WEATHER_ID
-            + " INTEGER, "
+            + " INTEGER NOT NULL, "
             + WeatherEntry.COLUMN_MIN_TEMP
-            + " REAL, "
+            + " REAL NOT NULL, "
             + WeatherEntry.COLUMN_MAX_TEMP
-            + " REAL, "
+            + " REAL NOT NULL, "
             + WeatherEntry.COLUMN_HUMIDITY
-            + " REAL, "
+            + " REAL NOT NULL, "
             + WeatherEntry.COLUMN_PRESSURE
-            + " REAL, "
+            + " REAL NOT NULL, "
             + WeatherEntry.COLUMN_WIND_SPEED
-            + " REAL, "
+            + " REAL NOT NULL, "
             + WeatherEntry.COLUMN_DEGREES
-            + " REAL"
+            + " REAL NOT NULL"
             + ");";
 
     /*
@@ -113,5 +113,8 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
    * @param newVersion The new database version
    */
   @Override
-  public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {}
+  public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+    sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+    onCreate(sqLiteDatabase);
+  }
 }
