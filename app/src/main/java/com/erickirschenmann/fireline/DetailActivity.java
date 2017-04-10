@@ -48,7 +48,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     if (mIncident != null) {
-      mAddress = mIncident.getStreetAddress();
+      mAddress = mIncident.getStreetAddress() + ", " + mIncident.getCity();
       mLat = mIncident.getLatitude();
       mLong = mIncident.getLongitude();
       setDetails();
