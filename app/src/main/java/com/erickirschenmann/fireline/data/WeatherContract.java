@@ -1,15 +1,32 @@
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.erickirschenmann.fireline.data;
 
 import android.provider.BaseColumns;
 
 /**
- * Created by eric on 4/4/17.
+ * Created by eric on 3/24/17.
+ *
+ * <p>Defines table and column names for the weather database. This class is not necessary, but
+ * keeps the code organized.
  */
-
-public class IncidentContract {
+public class WeatherContract {
 
   /* Inner class that defines the table contents of the incident table */
-  public static final class IncidentEntry implements BaseColumns {
+  public static final class WeatherEntry implements BaseColumns {
 
     /* Used internally as the name of our weather table. */
     public static final String TABLE_NAME = "weather";
@@ -33,7 +50,7 @@ public class IncidentContract {
     public static final String COLUMN_DATE = "date";
 
     /* Weather ID as returned by API, used to identify the icon to be used */
-    public static final String COLUMN_WEATHER_ID = "incident_id";
+    public static final String COLUMN_WEATHER_ID = "weather_id";
 
     /* Min and max temperatures in °C for the day (stored as floats in the database) */
     public static final String COLUMN_MIN_TEMP = "min";

@@ -1,15 +1,31 @@
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.erickirschenmann.fireline.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.erickirschenmann.fireline.data.IncidentContract.IncidentEntry;
+import com.erickirschenmann.fireline.data.WeatherContract.WeatherEntry;
 
 /**
- * Created by eric on 4/4/17.
+ * Created by eric on 3/24/17.
+ *
+ * <p>Manages a local database for incident data.
  */
-
-public class IncidentDbHelper extends SQLiteOpenHelper {
+public class WeatherDbHelper extends SQLiteOpenHelper {
 
   /*
    * This is the name of our database. Database names should be descriptive and end with the
@@ -30,7 +46,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
    */
   public static final int DATABASE_VERSION = 3;
 
-  public IncidentDbHelper(Context context) {
+  public WeatherDbHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }
 
@@ -49,7 +65,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
      */
     final String SQL_CREATE_WEATHER_TABLE =
         "CREATE TABLE "
-            + IncidentEntry.TABLE_NAME
+            + WeatherEntry.TABLE_NAME
             + " ("
             +
             /*
@@ -57,23 +73,23 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
              * WeatherEntry implements the interface, "BaseColumns", which does have a field
              * named "_ID". We use that here to designate our table's primary key.
              */
-            IncidentEntry._ID
+            WeatherEntry._ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + IncidentEntry.COLUMN_DATE
+            + WeatherEntry.COLUMN_DATE
             + " INTEGER NOT NULL, "
-            + IncidentEntry.COLUMN_WEATHER_ID
+            + WeatherEntry.COLUMN_WEATHER_ID
             + " INTEGER NOT NULL,"
-            + IncidentEntry.COLUMN_MIN_TEMP
+            + WeatherEntry.COLUMN_MIN_TEMP
             + " REAL NOT NULL, "
-            + IncidentEntry.COLUMN_MAX_TEMP
+            + WeatherEntry.COLUMN_MAX_TEMP
             + " REAL NOT NULL, "
-            + IncidentEntry.COLUMN_HUMIDITY
+            + WeatherEntry.COLUMN_HUMIDITY
             + " REAL NOT NULL, "
-            + IncidentEntry.COLUMN_PRESSURE
+            + WeatherEntry.COLUMN_PRESSURE
             + " REAL NOT NULL, "
-            + IncidentEntry.COLUMN_WIND_SPEED
+            + WeatherEntry.COLUMN_WIND_SPEED
             + " REAL NOT NULL, "
-            + IncidentEntry.COLUMN_DEGREES
+            + WeatherEntry.COLUMN_DEGREES
             + " REAL NOT NULL, "
             +
             /*
@@ -83,7 +99,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
              * insert another weather entry with that date, we replace the old weather entry.
              */
             " UNIQUE ("
-            + IncidentEntry.COLUMN_DATE
+            + WeatherEntry.COLUMN_DATE
             + ") ON CONFLICT REPLACE);";
 
     /*
@@ -107,7 +123,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
    */
   @Override
   public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-    sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + IncidentEntry.TABLE_NAME);
+    sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
     onCreate(sqLiteDatabase);
   }
 }
