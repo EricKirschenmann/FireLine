@@ -5,15 +5,16 @@ package com.erickirschenmann.fireline.data;
 //import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_MAX;
 //import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_MIN;
 //import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_PRESSURE;
-//import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_WEATHER_ID;
+//import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_INCIDENT_ID;
 //import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_WIND_DIR;
 //import static com.erickirschenmann.fireline.data.TestSunshineDatabase.REFLECTED_COLUMN_WIND_SPEED;
+
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_DATE;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_HUMIDITY;
+import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_INCIDENT_ID;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_MAX;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_MIN;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_PRESSURE;
-import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_WEATHER_ID;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_WIND_DIR;
 import static com.erickirschenmann.fireline.data.TestFirelineDatabase.REFLECTED_COLUMN_WIND_SPEED;
 import static junit.framework.Assert.assertEquals;
@@ -41,7 +42,7 @@ import java.util.regex.Pattern;
  * These are functions and some test data to make it easier to test your database and Content
  * Provider.
  *
- * <p>NOTE: If your WeatherContract class doesn't exactly match ours, THIS WILL NOT WORK as we've
+ * <p>NOTE: If your IncidentContract class doesn't exactly match ours, THIS WILL NOT WORK as we've
  * provided and you will need to make changes to this code to use it to pass your tests.
  */
 class TestUtilities {
@@ -106,22 +107,22 @@ class TestUtilities {
    * Used as a convenience method to return a singleton instance of ContentValues to populate our
    * database or insert using our ContentProvider.
    *
-   * @return ContentValues that can be inserted into our ContentProvider or weather.db
+   * @return ContentValues that can be inserted into our ContentProvider or incident.db
    */
-  static ContentValues createTestWeatherContentValues() {
+  static ContentValues createTestIncidentContentValues() {
 
-    ContentValues testWeatherValues = new ContentValues();
+    ContentValues testIncidentValues = new ContentValues();
 
-    testWeatherValues.put(REFLECTED_COLUMN_DATE, DATE_NORMALIZED);
-    testWeatherValues.put(REFLECTED_COLUMN_WIND_DIR, 1.1);
-    testWeatherValues.put(REFLECTED_COLUMN_HUMIDITY, 1.2);
-    testWeatherValues.put(REFLECTED_COLUMN_PRESSURE, 1.3);
-    testWeatherValues.put(REFLECTED_COLUMN_MAX, 75);
-    testWeatherValues.put(REFLECTED_COLUMN_MIN, 65);
-    testWeatherValues.put(REFLECTED_COLUMN_WIND_SPEED, 5.5);
-    testWeatherValues.put(REFLECTED_COLUMN_WEATHER_ID, 321);
+    testIncidentValues.put(REFLECTED_COLUMN_DATE, DATE_NORMALIZED);
+    testIncidentValues.put(REFLECTED_COLUMN_WIND_DIR, 1.1);
+    testIncidentValues.put(REFLECTED_COLUMN_HUMIDITY, 1.2);
+    testIncidentValues.put(REFLECTED_COLUMN_PRESSURE, 1.3);
+    testIncidentValues.put(REFLECTED_COLUMN_MAX, 75);
+    testIncidentValues.put(REFLECTED_COLUMN_MIN, 65);
+    testIncidentValues.put(REFLECTED_COLUMN_WIND_SPEED, 5.5);
+    testIncidentValues.put(REFLECTED_COLUMN_INCIDENT_ID, 321);
 
-    return testWeatherValues;
+    return testIncidentValues;
   }
 
   /**
@@ -134,11 +135,11 @@ class TestUtilities {
    * #validateThenCloseCursor(String, Cursor, ContentValues)} for more information on how this
    * verification is performed.
    *
-   * @return Array of ContentValues that can be inserted into our ContentProvider or weather.db
+   * @return Array of ContentValues that can be inserted into our ContentProvider or incident.db
    */
-  static ContentValues[] createBulkInsertTestWeatherValues() {
+  static ContentValues[] createBulkInsertTestIncidentValues() {
 
-    ContentValues[] bulkTestWeatherValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
+    ContentValues[] bulkTestIncidentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
 
     long testDate = TestUtilities.DATE_NORMALIZED;
     long normalizedTestDate = IncidentDateUtils.normalizeDate(testDate);
@@ -147,21 +148,21 @@ class TestUtilities {
 
       normalizedTestDate += IncidentDateUtils.DAY_IN_MILLIS;
 
-      ContentValues weatherValues = new ContentValues();
+      ContentValues incidentValues = new ContentValues();
 
-      weatherValues.put(REFLECTED_COLUMN_DATE, normalizedTestDate);
-      weatherValues.put(REFLECTED_COLUMN_WIND_DIR, 1.1);
-      weatherValues.put(REFLECTED_COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
-      weatherValues.put(REFLECTED_COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
-      weatherValues.put(REFLECTED_COLUMN_MAX, 75 + i);
-      weatherValues.put(REFLECTED_COLUMN_MIN, 65 - i);
-      weatherValues.put(REFLECTED_COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
-      weatherValues.put(REFLECTED_COLUMN_WEATHER_ID, 321);
+      incidentValues.put(REFLECTED_COLUMN_DATE, normalizedTestDate);
+      incidentValues.put(REFLECTED_COLUMN_WIND_DIR, 1.1);
+      incidentValues.put(REFLECTED_COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
+      incidentValues.put(REFLECTED_COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
+      incidentValues.put(REFLECTED_COLUMN_MAX, 75 + i);
+      incidentValues.put(REFLECTED_COLUMN_MIN, 65 - i);
+      incidentValues.put(REFLECTED_COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
+      incidentValues.put(REFLECTED_COLUMN_INCIDENT_ID, 321);
 
-      bulkTestWeatherValues[i] = weatherValues;
+      bulkTestIncidentValues[i] = incidentValues;
     }
 
-    return bulkTestWeatherValues;
+    return bulkTestIncidentValues;
   }
 
   static TestContentObserver getTestContentObserver() {
@@ -246,7 +247,7 @@ class TestUtilities {
   }
 
   /**
-   * Students: The functions we provide inside of TestWeatherProvider use TestContentObserver to
+   * Students: The functions we provide inside of TestIncidentProvider use TestContentObserver to
    * test the ContentObserver callbacks using the PollingCheck class from the Android Compatibility
    * Test Suite tests.
    *

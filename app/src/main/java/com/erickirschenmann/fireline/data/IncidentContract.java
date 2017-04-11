@@ -11,13 +11,13 @@ public class IncidentContract {
   /* Inner class that defines the table contents of the incident table */
   public static final class IncidentEntry implements BaseColumns {
 
-    /* Used internally as the name of our weather table. */
-    public static final String TABLE_NAME = "weather";
+    /* Used internally as the name of our incident table. */
+    public static final String TABLE_NAME = "incident";
 
     /*
      * The date column will store the UTC date that correlates to the local date for which
-     * each particular weather row represents. For example, if you live in the Eastern
-     * Standard Time (EST) time zone and you load weather data at 9:00 PM on September 23, 2016,
+     * each particular incident row represents. For example, if you live in the Eastern
+     * Standard Time (EST) time zone and you load incident data at 9:00 PM on September 23, 2016,
      * the UTC time stamp for that particular time would be 1474678800000 in milliseconds.
      * However, due to time zone offsets, it would already be September 24th, 2016 in the GMT
      * time zone when it is 9:00 PM on the 23rd in the EST time zone. In this example, the date
@@ -32,8 +32,8 @@ public class IncidentContract {
      */
     public static final String COLUMN_DATE = "date";
 
-    /* Weather ID as returned by API, used to identify the icon to be used */
-    public static final String COLUMN_WEATHER_ID = "incident_id";
+    /* Incident ID as returned by API, used to identify the icon to be used */
+    public static final String COLUMN_INCIDENT_ID = "incident_id";
 
     /* Min and max temperatures in °C for the day (stored as floats in the database) */
     public static final String COLUMN_MIN_TEMP = "min";
@@ -52,7 +52,7 @@ public class IncidentContract {
      * Degrees are meteorological degrees (e.g, 0 is north, 180 is south).
      * Stored as floats in the database.
      *
-     * Note: These degrees are not to be confused with temperature degrees of the weather.
+     * Note: These degrees are not to be confused with temperature degrees of the incident.
      */
     public static final String COLUMN_DEGREES = "degrees";
   }

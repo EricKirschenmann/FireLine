@@ -15,7 +15,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
    * This is the name of our database. Database names should be descriptive and end with the
    * .db extension.
    */
-  public static final String DATABASE_NAME = "weather.db";
+  public static final String DATABASE_NAME = "incident.db";
 
   /*
    * If you change the database schema, you must increment the database version or the onUpgrade
@@ -45,23 +45,23 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
 
     /*
      * This String will contain a simple SQL statement that will create a table that will
-     * cache our weather data.
+     * cache our incident data.
      */
-    final String SQL_CREATE_WEATHER_TABLE =
+    final String SQL_CREATE_INCIDENT_TABLE =
         "CREATE TABLE "
             + IncidentEntry.TABLE_NAME
             + " ("
             +
             /*
-             * WeatherEntry did not explicitly declare a column called "_ID". However,
-             * WeatherEntry implements the interface, "BaseColumns", which does have a field
+             * IncidentEntry did not explicitly declare a column called "_ID". However,
+             * IncidentEntry implements the interface, "BaseColumns", which does have a field
              * named "_ID". We use that here to designate our table's primary key.
              */
             IncidentEntry._ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + IncidentEntry.COLUMN_DATE
             + " INTEGER NOT NULL, "
-            + IncidentEntry.COLUMN_WEATHER_ID
+            + IncidentEntry.COLUMN_INCIDENT_ID
             + " INTEGER NOT NULL,"
             + IncidentEntry.COLUMN_MIN_TEMP
             + " REAL NOT NULL, "
@@ -77,10 +77,10 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
             + " REAL NOT NULL, "
             +
             /*
-             * To ensure this table can only contain one weather entry per date, we declare
+             * To ensure this table can only contain one incident entry per date, we declare
              * the date column to be unique. We also specify "ON CONFLICT REPLACE". This tells
-             * SQLite that if we have a weather entry for a certain date and we attempt to
-             * insert another weather entry with that date, we replace the old weather entry.
+             * SQLite that if we have a incident entry for a certain date and we attempt to
+             * insert another incident entry with that date, we replace the old incident entry.
              */
             " UNIQUE ("
             + IncidentEntry.COLUMN_DATE
@@ -90,7 +90,7 @@ public class IncidentDbHelper extends SQLiteOpenHelper {
      * After we've spelled out our SQLite table creation statement above, we actually execute
      * that SQL with the execSQL method of our SQLite database object.
      */
-    sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+    sqLiteDatabase.execSQL(SQL_CREATE_INCIDENT_TABLE);
   }
 
   /**

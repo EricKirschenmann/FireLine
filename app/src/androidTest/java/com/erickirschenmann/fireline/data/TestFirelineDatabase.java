@@ -31,20 +31,20 @@ import org.junit.runner.RunWith;
 /**
  * Created by eric on 4/3/17.
  *
- * <p>Used to test the database we use in Sunshine to cache weather data. Within these tests, we
+ * <p>Used to test the database we use in Sunshine to cache incident data. Within these tests, we
  * test the following:
  *
  * <p>1) Creation of the database with proper table(s)
  *
- * <p>2) Insertion of single record into our weather table
+ * <p>2) Insertion of single record into our incident table
  *
- * <p>3) When a record is already stored in the weather table with a particular date, a new record
+ * <p>3) When a record is already stored in the incident table with a particular date, a new record
  * with the same date will overwrite that record.
  *
  * <p>4) Verify that NON NULL constraints are working properly on record inserts
  *
  * <p>5) Verify auto increment is working with the ID 6) Test the onUpgrade functionality of the
- * WeatherDbHelper
+ * IncidentDbHelper
  */
 @RunWith(AndroidJUnit4.class)
 public class TestFirelineDatabase {
@@ -62,14 +62,14 @@ public class TestFirelineDatabase {
    */
   private static final String packageName = "com.erickirschenmann.fireline";
   private static final String dataPackageName = packageName + ".data";
-  private static final String weatherContractName = ".IncidentContract";
-  private static final String weatherEntryName = weatherContractName + "$IncidentEntry";
-  private static final String weatherDbHelperName = ".IncidentDbHelper";
+  private static final String incidentContractName = ".IncidentContract";
+  private static final String incidentEntryName = incidentContractName + "$IncidentEntry";
+  private static final String incidentDbHelperName = ".IncidentDbHelper";
   private static final String databaseNameVariableName = "DATABASE_NAME";
   private static final String databaseVersionVariableName = "DATABASE_VERSION";
   private static final String tableNameVariableName = "TABLE_NAME";
   private static final String columnDateVariableName = "COLUMN_DATE";
-  private static final String columnWeatherIdVariableName = "COLUMN_WEATHER_ID";
+  private static final String columnIncidentIdVariableName = "COLUMN_INCIDENT_ID";
   private static final String columnMinVariableName = "COLUMN_MIN_TEMP";
   private static final String columnMaxVariableName = "COLUMN_MAX_TEMP";
   private static final String columnHumidityVariableName = "COLUMN_HUMIDITY";
@@ -77,7 +77,7 @@ public class TestFirelineDatabase {
   private static final String columnWindSpeedVariableName = "COLUMN_WIND_SPEED";
   private static final String columnWindDirVariableName = "COLUMN_DEGREES";
   static String REFLECTED_COLUMN_DATE;
-  static String REFLECTED_COLUMN_WEATHER_ID;
+  static String REFLECTED_COLUMN_INCIDENT_ID;
   static String REFLECTED_COLUMN_MIN;
   static String REFLECTED_COLUMN_MAX;
   static String REFLECTED_COLUMN_HUMIDITY;
@@ -88,11 +88,11 @@ public class TestFirelineDatabase {
   private static int REFLECTED_DATABASE_VERSION;
   private static String REFLECTED_TABLE_NAME;
   /*
-   * Context used to perform operations on the database and create WeatherDbHelpers.
+   * Context used to perform operations on the database and create IncidentDbHelpers.
    */
   private final Context context = InstrumentationRegistry.getTargetContext();
-  private Class weatherEntryClass;
-  private Class weatherDbHelperClass;
+  private Class incidentEntryClass;
+  private Class incidentDbHelperClass;
   private SQLiteDatabase database;
   private SQLiteOpenHelper dbHelper;
 
@@ -100,56 +100,56 @@ public class TestFirelineDatabase {
   public void before() {
     try {
 
-      weatherEntryClass = Class.forName(dataPackageName + weatherEntryName);
-      if (!BaseColumns.class.isAssignableFrom(weatherEntryClass)) {
-        String weatherEntryDoesNotImplementBaseColumns =
-            "WeatherEntry class needs to " + "implement the interface BaseColumns, but does not.";
-        fail(weatherEntryDoesNotImplementBaseColumns);
+      incidentEntryClass = Class.forName(dataPackageName + incidentEntryName);
+      if (!BaseColumns.class.isAssignableFrom(incidentEntryClass)) {
+        String incidentEntryDoesNotImplementBaseColumns =
+            "IncidentEntry class needs to " + "implement the interface BaseColumns, but does not.";
+        fail(incidentEntryDoesNotImplementBaseColumns);
       }
 
-      REFLECTED_TABLE_NAME = getStaticStringField(weatherEntryClass, tableNameVariableName);
-      REFLECTED_COLUMN_DATE = getStaticStringField(weatherEntryClass, columnDateVariableName);
-      REFLECTED_COLUMN_WEATHER_ID =
-          getStaticStringField(weatherEntryClass, columnWeatherIdVariableName);
-      REFLECTED_COLUMN_MIN = getStaticStringField(weatherEntryClass, columnMinVariableName);
-      REFLECTED_COLUMN_MAX = getStaticStringField(weatherEntryClass, columnMaxVariableName);
+      REFLECTED_TABLE_NAME = getStaticStringField(incidentEntryClass, tableNameVariableName);
+      REFLECTED_COLUMN_DATE = getStaticStringField(incidentEntryClass, columnDateVariableName);
+      REFLECTED_COLUMN_INCIDENT_ID =
+          getStaticStringField(incidentEntryClass, columnIncidentIdVariableName);
+      REFLECTED_COLUMN_MIN = getStaticStringField(incidentEntryClass, columnMinVariableName);
+      REFLECTED_COLUMN_MAX = getStaticStringField(incidentEntryClass, columnMaxVariableName);
       REFLECTED_COLUMN_HUMIDITY =
-          getStaticStringField(weatherEntryClass, columnHumidityVariableName);
+          getStaticStringField(incidentEntryClass, columnHumidityVariableName);
       REFLECTED_COLUMN_PRESSURE =
-          getStaticStringField(weatherEntryClass, columnPressureVariableName);
+          getStaticStringField(incidentEntryClass, columnPressureVariableName);
       REFLECTED_COLUMN_WIND_SPEED =
-          getStaticStringField(weatherEntryClass, columnWindSpeedVariableName);
+          getStaticStringField(incidentEntryClass, columnWindSpeedVariableName);
       REFLECTED_COLUMN_WIND_DIR =
-          getStaticStringField(weatherEntryClass, columnWindDirVariableName);
+          getStaticStringField(incidentEntryClass, columnWindDirVariableName);
 
-      weatherDbHelperClass = Class.forName(dataPackageName + weatherDbHelperName);
+      incidentDbHelperClass = Class.forName(dataPackageName + incidentDbHelperName);
 
-      Class weatherDbHelperSuperclass = weatherDbHelperClass.getSuperclass();
+      Class incidentDbHelperSuperclass = incidentDbHelperClass.getSuperclass();
 
-      if (weatherDbHelperSuperclass == null || weatherDbHelperSuperclass.equals(Object.class)) {
+      if (incidentDbHelperSuperclass == null || incidentDbHelperSuperclass.equals(Object.class)) {
         String noExplicitSuperclass =
-            "WeatherDbHelper needs to extend SQLiteOpenHelper, but yours currently doesn't extend a class at all.";
+            "IncidentDbHelper needs to extend SQLiteOpenHelper, but yours currently doesn't extend a class at all.";
         fail(noExplicitSuperclass);
-      } else if (weatherDbHelperSuperclass != null) {
-        String weatherDbHelperSuperclassName = weatherDbHelperSuperclass.getSimpleName();
+      } else if (incidentDbHelperSuperclass != null) {
+        String incidentDbHelperSuperclassName = incidentDbHelperSuperclass.getSimpleName();
         String doesNotExtendOpenHelper =
-            "WeatherDbHelper needs to extend SQLiteOpenHelper but yours extends "
-                + weatherDbHelperSuperclassName;
+            "IncidentDbHelper needs to extend SQLiteOpenHelper but yours extends "
+                + incidentDbHelperSuperclassName;
 
         assertTrue(
             doesNotExtendOpenHelper,
-            SQLiteOpenHelper.class.isAssignableFrom(weatherDbHelperSuperclass));
+            SQLiteOpenHelper.class.isAssignableFrom(incidentDbHelperSuperclass));
       }
 
       REFLECTED_DATABASE_NAME =
-          getStaticStringField(weatherDbHelperClass, databaseNameVariableName);
+          getStaticStringField(incidentDbHelperClass, databaseNameVariableName);
 
       REFLECTED_DATABASE_VERSION =
-          getStaticIntegerField(weatherDbHelperClass, databaseVersionVariableName);
+          getStaticIntegerField(incidentDbHelperClass, databaseVersionVariableName);
 
-      Constructor weatherDbHelperCtor = weatherDbHelperClass.getConstructor(Context.class);
+      Constructor incidentDbHelperCtor = incidentDbHelperClass.getConstructor(Context.class);
 
-      dbHelper = (SQLiteOpenHelper) weatherDbHelperCtor.newInstance(context);
+      dbHelper = (SQLiteOpenHelper) incidentDbHelperCtor.newInstance(context);
 
       context.deleteDatabase(REFLECTED_DATABASE_NAME);
 
@@ -198,38 +198,38 @@ public class TestFirelineDatabase {
    *
    * <p>To test this, we first insert a row into the database and get its _ID. Then, we'll delete
    * that row, change the data that we're going to insert, and insert the changed data into the
-   * database again. If AUTOINCREMENT isn't set up properly in the WeatherDbHelper's table create
+   * database again. If AUTOINCREMENT isn't set up properly in the IncidentDbHelper's table create
    * statement, then the _ID of the first insert will be reused. However, if AUTOINCREMENT is setup
    * properly, that older ID will NOT be reused, and the test will pass.
    */
   @Test
   public void testDuplicateDateInsertBehaviorShouldReplace() {
 
-    /* Obtain weather values from TestUtilities */
-    ContentValues testWeatherValues = TestUtilities.createTestWeatherContentValues();
+    /* Obtain incident values from TestUtilities */
+    ContentValues testIncidentValues = TestUtilities.createTestIncidentContentValues();
 
     /*
-     * Get the original weather ID of the testWeatherValues to ensure we use a different
-     * weather ID for our next insert.
+     * Get the original incident ID of the testIncidentValues to ensure we use a different
+     * incident ID for our next insert.
      */
-    long originalWeatherId = testWeatherValues.getAsLong(REFLECTED_COLUMN_WEATHER_ID);
+    long originalIncidentId = testIncidentValues.getAsLong(REFLECTED_COLUMN_INCIDENT_ID);
 
-    /* Insert the ContentValues with old weather ID into database */
-    database.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, testWeatherValues);
+    /* Insert the ContentValues with old incident ID into database */
+    database.insert(IncidentContract.IncidentEntry.TABLE_NAME, null, testIncidentValues);
 
     /*
      * We don't really care what this ID is, just that it is different than the original and
-     * that we can use it to verify our "new" weather entry has been made.
+     * that we can use it to verify our "new" incident entry has been made.
      */
-    long newWeatherId = originalWeatherId + 1;
+    long newIncidentId = originalIncidentId + 1;
 
-    testWeatherValues.put(REFLECTED_COLUMN_WEATHER_ID, newWeatherId);
+    testIncidentValues.put(REFLECTED_COLUMN_INCIDENT_ID, newIncidentId);
 
-    /* Insert the ContentValues with new weather ID into database */
-    database.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, testWeatherValues);
+    /* Insert the ContentValues with new incident ID into database */
+    database.insert(IncidentContract.IncidentEntry.TABLE_NAME, null, testIncidentValues);
 
-    /* Query for a weather record with our new weather ID */
-    Cursor newWeatherIdCursor =
+    /* Query for a incident record with our new incident ID */
+    Cursor newIncidentIdCursor =
         database.query(
             REFLECTED_TABLE_NAME,
             new String[] {REFLECTED_COLUMN_DATE},
@@ -241,10 +241,10 @@ public class TestFirelineDatabase {
 
     String recordWithNewIdNotFound =
         "New record did not overwrite the previous record for the same date.";
-    assertTrue(recordWithNewIdNotFound, newWeatherIdCursor.getCount() == 1);
+    assertTrue(recordWithNewIdNotFound, newIncidentIdCursor.getCount() == 1);
 
     /* Always close the cursor after you're done with it */
-    newWeatherIdCursor.close();
+    newIncidentIdCursor.close();
   }
 
   /**
@@ -253,10 +253,10 @@ public class TestFirelineDatabase {
    */
   @Test
   public void testNullColumnConstraints() {
-    /* Use a WeatherDbHelper to get access to a writable database */
+    /* Use a IncidentDbHelper to get access to a writable database */
 
-    /* We need a cursor from a weather table query to access the column names */
-    Cursor weatherTableCursor =
+    /* We need a cursor from a incident table query to access the column names */
+    Cursor incidentTableCursor =
         database.query(
             REFLECTED_TABLE_NAME,
             /* We don't care about specifications, we just want the column names */
@@ -268,18 +268,18 @@ public class TestFirelineDatabase {
             null);
 
     /* Store the column names and close the cursor */
-    String[] weatherTableColumnNames = weatherTableCursor.getColumnNames();
-    weatherTableCursor.close();
+    String[] incidentTableColumnNames = incidentTableCursor.getColumnNames();
+    incidentTableCursor.close();
 
-    /* Obtain weather values from TestUtilities and make a copy to avoid altering singleton */
-    ContentValues testValues = TestUtilities.createTestWeatherContentValues();
+    /* Obtain incident values from TestUtilities and make a copy to avoid altering singleton */
+    ContentValues testValues = TestUtilities.createTestIncidentContentValues();
     /* Create a copy of the testValues to save as a reference point to restore values */
     ContentValues testValuesReferenceCopy = new ContentValues(testValues);
 
-    for (String columnName : weatherTableColumnNames) {
+    for (String columnName : incidentTableColumnNames) {
 
       /* We don't need to verify the _ID column value is not null, the system does */
-      if (columnName.equals(WeatherContract.WeatherEntry._ID)) continue;
+      if (columnName.equals(IncidentContract.IncidentEntry._ID)) continue;
 
       /* Set the value to null */
       testValues.putNull(columnName);
@@ -288,7 +288,7 @@ public class TestFirelineDatabase {
       long shouldFailRowId = database.insert(REFLECTED_TABLE_NAME, null, testValues);
 
       String variableName =
-          getConstantNameByStringValue(WeatherContract.WeatherEntry.class, columnName);
+          getConstantNameByStringValue(IncidentContract.IncidentEntry.class, columnName);
 
       /* If the insert fails, which it should in this case, database.insert returns -1 */
       String nullRowInsertShouldFail =
@@ -298,7 +298,7 @@ public class TestFirelineDatabase {
               + ", but didn't."
               + "\n Check that you've added NOT NULL to "
               + variableName
-              + " in your create table statement in the WeatherEntry class."
+              + " in your create table statement in the IncidentEntry class."
               + "\n Row ID: ";
       assertEquals(nullRowInsertShouldFail, -1, shouldFailRowId);
 
@@ -318,16 +318,16 @@ public class TestFirelineDatabase {
   public void testIntegerAutoincrement() {
 
     /* First, let's ensure we have some values in our table initially */
-    testInsertSingleRecordIntoWeatherTable();
+    testInsertSingleRecordIntoIncidentTable();
 
-    /* Obtain weather values from TestUtilities */
-    ContentValues testWeatherValues = TestUtilities.createTestWeatherContentValues();
+    /* Obtain incident values from TestUtilities */
+    ContentValues testIncidentValues = TestUtilities.createTestIncidentContentValues();
 
-    /* Get the date of the testWeatherValues to ensure we use a different date later */
-    long originalDate = testWeatherValues.getAsLong(REFLECTED_COLUMN_DATE);
+    /* Get the date of the testIncidentValues to ensure we use a different date later */
+    long originalDate = testIncidentValues.getAsLong(REFLECTED_COLUMN_DATE);
 
     /* Insert ContentValues into database and get a row ID back */
-    long firstRowId = database.insert(REFLECTED_TABLE_NAME, null, testWeatherValues);
+    long firstRowId = database.insert(REFLECTED_TABLE_NAME, null, testIncidentValues);
 
     /* Delete the row we just inserted to see if the database will reuse the rowID */
     database.delete(REFLECTED_TABLE_NAME, "_ID == " + firstRowId, null);
@@ -337,10 +337,10 @@ public class TestFirelineDatabase {
      * database policy is to replace identical dates on conflict.
      */
     long dayAfterOriginalDate = originalDate + TimeUnit.DAYS.toMillis(1);
-    testWeatherValues.put(REFLECTED_COLUMN_DATE, dayAfterOriginalDate);
+    testIncidentValues.put(REFLECTED_COLUMN_DATE, dayAfterOriginalDate);
 
     /* Insert ContentValues into database and get another row ID back */
-    long secondRowId = database.insert(REFLECTED_TABLE_NAME, null, testWeatherValues);
+    long secondRowId = database.insert(REFLECTED_TABLE_NAME, null, testIncidentValues);
 
     String sequentialInsertsDoNotAutoIncrementId =
         "IDs were reused and shouldn't be if autoincrement is setup properly.";
@@ -348,20 +348,20 @@ public class TestFirelineDatabase {
   }
 
   /**
-   * This method tests the {@link WeatherDbHelper#onUpgrade(SQLiteDatabase, int, int)}. The proper
-   * behavior for this method in our case is to simply DROP (or delete) the weather table from the
+   * This method tests the {@link IncidentDbHelper#onUpgrade(SQLiteDatabase, int, int)}. The proper
+   * behavior for this method in our case is to simply DROP (or delete) the incident table from the
    * database and then have the table recreated.
    */
   @Test
   public void testOnUpgradeBehavesCorrectly() {
 
-    testInsertSingleRecordIntoWeatherTable();
+    testInsertSingleRecordIntoIncidentTable();
 
     dbHelper.onUpgrade(database, 13, 14);
 
     /*
      * This Cursor will contain the names of each table in our database and we will use it to
-     * make sure that our weather table is still in the database after upgrading.
+     * make sure that our incident table is still in the database after upgrading.
      */
     Cursor tableNameCursor =
         database.rawQuery(
@@ -381,17 +381,17 @@ public class TestFirelineDatabase {
     /* We are done verifying our table names, so we can close this cursor */
     tableNameCursor.close();
 
-    Cursor shouldBeEmptyWeatherCursor =
+    Cursor shouldBeEmptyIncidentCursor =
         database.query(REFLECTED_TABLE_NAME, null, null, null, null, null, null);
 
     int expectedRecordCountAfterUpgrade = 0;
-    /* We will finally verify that our weather table is empty after */
-    String weatherTableShouldBeEmpty =
-        "Weather table should be empty after upgrade, but wasn't." + "\nNumber of records: ";
+    /* We will finally verify that our incident table is empty after */
+    String incidentTableShouldBeEmpty =
+        "Incident table should be empty after upgrade, but wasn't." + "\nNumber of records: ";
     assertEquals(
-        weatherTableShouldBeEmpty,
+        incidentTableShouldBeEmpty,
         expectedRecordCountAfterUpgrade,
-        shouldBeEmptyWeatherCursor.getCount());
+        shouldBeEmptyIncidentCursor.getCount());
 
     /* Test is over, close the cursor */
     database.close();
@@ -401,7 +401,7 @@ public class TestFirelineDatabase {
    * This method tests that our database contains all of the tables that we think it should contain.
    * Although in our case, we just have one table that we expect should be added
    *
-   * <p>{@link com.erickirschenmann.fireline.data.WeatherContract.WeatherEntry#TABLE_NAME}.
+   * <p>{@link com.erickirschenmann.fireline.data.IncidentContract.IncidentEntry#TABLE_NAME}.
    *
    * <p>Despite only needing to check one table name in Sunshine, we set this method up so that you
    * can use it in other apps to test databases with more than one table.
@@ -463,28 +463,28 @@ public class TestFirelineDatabase {
    * will fail for the following reasons:
    *
    * <p>1) Problem creating the database 2) A value of -1 for the ID of a single, inserted record 3)
-   * An empty cursor returned from query on the weather table 4) Actual values of weather data not
+   * An empty cursor returned from query on the incident table 4) Actual values of incident data not
    * matching the values from TestUtilities
    */
   @Test
-  public void testInsertSingleRecordIntoWeatherTable() {
+  public void testInsertSingleRecordIntoIncidentTable() {
 
-    /* Obtain weather values from TestUtilities */
-    ContentValues testWeatherValues = TestUtilities.createTestWeatherContentValues();
+    /* Obtain incident values from TestUtilities */
+    ContentValues testIncidentValues = TestUtilities.createTestIncidentContentValues();
 
     /* Insert ContentValues into database and get a row ID back */
-    long weatherRowId = database.insert(REFLECTED_TABLE_NAME, null, testWeatherValues);
+    long incidentRowId = database.insert(REFLECTED_TABLE_NAME, null, testIncidentValues);
 
     /* If the insert fails, database.insert returns -1 */
     int valueOfIdIfInsertFails = -1;
     String insertFailed = "Unable to insert into the database";
-    assertNotSame(insertFailed, valueOfIdIfInsertFails, weatherRowId);
+    assertNotSame(insertFailed, valueOfIdIfInsertFails, incidentRowId);
 
     /*
      * Query the database and receive a Cursor. A Cursor is the primary way to interact with
      * a database in Android.
      */
-    Cursor weatherCursor =
+    Cursor incidentCursor =
         database.query(
             /* Name of table on which to perform the query */
             REFLECTED_TABLE_NAME,
@@ -502,24 +502,25 @@ public class TestFirelineDatabase {
             null);
 
     /* Cursor.moveToFirst will return false if there are no records returned from your query */
-    String emptyQueryError = "Error: No Records returned from weather query";
-    assertTrue(emptyQueryError, weatherCursor.moveToFirst());
+    String emptyQueryError = "Error: No Records returned from incident query";
+    assertTrue(emptyQueryError, incidentCursor.moveToFirst());
 
     /* Verify that the returned results match the expected results */
-    String expectedWeatherDidntMatchActual = "Expected weather values didn't match actual values.";
+    String expectedIncidentDidntMatchActual =
+        "Expected incident values didn't match actual values.";
     TestUtilities.validateCurrentRecord(
-        expectedWeatherDidntMatchActual, weatherCursor, testWeatherValues);
+        expectedIncidentDidntMatchActual, incidentCursor, testIncidentValues);
 
     /*
      * Since before every method annotated with the @Test annotation, the database is
      * deleted, we can assume in this method that there should only be one record in our
-     * Weather table because we inserted it. If there is more than one record, an issue has
+     * Incident table because we inserted it. If there is more than one record, an issue has
      * occurred.
      */
     assertFalse(
-        "Error: More than one record returned from weather query", weatherCursor.moveToNext());
+        "Error: More than one record returned from incident query", incidentCursor.moveToNext());
 
     /* Close cursor */
-    weatherCursor.close();
+    incidentCursor.close();
   }
 }

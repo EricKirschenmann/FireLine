@@ -120,7 +120,7 @@ public final class IncidentDateUtils {
   }
 
   /**
-   * In order to ensure consistent inserts into WeatherProvider, we check that dates have been
+   * In order to ensure consistent inserts into IncidentProvider, we check that dates have been
    * normalized before they are inserted. If they are not normalized, we don't want to accept them,
    * and leave it up to the caller to throw an IllegalArgumentException.
    *
