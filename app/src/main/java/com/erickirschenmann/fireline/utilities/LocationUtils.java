@@ -9,20 +9,29 @@ import java.util.List;
 
 /** Created by eric on 4/13/17. */
 public class LocationUtils {
-  public static LatLng getLocationFromAddress(Context context, String strAddress)
+
+  /**
+   * Converts a street address into a {@code LatLng} object which is more usable by Google Maps
+   *
+   * @param context the context calling the method
+   * @param address a {@code String} containing the street address to be converted
+   * @return a {@code LatLng} object representation of the provided street address
+   * @throws IndexOutOfBoundsException if no valid LatLng created
+   */
+  public static LatLng getLocationFromAddress(Context context, String address)
       throws IndexOutOfBoundsException {
 
-    Geocoder coder = new Geocoder(context);
-    List<Address> address;
+    Geocoder geocoder = new Geocoder(context);
+    List<Address> addressList;
     LatLng latLng;
 
     try {
       // May throw an IOException
-      address = coder.getFromLocationName(strAddress, 5);
-      if (address == null) {
+      addressList = geocoder.getFromLocationName(address, 5);
+      if (addressList == null) {
         return null;
       }
-      Address location = address.get(0);
+      Address location = addressList.get(0);
 
       latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
