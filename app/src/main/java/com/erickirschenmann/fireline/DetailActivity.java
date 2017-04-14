@@ -1,9 +1,6 @@
 package com.erickirschenmann.fireline;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.erickirschenmann.fireline.models.Incident;
+import com.erickirschenmann.fireline.utilities.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import java.io.IOException;
-import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -107,44 +103,21 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     } else {
       try {
         // this is the ideal scenario as it is a more accurate location than the provided lat and long
-        location = getLocationFromAddress(this, mAddress);
+        location = LocationUtils.getLocationFromAddress(this, mAddress);
       } catch (IndexOutOfBoundsException e) {
         // for some reason it does not like certain address so this should hopefully just happen by default
         location = new LatLng(mLat, mLong);
       }
     }
 
-    // place the marker on the map
-    googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+    if (location != null) {
+      // place the marker on the map
+      googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+    }
 
     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
     googleMap.animateCamera(CameraUpdateFactory.zoomIn());
     googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     googleMap.setTrafficEnabled(true);
-  }
-
-  public LatLng getLocationFromAddress(Context context, String strAddress)
-      throws IndexOutOfBoundsException {
-
-    Geocoder coder = new Geocoder(context);
-    List<Address> address;
-    LatLng p1;
-
-    try {
-      // May throw an IOException
-      address = coder.getFromLocationName(strAddress, 5);
-      if (address == null) {
-        return null;
-      }
-      Address location = address.get(0);
-
-      p1 = new LatLng(location.getLatitude(), location.getLongitude());
-
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      return null;
-    }
-
-    return p1;
   }
 }

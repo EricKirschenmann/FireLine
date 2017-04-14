@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * android.support.v7.widget.RecyclerView}
  */
 class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapterViewHolder> {
-
   private final IncidentAdapterOnClickHandler mClickHandler;
   private String[] mIncidentData;
   private String[] mIncidentType;
