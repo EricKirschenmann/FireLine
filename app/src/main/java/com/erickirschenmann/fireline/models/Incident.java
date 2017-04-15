@@ -244,22 +244,25 @@ public class Incident implements Parcelable {
     this.units = units;
   }
 
+  /**
+   * Get the units array as a comma separated list of units
+   *
+   * @return A {@code String} representation of the units array
+   */
   private String getUnitsString() {
-    String units = "";
-
     // hopefully fix crashing issue by not returning some sort of null pointer
+    StringBuilder stringBuilder = new StringBuilder();
     if (this.units != null && this.units.length != 0) {
-
       for (int x = 0; x < this.units.length; x++) {
         if (x != this.units.length - 1) {
-          units += this.units[x] + ", ";
+          stringBuilder.append(this.units[x]).append(", ");
         } else {
-          units += this.units[x];
+          stringBuilder.append(this.units[x]);
         }
       }
     }
 
-    return units;
+    return stringBuilder.toString();
   }
 
   /**
@@ -348,7 +351,11 @@ public class Incident implements Parcelable {
 
   @Override
   public String toString() {
-    return this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city;
+    if (!this.city.isEmpty()) {
+      return this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city;
+    } else {
+      return this.responseDate + "\n" + this.getStreetAddress();
+    }
   }
 
   public String getDetails() {
