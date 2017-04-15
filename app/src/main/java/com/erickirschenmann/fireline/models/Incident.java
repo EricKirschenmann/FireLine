@@ -2,6 +2,7 @@ package com.erickirschenmann.fireline.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -33,6 +34,7 @@ public class Incident implements Parcelable {
   private String responseDate;
   private String status;
   private String[] units;
+  private LatLng latLng;
 
   // should never be used
   public Incident() {
@@ -47,6 +49,7 @@ public class Incident implements Parcelable {
     this.responseDate = "";
     this.status = "";
     this.units = new String[1];
+    this.latLng = new LatLng(this.latitude, this.longitude);
   }
 
   /**
@@ -76,7 +79,8 @@ public class Incident implements Parcelable {
       double longitude,
       String responseDate,
       String status,
-      String units) {
+      String units,
+      LatLng latLng) {
     setAddress(address.trim(), block.trim());
     this.block = block.trim();
     this.city = city.trim();
@@ -89,6 +93,7 @@ public class Incident implements Parcelable {
     this.responseDate = responseDate;
     this.status = status;
     getUnitsArray(units); // hopefully will get the units
+    this.latLng = latLng;
   }
 
   private Incident(Parcel in) {
@@ -103,6 +108,7 @@ public class Incident implements Parcelable {
     this.responseDate = in.readString();
     this.status = in.readString();
     this.units = in.createStringArray();
+    this.latLng = in.readParcelable(LatLng.class.getClassLoader());
   }
 
   /**
@@ -144,6 +150,10 @@ public class Incident implements Parcelable {
   //getters and setters which will most likely never be used but just in case
   public String getAddress() {
     return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   private void setAddress(String address, String block) {
@@ -242,6 +252,14 @@ public class Incident implements Parcelable {
 
   public void setUnits(String[] units) {
     this.units = units;
+  }
+
+  public LatLng getLatLng() {
+    return latLng;
+  }
+
+  public void setLatLng(LatLng latLng) {
+    this.latLng = latLng;
   }
 
   /**
@@ -394,5 +412,6 @@ public class Incident implements Parcelable {
     dest.writeString(this.responseDate);
     dest.writeString(this.status);
     dest.writeStringArray(this.units);
+    dest.writeParcelable(this.latLng, flags);
   }
 }

@@ -1,5 +1,6 @@
 package com.erickirschenmann.fireline.utilities;
 
+import android.content.Context;
 import com.erickirschenmann.fireline.models.Incident;
 import java.util.ArrayList;
 import org.json.JSONArray;
@@ -12,7 +13,7 @@ public class FirelineJsonUtils {
   // will contain the current Incident objects
   // private ArrayList<Incident> incidents;
 
-  public static ArrayList<Incident> getIncidentsFromJson(String json) {
+  public static ArrayList<Incident> getIncidentsFromJson(Context context, String json) {
 
     String[] formattedIncidents;
     ArrayList<Incident> incidents = new ArrayList<>();
@@ -52,7 +53,8 @@ public class FirelineJsonUtils {
                 longitude,
                 responseDate,
                 status,
-                units);
+                units,
+                LocationUtils.getLocationFromAddress(context, address, latitude, longitude));
         incidents.add(incident);
       }
 

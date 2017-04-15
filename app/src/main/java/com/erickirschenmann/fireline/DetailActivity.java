@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.erickirschenmann.fireline.models.Incident;
-import com.erickirschenmann.fireline.utilities.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +22,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
   private double mLat = 0;
   private double mLong = 0;
   private String mAddress = "";
+  private LatLng mLatLng;
 
   private Incident mIncident;
 
@@ -47,6 +47,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
       mAddress = mIncident.getStreetAddress() + ", " + mIncident.getCity();
       mLat = mIncident.getLatitude();
       mLong = mIncident.getLongitude();
+      mLatLng = mIncident.getLatLng();
       setDetails();
     }
 
@@ -93,22 +94,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
   public void onMapReady(GoogleMap googleMap) {
     // Add a marker in Sydney, Australia,
     // and move the map's camera to the same location.
-
-    //LatLng location = getLocationFromAddress(this, mAddress);
-    LatLng location;
-
-    // intersections don't work so use that latitude and longitude
-    if (mAddress.contains("/")) {
-      location = new LatLng(mLat, mLong);
-    } else {
-      try {
-        // this is the ideal scenario as it is a more accurate location than the provided lat and long
-        location = LocationUtils.getLocationFromAddress(this, mAddress);
-      } catch (IndexOutOfBoundsException e) {
-        // for some reason it does not like certain address so this should hopefully just happen by default
-        location = new LatLng(mLat, mLong);
-      }
-    }
+    LatLng location = mLatLng;
 
     if (location != null) {
       // place the marker on the map

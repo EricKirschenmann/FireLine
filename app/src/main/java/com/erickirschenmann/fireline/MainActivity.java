@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
           // attempt to retrieve the JSON data from the server
           URL url = NetworkUtils.getUrl();
           results = NetworkUtils.getResponseFromHttpUrl(url, getContext());
-          incidents = FirelineJsonUtils.getIncidentsFromJson(results);
+          incidents = FirelineJsonUtils.getIncidentsFromJson(getContext(), results);
         } catch (IOException e) {
           e.printStackTrace();
         }

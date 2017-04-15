@@ -42,4 +42,38 @@ public class LocationUtils {
 
     return latLng;
   }
+
+
+  static LatLng getLocationFromAddress(
+      Context context, String address, double latitude, double longitude)
+      throws IndexOutOfBoundsException {
+
+    Geocoder geocoder = new Geocoder(context);
+    List<Address> addressList;
+    LatLng latLng;
+
+    try {
+      if (address.contains("/")) {
+        latLng = new LatLng(latitude, longitude);
+        return latLng;
+      }
+
+      // May throw an IOException
+      addressList = geocoder.getFromLocationName(address, 5);
+      if (addressList == null) {
+        return null;
+      }
+      Address location = addressList.get(0);
+
+      latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+    } catch (IndexOutOfBoundsException e) {
+      latLng = new LatLng(latitude, longitude);
+    } catch (IOException ex) {
+      ex.printStackTrace();
+      return null;
+    }
+
+    return latLng;
+  }
 }
