@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.erickirschenmann.fireline.models.Incident;
+import com.erickirschenmann.fireline.utilities.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -94,8 +95,21 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
   public void onMapReady(GoogleMap googleMap) {
     // Add a marker in Sydney, Australia,
     // and move the map's camera to the same location.
-    LatLng location = mLatLng;
+    //LatLng location = getLocationFromAddress(this, mAddress);
+    LatLng location;
 
+    // intersections don't work so use that latitude and longitude
+    if (mAddress.contains("/")) {
+      location = mLatLng;
+    } else {
+      try {
+        // this is the ideal scenario as it is a more accurate location than the provided lat and long
+        location = LocationUtils.getLocationFromAddress(this, mAddress);
+      } catch (IndexOutOfBoundsException e) {
+        // for some reason it does not like certain address so this should hopefully just happen by default
+        location = mLatLng;
+      }
+    }
     if (location != null) {
       // place the marker on the map
       googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));

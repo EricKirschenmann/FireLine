@@ -2,6 +2,7 @@ package com.erickirschenmann.fireline.utilities;
 
 import android.content.Context;
 import com.erickirschenmann.fireline.models.Incident;
+import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +55,7 @@ public class FirelineJsonUtils {
                 responseDate,
                 status,
                 units,
-                LocationUtils.getLocationFromAddress(context, address, latitude, longitude));
+                new LatLng(latitude, longitude));
         incidents.add(incident);
       }
 
