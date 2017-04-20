@@ -25,4 +25,8 @@
   <string name="pref_address_key">address</string>
   <string name="pref_address_label">Your Address</string>
   <string name="pref_address_default">165 Durley Av., Camarillo, CA 93010</string>
+
+  <!-- SharedPreference keys for the latitude and longitude-->
+  <string name="pref_location_latitude_key">latitude</string>
+  <string name="pref_location_longitude_key">longitude</string>
 </resources>
