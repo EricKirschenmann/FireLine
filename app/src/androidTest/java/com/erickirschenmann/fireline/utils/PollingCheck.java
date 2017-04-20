@@ -21,6 +21,7 @@ import java.util.concurrent.Callable;
 import junit.framework.Assert;
 
 public abstract class PollingCheck {
+
   private static final long TIME_SLICE = 50;
   private long mTimeout = 3000;
 

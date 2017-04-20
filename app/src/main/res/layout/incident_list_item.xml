@@ -10,19 +10,19 @@
     android:id="@+id/tv_incident_type"
     style="@style/ListTitle"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"/>
 
   <!--will contain the data pulled from the JSON-->
   <TextView
     android:id="@+id/tv_incident_data"
     style="@style/ListItem"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"/>
 
   <!--line that separates the items within the RecyclerView-->
   <View
     android:layout_width="match_parent"
     android:layout_height="0.5dp"
-    android:background="#dadada" />
+    android:background="#dadada"/>
 
 </LinearLayout>

@@ -5,10 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.erickirschenmann.fireline.data.IncidentContract.IncidentEntry;
 
-/**
- * Created by eric on 4/4/17.
- */
-
+/** Created by eric on 4/4/17. */
 public class IncidentDbHelper extends SQLiteOpenHelper {
 
   /*

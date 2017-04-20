@@ -20,8 +20,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
   private static final String LOG_TAG = DetailActivity.class.getSimpleName();
   private TextView mDetailsTextView;
-  private double mLat = 0;
-  private double mLong = 0;
   private String mAddress = "";
   private LatLng mLatLng;
 
@@ -46,8 +44,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     if (mIncident != null) {
       mAddress = mIncident.getStreetAddress() + ", " + mIncident.getCity();
-      mLat = mIncident.getLatitude();
-      mLong = mIncident.getLongitude();
       mLatLng = mIncident.getLatLng();
       setDetails();
     }
@@ -60,7 +56,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
   }
 
   /** Sets the details TextView, will be filled in separately at a later point */
-  void setDetails() {
+  private void setDetails() {
     mDetailsTextView.setText(mIncident.getDetails());
   }
 

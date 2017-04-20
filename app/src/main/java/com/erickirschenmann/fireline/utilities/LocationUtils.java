@@ -43,7 +43,6 @@ public class LocationUtils {
     return latLng;
   }
 
-
   static LatLng getLocationFromAddress(
       Context context, String address, double latitude, double longitude)
       throws IndexOutOfBoundsException {

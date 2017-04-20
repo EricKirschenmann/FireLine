@@ -73,9 +73,8 @@ public final class IncidentDateUtils {
      * midnight in GMT time. We will need to account for local time zone offsets when
      * extracting this information from the database.
      */
-    long normalizedUtcMidnightMillis = TimeUnit.DAYS.toMillis(daysSinceEpochLocal);
 
-    return normalizedUtcMidnightMillis;
+    return TimeUnit.DAYS.toMillis(daysSinceEpochLocal);
   }
 
   /**
@@ -115,8 +114,7 @@ public final class IncidentDateUtils {
    */
   public static long normalizeDate(long date) {
     long daysSinceEpoch = elapsedDaysSinceEpoch(date);
-    long millisFromEpochToTodayAtMidnightUtc = daysSinceEpoch * DAY_IN_MILLIS;
-    return millisFromEpochToTodayAtMidnightUtc;
+    return daysSinceEpoch * DAY_IN_MILLIS;
   }
 
   /**
@@ -151,8 +149,7 @@ public final class IncidentDateUtils {
      * time.
      */
     long gmtOffset = timeZone.getOffset(normalizedUtcDate);
-    long localMidnightMillis = normalizedUtcDate - gmtOffset;
-    return localMidnightMillis;
+    return normalizedUtcDate - gmtOffset;
   }
 
   /**

@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
    * @param value The value of the current preference, if ListPreference need to find entry from
    *     value
    */
-  void setPreferenceSummary(Preference preference, String value) {
+  private void setPreferenceSummary(Preference preference, String value) {
     if (preference instanceof EditTextPreference) {
       // if this is an EditTextPreference you can just use the value for the summary
       preference.setSummary(value);

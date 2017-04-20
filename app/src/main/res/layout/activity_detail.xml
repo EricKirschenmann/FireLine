@@ -17,7 +17,7 @@
       android:id="@+id/google_map"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:name="com.google.android.gms.maps.SupportMapFragment" />
+      android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
   </LinearLayout>
 
@@ -35,14 +35,14 @@
         style="@style/DetailsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/details_title" />
+        android:text="@string/details_title"/>
 
       <TextView
         android:id="@+id/tv_details"
         style="@style/DetailsItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/details_error" />
+        android:text="@string/details_error"/>
 
     </LinearLayout>
   </ScrollView>

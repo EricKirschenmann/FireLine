@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  public void invalidateData() {
+  private void invalidateData() {
     mIncidentAdapter.setIncidentData(null);
   }
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
    * is okay to redundantly set the visibility of a View, we don't need to check whether each view
    * is currently visible or invisible.
    */
-  void showEmergencyData() {
+  private void showEmergencyData() {
     mRecyclerView.setVisibility(View.VISIBLE);
     mErrorMessageTextView.setVisibility(View.INVISIBLE);
   }
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
    * redundantly set the visibility of a View, we don't need to check whether each view is currently
    * visible or invisible.
    */
-  void showErrorMessage() {
+  private void showErrorMessage() {
     mRecyclerView.setVisibility(View.INVISIBLE);
     mErrorMessageTextView.setVisibility(View.VISIBLE);
   }

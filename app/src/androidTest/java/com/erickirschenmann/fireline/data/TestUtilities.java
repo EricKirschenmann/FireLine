@@ -36,10 +36,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Created by eric on 4/3/17. */
-
 /**
- * These are functions and some test data to make it easier to test your database and Content
+ * Created by eric on 4/3/17.
+ *
+ * <p>These are functions and some test data to make it easier to test your database and Content
  * Provider.
  *
  * <p>NOTE: If your IncidentContract class doesn't exactly match ours, THIS WILL NOT WORK as we've
@@ -48,9 +48,9 @@ import java.util.regex.Pattern;
 class TestUtilities {
 
   /* October 1st, 2016 at midnight, GMT time */
-  static final long DATE_NORMALIZED = 1475280000000L;
+  private static final long DATE_NORMALIZED = 1475280000000L;
 
-  static final int BULK_INSERT_RECORDS_TO_INSERT = 10;
+  private static final int BULK_INSERT_RECORDS_TO_INSERT = 10;
 
   /**
    * Ensures there is a non empty cursor and validates the cursor's data by checking it against a
@@ -141,8 +141,7 @@ class TestUtilities {
 
     ContentValues[] bulkTestIncidentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
 
-    long testDate = TestUtilities.DATE_NORMALIZED;
-    long normalizedTestDate = IncidentDateUtils.normalizeDate(testDate);
+    long normalizedTestDate = IncidentDateUtils.normalizeDate(TestUtilities.DATE_NORMALIZED);
 
     for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
 
@@ -183,7 +182,9 @@ class TestUtilities {
         String fieldName = f.getName();
         try {
           String fieldValue = (String) klass.getDeclaredField(fieldName).get(null);
-          if (fieldValue.equals(value)) return fieldName;
+          if (fieldValue.equals(value)) {
+            return fieldName;
+          }
         } catch (IllegalAccessException e) {
           return null;
         } catch (NoSuchFieldException e) {
@@ -199,16 +200,14 @@ class TestUtilities {
       throws NoSuchFieldException, IllegalAccessException {
     Field stringField = clazz.getDeclaredField(variableName);
     stringField.setAccessible(true);
-    String value = (String) stringField.get(null);
-    return value;
+    return (String) stringField.get(null);
   }
 
   static Integer getStaticIntegerField(Class clazz, String variableName)
       throws NoSuchFieldException, IllegalAccessException {
     Field intField = clazz.getDeclaredField(variableName);
     intField.setAccessible(true);
-    Integer value = (Integer) intField.get(null);
-    return value;
+    return (Integer) intField.get(null);
   }
 
   static String studentReadableClassNotFound(ClassNotFoundException e) {
@@ -216,11 +215,9 @@ class TestUtilities {
     int indexBeforeSimpleClassName = message.lastIndexOf('.');
     String simpleClassNameThatIsMissing = message.substring(indexBeforeSimpleClassName + 1);
     simpleClassNameThatIsMissing = simpleClassNameThatIsMissing.replaceAll("\\$", ".");
-    String fullClassNotFoundReadableMessage =
-        "Couldn't find the class "
-            + simpleClassNameThatIsMissing
-            + ".\nPlease make sure you've created that class and followed the TODOs.";
-    return fullClassNotFoundReadableMessage;
+    return "Couldn't find the class "
+        + simpleClassNameThatIsMissing
+        + ".\nPlease make sure you've created that class and followed the TODOs.";
   }
 
   static String studentReadableNoSuchField(NoSuchFieldException e) {
@@ -233,14 +230,12 @@ class TestUtilities {
     if (m.find()) {
       String missingFieldName = m.group(1);
       String classForField = m.group(2).replaceAll("\\$", ".");
-      String fieldNotFoundReadableMessage =
-          "Couldn't find "
-              + missingFieldName
-              + " in class "
-              + classForField
-              + "."
-              + "\nPlease make sure you've declared that field and followed the TODOs.";
-      return fieldNotFoundReadableMessage;
+      return "Couldn't find "
+          + missingFieldName
+          + " in class "
+          + classForField
+          + "."
+          + "\nPlease make sure you've declared that field and followed the TODOs.";
     } else {
       return e.getMessage();
     }
@@ -255,6 +250,7 @@ class TestUtilities {
    * correct Uri is returned.
    */
   static class TestContentObserver extends ContentObserver {
+
     final HandlerThread mHT;
     boolean mContentChanged;
 

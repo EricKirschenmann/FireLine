@@ -279,7 +279,9 @@ public class TestFirelineDatabase {
     for (String columnName : incidentTableColumnNames) {
 
       /* We don't need to verify the _ID column value is not null, the system does */
-      if (columnName.equals(IncidentContract.IncidentEntry._ID)) continue;
+      if (columnName.equals(IncidentContract.IncidentEntry._ID)) {
+        continue;
+      }
 
       /* Set the value to null */
       testValues.putNull(columnName);
