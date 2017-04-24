@@ -14,11 +14,20 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
   @Override
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-    addPreferencesFromResource(R.xml.pref_fireline);
+
+    // if app is in debug mode use debug settings otherwise use regular settings
+    if (getContext().getResources().getBoolean(R.bool.debug)) {
+      addPreferencesFromResource(R.xml.pref_fireline_debug);
+    } else {
+      addPreferencesFromResource(R.xml.pref_fireline);
+    }
 
     SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
     PreferenceScreen preferenceScreen = getPreferenceScreen();
     int count = preferenceScreen.getPreferenceCount();
+
+    // check if the current build is in debug or not and remove debug data if it is not
+    resetDebugPreference();
 
     // Go through all of the preferences, and set up their preference summary.
     for (int i = 0; i < count; i++) {
@@ -29,6 +38,19 @@ public class SettingsFragment extends PreferenceFragmentCompat
         String value = sharedPreferences.getString(preference.getKey(), "");
         setPreferenceSummary(preference, value);
       }
+    }
+  }
+
+  /** Removing debug from settings when the debug is disabled */
+  private void resetDebugPreference() {
+    boolean debug = getContext().getResources().getBoolean(R.bool.debug);
+    SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+    // if the app isn't in debug and the data might be debug data reset it
+    if (!debug && sharedPreferences.contains(getString(R.string.pref_show_debug_key))) {
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean(getString(R.string.pref_show_debug_key), false);
+      editor.apply();
     }
   }
 

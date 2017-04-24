@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity
 
     mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
+    resetDebug();
+
     // initial load of data
     getSupportLoaderManager().initLoader(INCIDENT_LOADER_ID, null, this);
 
@@ -68,6 +70,19 @@ public class MainActivity extends AppCompatActivity
     PreferenceManager.getDefaultSharedPreferences(this)
         .registerOnSharedPreferenceChangeListener(this);
   }
+
+  void resetDebug() {
+    boolean debug = getResources().getBoolean(R.bool.debug);
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+    // if the app isn't in debug and the data might be debug data reset it
+    if (!debug && sharedPreferences.contains(getString(R.string.pref_show_debug_key))) {
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean(getString(R.string.pref_show_debug_key), false);
+      editor.apply();
+    }
+  }
+
 
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -88,7 +103,9 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
+  /** Invalidate the current data, then begin new Loader to retrieve new data */
   private void reloadData() {
+    resetDebug(); // just to make sure...
     invalidateData();
     getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
   }
