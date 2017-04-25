@@ -91,11 +91,21 @@ public class FirelineJsonUtils {
     }
 
     // hacky way of using the default address, crashes the app using default distance
-    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
+    //    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
+    //      return new LatLng(34.209056, -119.074665);
+    //    }
+
+    try {
+      // attempt to use the user's address
+      return LocationUtils.getLocationFromAddress(context, address);
+    } catch (IndexOutOfBoundsException e) {
+      // will alert the user it failed
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putBoolean(context.getString(R.string.pref_location_failed_key), true);
+      editor.apply();
+      // use default location
       return new LatLng(34.209056, -119.074665);
     }
-
-    return LocationUtils.getLocationFromAddress(context, address);
   }
 
   private static double getDistance(LatLng incidentLocation, LatLng userLocation) {

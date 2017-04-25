@@ -1,5 +1,7 @@
 package com.erickirschenmann.fireline;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
     resetDebug();
+    checkFail();
 
     // initial load of data
     getSupportLoaderManager().initLoader(INCIDENT_LOADER_ID, null, this);
@@ -80,6 +85,29 @@ public class MainActivity extends AppCompatActivity
       SharedPreferences.Editor editor = sharedPreferences.edit();
       editor.putBoolean(getString(R.string.pref_show_debug_key), false);
       editor.apply();
+    }
+  }
+
+  void checkFail() {
+    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    if (sharedPreferences.contains(getString(R.string.pref_location_failed_key))) {
+      System.out.println("here");
+      if (sharedPreferences.getBoolean(getString(R.string.pref_location_failed_key), false)) {
+        AlertDialog.Builder builder = new Builder(this);
+        builder.setMessage(R.string.pref_location_failed_message);
+        builder.setPositiveButton(
+            R.string.pref_location_failed_okay,
+            new OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                // undo the error message so it doesn't show up all the time
+                editor.putBoolean(getString(R.string.pref_location_failed_key), false);
+                editor.apply();
+              }
+            });
+        builder.show();
+      }
     }
   }
 
