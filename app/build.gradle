@@ -7,8 +7,8 @@ android {
         applicationId "com.erickirschenmann.fireline"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 6
-        versionName "1.4.1"
+        versionCode 7
+        versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
     }
