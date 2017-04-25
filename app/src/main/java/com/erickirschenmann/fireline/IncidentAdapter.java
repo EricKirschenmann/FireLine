@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.erickirschenmann.fireline.models.Incident;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -52,11 +53,14 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    */
   @Override
   public void onBindViewHolder(IncidentAdapterViewHolder holder, int position) {
+    DecimalFormat decimalFormat = new DecimalFormat("0.0");
     String incidentData = mIncidentData[position];
     String incidentType = mIncidentType[position];
+    String incidentDistance = decimalFormat.format(mIncidents.get(position).getDistance()) + " mi.";
 
     holder.mIncidentTextView.setText(incidentData);
     holder.mIncidentTypeTextView.setText(incidentType);
+    holder.mIncidentDistanceTextView.setText(incidentDistance);
   }
 
   /**
@@ -114,11 +118,13 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
 
     final TextView mIncidentTextView;
     final TextView mIncidentTypeTextView;
+    final TextView mIncidentDistanceTextView;
 
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
       mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
       mIncidentTypeTextView = (TextView) itemView.findViewById(R.id.tv_incident_type);
+      mIncidentDistanceTextView = (TextView) itemView.findViewById(R.id.tv_incident_distance);
       itemView.setOnClickListener(this);
     }
 

@@ -36,6 +36,7 @@ public class Incident implements Parcelable {
   private String status;
   private String[] units;
   private LatLng latLng;
+  private double distance;
 
   // should never be used
   public Incident() {
@@ -51,6 +52,7 @@ public class Incident implements Parcelable {
     this.status = "";
     this.units = new String[1];
     this.latLng = new LatLng(this.latitude, this.longitude);
+    this.distance = 0.0;
   }
 
   /**
@@ -81,7 +83,8 @@ public class Incident implements Parcelable {
       String responseDate,
       String status,
       String units,
-      LatLng latLng) {
+      LatLng latLng,
+      double distance) {
     setAddress(address.trim(), block.trim());
     this.block = block.trim();
     this.city = city.trim();
@@ -95,9 +98,10 @@ public class Incident implements Parcelable {
     this.status = status;
     getUnitsArray(units); // hopefully will get the units
     this.latLng = latLng;
+    this.distance = distance;
   }
 
-  private Incident(Parcel in) {
+  protected Incident(Parcel in) {
     this.address = in.readString();
     this.block = in.readString();
     this.city = in.readString();
@@ -110,6 +114,15 @@ public class Incident implements Parcelable {
     this.status = in.readString();
     this.units = in.createStringArray();
     this.latLng = in.readParcelable(LatLng.class.getClassLoader());
+    this.distance = in.readDouble();
+  }
+
+  public double getDistance() {
+    return distance;
+  }
+
+  public void setDistance(double distance) {
+    this.distance = distance;
   }
 
   /**
@@ -415,5 +428,6 @@ public class Incident implements Parcelable {
     dest.writeString(this.status);
     dest.writeStringArray(this.units);
     dest.writeParcelable(this.latLng, flags);
+    dest.writeDouble(this.distance);
   }
 }

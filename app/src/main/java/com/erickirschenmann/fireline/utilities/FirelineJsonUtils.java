@@ -1,6 +1,10 @@
 package com.erickirschenmann.fireline.utilities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.preference.PreferenceManager;
+import com.erickirschenmann.fireline.R;
 import com.erickirschenmann.fireline.models.Incident;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
@@ -16,8 +20,8 @@ public class FirelineJsonUtils {
 
   public static ArrayList<Incident> getIncidentsFromJson(Context context, String json) {
 
-    String[] formattedIncidents;
     ArrayList<Incident> incidents = new ArrayList<>();
+    LatLng userLocation = getUserLatLng(context);
 
     try {
       // create an array of json objects
@@ -41,6 +45,11 @@ public class FirelineJsonUtils {
         String status = current.getString("Status");
         String units = current.getString("Units");
 
+        LatLng incidentLocation = new LatLng(latitude, longitude);
+
+        // get distance between points
+        double distance = getDistance(incidentLocation, userLocation);
+
         // create and add a new Incident Object to the ArrayList
         Incident incident =
             new Incident(
@@ -55,7 +64,8 @@ public class FirelineJsonUtils {
                 responseDate,
                 status,
                 units,
-                new LatLng(latitude, longitude));
+                incidentLocation,
+                distance);
         incidents.add(incident);
       }
 
@@ -64,5 +74,45 @@ public class FirelineJsonUtils {
     }
 
     return incidents;
+  }
+
+  private static LatLng getUserLatLng(Context context) {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    String address;
+
+    // if the address is not the default
+    if (sharedPreferences.contains(context.getString(R.string.pref_address_key))) {
+      address =
+          sharedPreferences.getString(
+              context.getString(R.string.pref_address_key),
+              context.getString(R.string.pref_address_default));
+    } else {
+      address = context.getString(R.string.pref_address_test_default);
+    }
+
+    // hacky way of using the default address, crashes the app using default distance
+    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
+      return new LatLng(34.209056, -119.074665);
+    }
+
+    return LocationUtils.getLocationFromAddress(context, address);
+  }
+
+  private static double getDistance(LatLng incidentLocation, LatLng userLocation) {
+    double startLatitude = incidentLocation.latitude;
+    double startLongitude = incidentLocation.longitude;
+    double endLatitude = userLocation.latitude;
+    double endLongitude = userLocation.longitude;
+
+    float[] results = new float[5];
+
+    try {
+      Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    }
+
+    // distance in miles
+    return (double) results[0] / 1609.34;
   }
 }

@@ -14,6 +14,12 @@
     <item name="android:textColor">@color/primary_text</item>
     <item name="android:paddingTop">@dimen/padding</item>
     <item name="android:paddingLeft">@dimen/padding</item>
+  </style>
+
+  <style name="ListTitleDistance" parent="AppTheme">
+    <item name="android:textSize">@dimen/title_size</item>
+    <item name="android:textColor">@color/primary_text</item>
+    <item name="android:paddingTop">@dimen/padding</item>
     <item name="android:paddingRight">@dimen/padding</item>
   </style>
 
