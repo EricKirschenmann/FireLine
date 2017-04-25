@@ -32,7 +32,9 @@
   <!-- SharedPreference keys for the latitude and longitude-->
   <string name="pref_location_latitude_key">latitude</string>
   <string name="pref_location_longitude_key">longitude</string>
-
+  <string name="pref_location_latitude_default">34.209056</string>
+  <string name="pref_location_longitude_default">-119.074665</string>
+  <string name="pref_location_changed_key">location_changed</string>
 
   <string name="pref_location_failed_key">failed_key</string>
   <string name="pref_location_failed_message">Sorry, as of right now your address is not supported. This will be fixed in later versions. Please try again with a different address.</string>

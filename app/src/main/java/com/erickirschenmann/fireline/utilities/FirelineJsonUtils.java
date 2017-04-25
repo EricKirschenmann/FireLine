@@ -78,32 +78,22 @@ public class FirelineJsonUtils {
 
   private static LatLng getUserLatLng(Context context) {
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    String address;
 
-    // if the address is not the default
-    if (sharedPreferences.contains(context.getString(R.string.pref_address_key))) {
-      address =
-          sharedPreferences.getString(
-              context.getString(R.string.pref_address_key),
-              context.getString(R.string.pref_address_default));
+    if (sharedPreferences.contains(context.getString(R.string.pref_location_latitude_key))
+        && sharedPreferences.contains(context.getString(R.string.pref_location_longitude_key))) {
+      double latitude =
+          (double)
+              sharedPreferences.getFloat(
+                  context.getString(R.string.pref_location_latitude_key),
+                  Float.parseFloat(context.getString(R.string.pref_location_latitude_default)));
+      double longitude =
+          (double)
+              sharedPreferences.getFloat(
+                  context.getString(R.string.pref_location_longitude_key),
+                  Float.parseFloat(context.getString(R.string.pref_location_longitude_default)));
+      System.out.println(latitude + ", " + longitude);
+      return new LatLng(latitude, longitude);
     } else {
-      address = context.getString(R.string.pref_address_test_default);
-    }
-
-    // hacky way of using the default address, crashes the app using default distance
-    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
-      return new LatLng(34.209056, -119.074665);
-    }
-
-    try {
-      // attempt to use the user's address
-      return LocationUtils.getLocationFromAddress(context, address);
-    } catch (IndexOutOfBoundsException e) {
-      // will alert the user it failed
-      SharedPreferences.Editor editor = sharedPreferences.edit();
-      editor.putBoolean(context.getString(R.string.pref_location_failed_key), true);
-      editor.apply();
-      // use default location
       return new LatLng(34.209056, -119.074665);
     }
   }
@@ -124,5 +114,33 @@ public class FirelineJsonUtils {
 
     // distance in miles
     return (double) results[0] / 1609.34;
+  }
+
+  static double[] getLatLong(String json) {
+
+    double[] location = new double[2];
+
+    try {
+      JSONObject jsonObject = new JSONObject(json);
+
+      location[0] =
+          ((JSONArray) jsonObject.get("results"))
+              .getJSONObject(0)
+              .getJSONObject("geometry")
+              .getJSONObject("location")
+              .getDouble("lng");
+
+      location[1] =
+          ((JSONArray) jsonObject.get("results"))
+              .getJSONObject(0)
+              .getJSONObject("geometry")
+              .getJSONObject("location")
+              .getDouble("lat");
+
+    } catch (JSONException e) {
+      return null;
+    }
+
+    return location;
   }
 }

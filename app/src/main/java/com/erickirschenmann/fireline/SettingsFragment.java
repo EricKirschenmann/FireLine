@@ -89,6 +89,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
       if (!(preference instanceof CheckBoxPreference)) {
         String value = sharedPreferences.getString(preference.getKey(), "");
         setPreferenceSummary(preference, value);
+
+        // location was changed when data is retrieved this value will be checked in order to update location
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pref_location_changed_key), true);
+        editor.apply();
       }
     }
   }
