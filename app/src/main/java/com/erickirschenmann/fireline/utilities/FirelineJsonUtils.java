@@ -91,7 +91,6 @@ public class FirelineJsonUtils {
               sharedPreferences.getFloat(
                   context.getString(R.string.pref_location_longitude_key),
                   Float.parseFloat(context.getString(R.string.pref_location_longitude_default)));
-      System.out.println(latitude + ", " + longitude);
       return new LatLng(latitude, longitude);
     } else {
       return new LatLng(34.209056, -119.074665);
