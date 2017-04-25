@@ -91,9 +91,9 @@ public class FirelineJsonUtils {
     }
 
     // hacky way of using the default address, crashes the app using default distance
-    //    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
-    //      return new LatLng(34.209056, -119.074665);
-    //    }
+    if (address.equals("165 Durley Ave., Camarillo, CA 93010")) {
+      return new LatLng(34.209056, -119.074665);
+    }
 
     try {
       // attempt to use the user's address
