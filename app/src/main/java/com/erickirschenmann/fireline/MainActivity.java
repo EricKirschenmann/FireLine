@@ -1,5 +1,6 @@
 package com.erickirschenmann.fireline;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity
    * @param args Any arguments supplied by the caller.
    * @return Return a new Loader instance that is ready to start loading.
    */
+  @SuppressLint("StaticFieldLeak")
   @Override
   public Loader<ArrayList<Incident>> onCreateLoader(int id, Bundle args) {
     return new AsyncTaskLoader<ArrayList<Incident>>(this) {
