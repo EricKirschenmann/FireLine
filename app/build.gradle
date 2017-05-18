@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 'android-O'
     buildToolsVersion "26.0.0-rc2"
     defaultConfig {
         applicationId "com.erickirschenmann.fireline"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 'O'
         versionCode 7
         versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,10 +25,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:preference-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.0.0-beta1'
+    compile 'com.android.support:recyclerview-v7:26.0.0-beta1'
+    compile 'com.android.support:preference-v7:26.0.0-beta1'
     compile 'com.google.android.gms:play-services-maps:10.2.6'
     compile 'org.apache.commons:commons-lang3:3.5'
     testCompile 'junit:junit:4.12'
+}
+
+// REQUIRED: Google's new Maven repo is required for the latest
+// support library that is compatible with Android O
+repositories {
+    maven {
+        url 'https://maven.google.com'
+    }
 }
