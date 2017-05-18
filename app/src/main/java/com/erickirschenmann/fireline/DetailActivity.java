@@ -106,14 +106,25 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         location = mLatLng;
       }
     }
+
+    // there's been an issue with the maps crashing on null pointer exceptions, hopefully this will
+    // catch crashes before they occur, but it may mess with maps rendering when that happens
     if (location != null) {
       // place the marker on the map
       googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+      googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+      googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+      googleMap.setTrafficEnabled(true);
+    } else {
+      // if the location may cause the app to crash get the location from the Incident
+      location = mLatLng;
+      // place the marker on the map
+      googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+      googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+      googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+      googleMap.setTrafficEnabled(true);
     }
-
-    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-    googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-    googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-    googleMap.setTrafficEnabled(true);
   }
 }

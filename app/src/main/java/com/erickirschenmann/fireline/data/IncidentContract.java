@@ -54,4 +54,3 @@ public class IncidentContract {
     public static final String COLUMN_DEGREES = "degrees";
   }
 }
-

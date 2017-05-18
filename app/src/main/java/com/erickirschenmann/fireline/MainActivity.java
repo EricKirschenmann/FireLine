@@ -20,12 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
 import com.erickirschenmann.fireline.models.Incident;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
 import com.erickirschenmann.fireline.utilities.NetworkUtils;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
