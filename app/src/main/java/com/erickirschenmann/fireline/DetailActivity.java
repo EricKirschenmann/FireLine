@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -89,42 +90,38 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
    */
   @Override
   public void onMapReady(GoogleMap googleMap) {
-    // Add a marker in Sydney, Australia,
-    // and move the map's camera to the same location.
-    //LatLng location = getLocationFromAddress(this, mAddress);
-    LatLng location;
+    try {
+      // by default use the location provided by the data
+      LatLng location = mLatLng;
 
-    // intersections don't work so use that latitude and longitude
-    if (mAddress.contains("/")) {
-      location = mLatLng;
-    } else {
-      try {
-        // this is the ideal scenario as it is a more accurate location than the provided lat and long
-        location = LocationUtils.getLocationFromAddress(this, mAddress);
-      } catch (IndexOutOfBoundsException e) {
-        // for some reason it does not like certain address so this should hopefully just happen by default
-        location = mLatLng;
+      // if possible try to get a more accurate location but not necessarily
+      // intersections don't work so use that latitude and longitude
+      if (!mAddress.contains("/")) {
+        try {
+          // this is the ideal scenario as it is a more accurate location than the provided lat and long
+          location = LocationUtils.getLocationFromAddress(this, mAddress);
+        } catch (IndexOutOfBoundsException e) {
+          // for some reason it does not like certain address so this should hopefully just happen by default
+          location = mLatLng;
+        }
       }
-    }
 
-    // there's been an issue with the maps crashing on null pointer exceptions, hopefully this will
-    // catch crashes before they occur, but it may mess with maps rendering when that happens
-    if (location != null) {
-      // place the marker on the map
-      googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+      // there's been an issue with the maps crashing on null pointer exceptions, hopefully this will
+      // catch crashes before they occur, but it may mess with maps rendering when that happens
+      if (location != null) {
+        // place the marker on the map
+        googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
+      }
+
+      // place markers on the screen
       googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
       googleMap.animateCamera(CameraUpdateFactory.zoomIn());
       googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
       googleMap.setTrafficEnabled(true);
-    } else {
-      // if the location may cause the app to crash get the location from the Incident
-      location = mLatLng;
-      // place the marker on the map
-      googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
-      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-      googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-      googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-      googleMap.setTrafficEnabled(true);
+    } catch (NullPointerException e) {
+      // hopefully will not crash on a null pointer exception
+      Log.e(LOG_TAG, mIncident.toString());
+      e.printStackTrace();
     }
   }
 }
