@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   /**
-   * Sort the {@code ArrayList} of Incident objects based on the distance from the user's specified
-   * location and display a message if the sort is successful or unsuccessful
+   * Attempt to sort the {@code ArrayList} of Incident objects based on the distance from the user's
+   * specified location and display a message if the sort is successful or unsuccessful
    */
   private void sortData() {
     // store the different messages depending on the sort
@@ -182,16 +182,6 @@ public class MainActivity extends AppCompatActivity
       // most likely a bad value in one of the first 15 or so values, but it's just debug data so oh well
       // hopefully none of the fire department's values crash it
       int maxSize = 50;
-
-      // trim data for testing purposes
-      if (incidents.size() > maxSize) {
-        Log.d(TAG, "sortData: trimming data:");
-        while (incidents.size() > maxSize) {
-          // remove the first incidents so only the final 31 remain
-          Log.d(TAG, "trimmed: " + incidents.get(1).getDistance() + incidents.get(1).getAddress());
-          incidents.remove(1);
-        }
-      }
 
       // make sure the ArrayList is not too long to be sorted by Collections
       if (incidents.size() <= maxSize) {
