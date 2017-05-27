@@ -2,6 +2,7 @@ package com.erickirschenmann.fireline.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 import org.apache.commons.lang3.text.WordUtils;
 
 /** Created by eric on 3/4/17. */
-public class Incident implements Parcelable {
+public class Incident implements Parcelable, Comparable<Incident> {
 
   public static final Creator<Incident> CREATOR =
       new Creator<Incident>() {
@@ -429,5 +430,10 @@ public class Incident implements Parcelable {
     dest.writeStringArray(this.units);
     dest.writeParcelable(this.latLng, flags);
     dest.writeDouble(this.distance);
+  }
+
+  @Override
+  public int compareTo(@NonNull Incident o) {
+    return (int) (this.distance - o.getDistance());
   }
 }
