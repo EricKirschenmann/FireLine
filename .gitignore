@@ -68,3 +68,4 @@ local.properties
 #/app/app-release.apk
 #out
 #gen
+app/release/output.json
