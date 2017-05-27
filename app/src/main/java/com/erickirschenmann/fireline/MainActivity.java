@@ -15,11 +15,13 @@ import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
 import com.erickirschenmann.fireline.models.Incident;
 import com.erickirschenmann.fireline.utilities.FirelineJsonUtils;
@@ -27,18 +29,21 @@ import com.erickirschenmann.fireline.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity
     implements IncidentAdapterOnClickHandler,
         LoaderCallbacks<ArrayList<Incident>>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+  private static final String TAG = MainActivity.class.getSimpleName();
   private static final int INCIDENT_LOADER_ID = 19232;
   private ArrayList<Incident> incidents;
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
   private TextView mErrorMessageTextView;
   private ProgressBar mProgressBar;
+  private Toast mToast;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +156,10 @@ public class MainActivity extends AppCompatActivity
         // open settings activity
         startActivity(new Intent(this, SettingsActivity.class));
         return true;
+      case R.id.action_sort:
+        // sort the data
+        sortData();
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -158,6 +167,52 @@ public class MainActivity extends AppCompatActivity
 
   private void invalidateData() {
     mIncidentAdapter.setIncidentData(null);
+  }
+
+  /**
+   * Sort the {@code ArrayList} of Incident objects based on the distance from the user's specified
+   * location and display a message if the sort is successful or unsuccessful
+   */
+  private void sortData() {
+    // store the different messages depending on the sort
+    String message;
+
+    try {
+      // for some reason the sort crashes on a length above 150 or so so just trim the size of the list,
+      // most likely a bad value in one of the first 15 or so values, but it's just debug data so oh well
+      // hopefully none of the fire department's values crash it
+      int maxSize = 50;
+
+      // trim data for testing purposes
+      if (incidents.size() > maxSize) {
+        Log.d(TAG, "sortData: trimming data:");
+        while (incidents.size() > maxSize) {
+          // remove the first incidents so only the final 31 remain
+          Log.d(TAG, "trimmed: " + incidents.get(1).getDistance() + incidents.get(1).getAddress());
+          incidents.remove(1);
+        }
+      }
+
+      // make sure the ArrayList is not too long to be sorted by Collections
+      if (incidents.size() <= maxSize) {
+        Collections.sort(incidents);
+        mIncidentAdapter.setIncidentData(incidents);
+        message = getString(R.string.sort_distance_message);
+      } else {
+        message = getString(R.string.sort_error_message);
+      }
+    } catch (IllegalArgumentException e) {
+      Log.e(TAG, "sortData: could not sort the data!");
+      message = getString(R.string.sort_error_message);
+    }
+
+    // check if the sort has already happened and reset the toast
+    if (mToast != null) {
+      mToast.cancel();
+    }
+    // display the toast with the message
+    mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+    mToast.show();
   }
 
   /**

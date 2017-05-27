@@ -10,6 +10,8 @@
   <string name="tomorrow">Tomorrow</string>
 
   <string name="error_message">Sorry could not fetch data</string>
+  <string name="sort_distance_message">Sorted by distance</string>
+  <string name="sort_error_message">Sorry, cannot sort these incidents</string>
 
   <string name="details_error">Details not found.</string>
   <string name="details_title">Incident Details:</string>
