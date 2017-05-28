@@ -184,14 +184,16 @@ public class MainActivity extends AppCompatActivity
       int maxSize = 200;
 
       // make sure the ArrayList is not too long to be sorted by Collections
-      if (incidents.size() <= maxSize) {
+      if (incidents.size() == 0 || incidents == null) {
+        message = getString(R.string.sort_null_empty_message);
+      } else if (incidents.size() <= maxSize) {
         Collections.sort(incidents);
         mIncidentAdapter.setIncidentData(incidents);
         message = getString(R.string.sort_distance_message);
       } else {
         message = getString(R.string.sort_error_message);
       }
-    } catch (IllegalArgumentException e) {
+    } catch (NullPointerException | IllegalArgumentException e) {
       Log.e(TAG, "sortData: could not sort the data!");
       message = getString(R.string.sort_error_message);
     }
