@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity
     implements IncidentAdapterOnClickHandler,
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
   private TextView mErrorMessageTextView;
   private ProgressBar mProgressBar;
   private Toast mToast;
+  private int sortMode = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -187,9 +189,46 @@ public class MainActivity extends AppCompatActivity
       if (incidents.size() == 0 || incidents == null) {
         message = getString(R.string.sort_null_empty_message);
       } else if (incidents.size() <= maxSize) {
-        Collections.sort(incidents);
-        mIncidentAdapter.setIncidentData(incidents);
+        // rotate between ascending and descending sorts
+        if (sortMode % 2 == 0) {
+          // ascending
+          Collections.sort(
+              incidents,
+              new Comparator<Incident>() {
+                @Override
+                public int compare(Incident o1, Incident o2) {
+                  // better comparison than the subtraction method which ignores differences of less than 1.0
+                  if (o1.getDistance() > o2.getDistance()) {
+                    return 1;
+                  } else if (o1.getDistance() < o2.getDistance()) {
+                    return -1;
+                  } else {
+                    return 0;
+                  }
+                }
+              });
+        } else {
+          // descending
+          Collections.sort(
+              incidents,
+              new Comparator<Incident>() {
+                @Override
+                public int compare(Incident o1, Incident o2) {
+                  // better comparison than the subtraction method which ignores differences of less than 1.0
+                  if (o1.getDistance() > o2.getDistance()) {
+                    return -1;
+                  } else if (o1.getDistance() < o2.getDistance()) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                }
+              });
+        }
+
+        sortMode++;
         message = getString(R.string.sort_distance_message);
+        mIncidentAdapter.setIncidentData(incidents);
       } else {
         message = getString(R.string.sort_error_message);
       }

@@ -2,7 +2,6 @@ package com.erickirschenmann.fireline.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 import org.apache.commons.lang3.text.WordUtils;
 
 /** Created by eric on 3/4/17. */
-public class Incident implements Parcelable, Comparable<Incident> {
+public class Incident implements Parcelable {
 
   public static final Creator<Incident> CREATOR =
       new Creator<Incident>() {
@@ -430,25 +429,5 @@ public class Incident implements Parcelable, Comparable<Incident> {
     dest.writeStringArray(this.units);
     dest.writeParcelable(this.latLng, flags);
     dest.writeDouble(this.distance);
-  }
-
-  /**
-   * Compare the distances of two different {@code Incident} objects, used for sorting based on the
-   * distance value
-   *
-   * @param o the incident value to compare this Incident to
-   * @return a negative integer, zero, or a positive integer as this object is less than, equal to,
-   * or greater than the specified object.
-   */
-  @Override
-  public int compareTo(@NonNull Incident o) {
-    // better comparison than the subtraction method which ignores differences of less than 1.0
-    if (this.distance > o.getDistance()) {
-      return 1;
-    } else if (this.distance < o.getDistance()) {
-      return -1;
-    } else {
-      return 0;
-    }
   }
 }
