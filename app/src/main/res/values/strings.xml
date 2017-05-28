@@ -13,7 +13,8 @@
   <string name="sort_distance_message">Sorted by distance</string>
   <string name="sort_distance_asc_message">Sorted by distance ascending</string>
   <string name="sort_distance_desc_message">Sorted by distance descending</string>
-  <string name="sort_incident_type_message">Sorted by type</string>
+  <string name="sort_type_message">Sorted by type alphabetically</string>
+  <string name="sort_type_reverse_message">Sorted by type reverse alphabetically</string>
   <string name="sort_error_message">Sorry, cannot sort these incidents</string>
   <string name="sort_null_empty_message">Sorry, nothing to sort</string>
 

@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity
 
   /** Invalidate the current data, then begin new Loader to retrieve new data */
   private void reloadData() {
+    sortMode = 0; // reset the current sort type
     resetDebug(); // just to make sure...
     invalidateData();
     getSupportLoaderManager().restartLoader(INCIDENT_LOADER_ID, null, this);
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity
         message = getString(R.string.sort_null_empty_message);
       } else if (incidents.size() <= maxSize) {
         // rotate between ascending and descending and alphabetical sorts
-        if (sortMode % 3 == 0) {
+        if (sortMode % 4 == 0) {
           // ascending
           Collections.sort(
               incidents,
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity
                 }
               });
           message = getString(R.string.sort_distance_asc_message);
-        } else if (sortMode % 3 == 1) {
+        } else if (sortMode % 4 == 1) {
           // descending
           Collections.sort(
               incidents,
@@ -226,18 +227,33 @@ public class MainActivity extends AppCompatActivity
                 }
               });
           message = getString(R.string.sort_distance_desc_message);
-        } else {
+        } else if (sortMode % 4 == 2) {
           // alphabetical
           Collections.sort(
               incidents,
               new Comparator<Incident>() {
                 @Override
                 public int compare(Incident incident1, Incident incident2) {
-                  return incident1.getIncidentType()
+                  return incident1
+                      .getIncidentType()
                       .compareToIgnoreCase(incident2.getIncidentType());
                 }
               });
-          message = getString(R.string.sort_incident_type_message);
+          message = getString(R.string.sort_type_message);
+        } else {
+          // reverse alphabetical
+          Collections.sort(
+              incidents,
+              new Comparator<Incident>() {
+                @Override
+                public int compare(Incident incident1, Incident incident2) {
+                  return -1
+                      * (incident1
+                      .getIncidentType()
+                      .compareToIgnoreCase(incident2.getIncidentType()));
+                }
+              });
+          message = getString(R.string.sort_type_reverse_message);
         }
 
         sortMode++;
