@@ -15,7 +15,6 @@ import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +83,11 @@ public class MainActivity extends AppCompatActivity
         .registerOnSharedPreferenceChangeListener(this);
   }
 
+  /**
+   * When the user updates to a new app version that does not have the debug data enabled, this
+   * checks and resets the SharedPreferences to make sure they are not stuck on the old debug data
+   * and can load actual data instead
+   */
   void resetDebug() {
     boolean debug = getResources().getBoolean(R.bool.debug);
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -96,10 +100,13 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
+  /**
+   * Check if the user entered address was able to create a location, shouldn't be needed anymore
+   * but kept just in case the issue persists for now
+   */
   void checkFail() {
     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     if (sharedPreferences.contains(getString(R.string.pref_location_failed_key))) {
-      System.out.println("here");
       if (sharedPreferences.getBoolean(getString(R.string.pref_location_failed_key), false)) {
         AlertDialog.Builder builder = new Builder(this);
         builder.setMessage(R.string.pref_location_failed_message);
@@ -187,7 +194,7 @@ public class MainActivity extends AppCompatActivity
       int maxSize = 200;
 
       // make sure the ArrayList is not too long to be sorted by Collections
-      if (incidents.size() == 0 || incidents == null) {
+      if (incidents == null || incidents.size() == 0) {
         message = getString(R.string.sort_null_empty_message);
       } else if (incidents.size() <= maxSize) {
         // rotate between ascending and descending and alphabetical sorts
@@ -256,13 +263,17 @@ public class MainActivity extends AppCompatActivity
           message = getString(R.string.sort_type_reverse_message);
         }
 
+        // move onto next sort type
         sortMode++;
+        // use the new ArrayList as the data
         mIncidentAdapter.setIncidentData(incidents);
       } else {
+        // display an error message if the data cannot be displayed
         message = getString(R.string.sort_error_message);
       }
     } catch (NullPointerException | IllegalArgumentException e) {
-      Log.e(TAG, "sortData: could not sort the data!");
+      //Log.e(TAG, "sortData: could not sort the data!");
+      //e.printStackTrace();
       message = getString(R.string.sort_error_message);
     }
 
