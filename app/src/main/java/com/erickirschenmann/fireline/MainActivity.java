@@ -214,11 +214,11 @@ public class MainActivity extends AppCompatActivity
               incidents,
               new Comparator<Incident>() {
                 @Override
-                public int compare(Incident o1, Incident o2) {
+                public int compare(Incident incident1, Incident incident2) {
                   // better comparison than the subtraction method which ignores differences of less than 1.0
-                  if (o1.getDistance() > o2.getDistance()) {
+                  if (incident1.getDistance() > incident2.getDistance()) {
                     return -1;
-                  } else if (o1.getDistance() < o2.getDistance()) {
+                  } else if (incident1.getDistance() < incident2.getDistance()) {
                     return 1;
                   } else {
                     return 0;
@@ -227,13 +227,14 @@ public class MainActivity extends AppCompatActivity
               });
           message = getString(R.string.sort_distance_desc_message);
         } else {
-          // descending
+          // alphabetical
           Collections.sort(
               incidents,
               new Comparator<Incident>() {
                 @Override
-                public int compare(Incident o1, Incident o2) {
-                  return o1.getIncidentType().compareToIgnoreCase(o2.getIncidentType());
+                public int compare(Incident incident1, Incident incident2) {
+                  return incident1.getIncidentType()
+                      .compareToIgnoreCase(incident2.getIncidentType());
                 }
               });
           message = getString(R.string.sort_incident_type_message);
