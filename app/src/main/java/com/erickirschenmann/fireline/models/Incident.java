@@ -432,8 +432,23 @@ public class Incident implements Parcelable, Comparable<Incident> {
     dest.writeDouble(this.distance);
   }
 
+  /**
+   * Compare the distances of two different {@code Incident} objects, used for sorting based on the
+   * distance value
+   *
+   * @param o the incident value to compare this Incident to
+   * @return a negative integer, zero, or a positive integer as this object is less than, equal to,
+   * or greater than the specified object.
+   */
   @Override
   public int compareTo(@NonNull Incident o) {
-    return (int) (this.distance - o.getDistance());
+    // better comparison than the subtraction method which ignores differences of less than 1.0
+    if (this.distance > o.getDistance()) {
+      return 1;
+    } else if (this.distance < o.getDistance()) {
+      return -1;
+    } else {
+      return 0;
+    }
   }
 }

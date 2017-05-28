@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity
       // for some reason the sort crashes on a length above 150 or so so just trim the size of the list,
       // most likely a bad value in one of the first 15 or so values, but it's just debug data so oh well
       // hopefully none of the fire department's values crash it
-      int maxSize = 50;
+      int maxSize = 200;
 
       // make sure the ArrayList is not too long to be sorted by Collections
       if (incidents.size() <= maxSize) {

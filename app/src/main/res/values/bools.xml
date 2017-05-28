@@ -2,5 +2,5 @@
 <resources>
   <bool name="pref_show_debug_default">false</bool>
   <bool name="pref_location_changed_default">false</bool>
-  <bool name="debug">false</bool>
+  <bool name="debug">true</bool>
 </resources>
