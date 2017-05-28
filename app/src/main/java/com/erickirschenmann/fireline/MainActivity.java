@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity
       if (incidents.size() == 0 || incidents == null) {
         message = getString(R.string.sort_null_empty_message);
       } else if (incidents.size() <= maxSize) {
-        // rotate between ascending and descending sorts
-        if (sortMode % 2 == 0) {
+        // rotate between ascending and descending and alphabetical sorts
+        if (sortMode % 3 == 0) {
           // ascending
           Collections.sort(
               incidents,
@@ -207,7 +207,8 @@ public class MainActivity extends AppCompatActivity
                   }
                 }
               });
-        } else {
+          message = getString(R.string.sort_distance_asc_message);
+        } else if (sortMode % 3 == 1) {
           // descending
           Collections.sort(
               incidents,
@@ -224,10 +225,21 @@ public class MainActivity extends AppCompatActivity
                   }
                 }
               });
+          message = getString(R.string.sort_distance_desc_message);
+        } else {
+          // descending
+          Collections.sort(
+              incidents,
+              new Comparator<Incident>() {
+                @Override
+                public int compare(Incident o1, Incident o2) {
+                  return o1.getIncidentType().compareToIgnoreCase(o2.getIncidentType());
+                }
+              });
+          message = getString(R.string.sort_incident_type_message);
         }
 
         sortMode++;
-        message = getString(R.string.sort_distance_message);
         mIncidentAdapter.setIncidentData(incidents);
       } else {
         message = getString(R.string.sort_error_message);
