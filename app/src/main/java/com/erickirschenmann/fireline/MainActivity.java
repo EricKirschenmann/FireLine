@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -19,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.erickirschenmann.fireline.IncidentAdapter.IncidentAdapterOnClickHandler;
 import com.erickirschenmann.fireline.models.Incident;
@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity
   private ArrayList<Incident> incidents;
   private RecyclerView mRecyclerView;
   private IncidentAdapter mIncidentAdapter;
-  private TextView mErrorMessageTextView;
   private ProgressBar mProgressBar;
   private Toast mToast;
   private int sortMode = 0;
+  private Snackbar mErrorSnackBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity
 
     // allows us to manipulate the RecyclerView based on this reference
     mRecyclerView = (RecyclerView) findViewById(R.id.rv_incident);
-
-    mErrorMessageTextView = (TextView) findViewById(R.id.tv_error_message);
 
     // specifies the direction of the layout as VERTICAL as opposed to HORIZONTAL
     LinearLayoutManager layoutManager =
@@ -367,7 +365,10 @@ public class MainActivity extends AppCompatActivity
    */
   private void showEmergencyData() {
     mRecyclerView.setVisibility(View.VISIBLE);
-    mErrorMessageTextView.setVisibility(View.INVISIBLE);
+    // hide error message
+    if (mErrorSnackBar != null) {
+      mErrorSnackBar.dismiss();
+    }
   }
 
   /**
@@ -377,6 +378,20 @@ public class MainActivity extends AppCompatActivity
    */
   private void showErrorMessage() {
     mRecyclerView.setVisibility(View.INVISIBLE);
-    mErrorMessageTextView.setVisibility(View.VISIBLE);
+    // display the error message as a Snackbar
+    if (mErrorSnackBar != null) {
+      mErrorSnackBar = null;
+    }
+
+    // create and display error message
+    setupSnackbar();
+    mErrorSnackBar.show();
+  }
+
+  void setupSnackbar() {
+    View view = findViewById(R.id.rv_incident);
+    String error = getString(R.string.error_message);
+    int length = Snackbar.LENGTH_INDEFINITE;
+    mErrorSnackBar = Snackbar.make(view, error, length);
   }
 }

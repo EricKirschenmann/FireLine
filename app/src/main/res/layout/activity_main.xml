@@ -14,19 +14,10 @@
 
   </android.support.v7.widget.RecyclerView>
 
-  <!--will provide an error message if the data cannot be fetched from Fireline-->
-  <TextView
-    android:id="@+id/tv_error_message"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/error_message"
-    android:visibility="invisible"/>
-
   <!--will be visible when fetching data, hopefully not very long-->
   <ProgressBar
     android:id="@+id/pb_loading_indicator"
     android:layout_width="42dp"
     android:layout_height="42dp"
     android:layout_gravity="center"/>
-
 </FrameLayout>
