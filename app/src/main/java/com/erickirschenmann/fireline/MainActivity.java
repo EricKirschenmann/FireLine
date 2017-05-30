@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity
         message = getString(R.string.sort_error_message);
       }
     } catch (NullPointerException | IllegalArgumentException e) {
-      //Log.e(TAG, "sortData: could not sort the data!");
+      Log.e(TAG, "sortData: could not sort the data!");
       //e.printStackTrace();
       message = getString(R.string.sort_error_message);
     }
@@ -388,6 +389,9 @@ public class MainActivity extends AppCompatActivity
     mErrorSnackBar.show();
   }
 
+  /**
+   * Creates a Snackbar containing the error message
+   */
   void setupSnackbar() {
     View view = findViewById(R.id.rv_incident);
     String error = getString(R.string.error_message);
