@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // allows us to manipulate the RecyclerView based on this reference
-    mRecyclerView = (RecyclerView) findViewById(R.id.rv_incident);
+    mRecyclerView = findViewById(R.id.rv_incident);
 
     // specifies the direction of the layout as VERTICAL as opposed to HORIZONTAL
     LinearLayoutManager layoutManager =
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 
     mRecyclerView.setAdapter(mIncidentAdapter);
 
-    mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+    mProgressBar = findViewById(R.id.pb_loading_indicator);
 
     resetDebug();
     checkFail();
