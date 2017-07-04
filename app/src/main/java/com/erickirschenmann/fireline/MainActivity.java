@@ -255,8 +255,8 @@ public class MainActivity extends AppCompatActivity
                 public int compare(Incident incident1, Incident incident2) {
                   return -1
                       * (incident1
-                      .getIncidentType()
-                      .compareToIgnoreCase(incident2.getIncidentType()));
+                          .getIncidentType()
+                          .compareToIgnoreCase(incident2.getIncidentType()));
                 }
               });
           message = getString(R.string.sort_type_reverse_message);
@@ -389,9 +389,7 @@ public class MainActivity extends AppCompatActivity
     mErrorSnackBar.show();
   }
 
-  /**
-   * Creates a Snackbar containing the error message
-   */
+  /** Creates a Snackbar containing the error message */
   void setupSnackbar() {
     View view = findViewById(R.id.rv_incident);
     String error = getString(R.string.error_message);
