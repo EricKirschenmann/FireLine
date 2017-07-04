@@ -7,3 +7,8 @@ This is my Android Application which relies on the freely available JSON data an
 
 ## Google Play Store Link to Application
 https://play.google.com/store/apps/details?id=com.erickirschenmann.fireline
+
+## Screenshots:
+![Main Screen](https://lh3.googleusercontent.com/afa2mDdHOpRCWUFlgzEWvJzcQAQkgz4xNx0AbzbWrQ8LKeiUpp7kixUwhz3KsF5EE5c=h900-rw)
+
+![Details Screen](https://lh3.googleusercontent.com/3sN1yVxLEzSp2a-2UKGU2ZOKua4EW2mlbXdt1h-lM_Ls29fZbtJG6OS9xCwZILGHVhRt=h900-rw)
