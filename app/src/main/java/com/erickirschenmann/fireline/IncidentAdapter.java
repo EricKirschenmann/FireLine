@@ -122,9 +122,9 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
 
     IncidentAdapterViewHolder(View itemView) {
       super(itemView);
-      mIncidentTextView = (TextView) itemView.findViewById(R.id.tv_incident_data);
-      mIncidentTypeTextView = (TextView) itemView.findViewById(R.id.tv_incident_type);
-      mIncidentDistanceTextView = (TextView) itemView.findViewById(R.id.tv_incident_distance);
+      mIncidentTextView = itemView.findViewById(R.id.tv_incident_data);
+      mIncidentTypeTextView = itemView.findViewById(R.id.tv_incident_type);
+      mIncidentDistanceTextView = itemView.findViewById(R.id.tv_incident_distance);
       itemView.setOnClickListener(this);
     }
 
