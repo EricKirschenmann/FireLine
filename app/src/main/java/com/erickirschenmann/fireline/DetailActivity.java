@@ -31,7 +31,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
 
-    mDetailsTextView = (TextView) findViewById(R.id.tv_details);
+    mDetailsTextView = findViewById(R.id.tv_details);
 
     if (getActionBar() != null) {
       getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,16 +98,18 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
       // intersections don't work so use that latitude and longitude
       if (!mAddress.contains("/")) {
         try {
-          // this is the ideal scenario as it is a more accurate location than the provided lat and long
+          // this is the ideal scenario as it is a more accurate location
+          // than the provided latitude and longitude
           location = LocationUtils.getLocationFromAddress(this, mAddress);
         } catch (IndexOutOfBoundsException e) {
-          // for some reason it does not like certain address so this should hopefully just happen by default
-          location = mLatLng;
+          // for some reason it does not like certain addresses, will use provided instead
+          Log.e(LOG_TAG, "onMapReady: using provided latitude and longitude");
         }
       }
 
-      // there's been an issue with the maps crashing on null pointer exceptions, hopefully this will
-      // catch crashes before they occur, but it may mess with maps rendering when that happens
+      // there's been an issue with the maps crashing on null pointer exceptions,
+      // hopefully this will catch crashes before they occur,
+      // but it may mess with maps rendering when that happens
       if (location != null) {
         // place the marker on the map
         googleMap.addMarker(new MarkerOptions().position(location).title(mAddress));
