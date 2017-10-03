@@ -74,7 +74,8 @@ public class NetworkUtils {
     String debugKey = resources.getString(R.string.pref_show_debug_key);
     boolean debugDefault = resources.getBoolean(R.bool.pref_show_debug_default);
 
-    // this needs to be separated to it's own method or something but for now it'll only run when needed
+    // this needs to be separated to it's own method or something but for now it'll only run when
+    // needed
     // when I use the user's actual location this will be unnecessary
     // if the location has been changed or does not exist
     if (!sharedPreferences.contains(resources.getString(R.string.pref_location_changed_key))

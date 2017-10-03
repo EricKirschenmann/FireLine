@@ -155,13 +155,12 @@ public class Incident implements Parcelable {
     if (unitsArray.size() != 0) {
       this.units = new String[unitsArray.size()];
       for (int x = 0; x < this.units.length; x++) {
-        //System.out.println(x + ": " + unitsArray.get(x));
         this.units[x] = unitsArray.get(x);
       }
     }
   }
 
-  //getters and setters which will most likely never be used but just in case
+  // getters and setters which will most likely never be used but just in case
   public String getAddress() {
     return address;
   }
