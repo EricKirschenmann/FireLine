@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity
     // initial load of data
     getSupportLoaderManager().initLoader(INCIDENT_LOADER_ID, null, this);
 
-    // register the OnSharedPreferenceChangeListener so the data will update when the user changes a preference
+    // register the OnSharedPreferenceChangeListener so the data will update when the user changes a
+    // preference
     PreferenceManager.getDefaultSharedPreferences(this)
         .registerOnSharedPreferenceChangeListener(this);
   }
@@ -187,8 +188,10 @@ public class MainActivity extends AppCompatActivity
     String message;
 
     try {
-      // for some reason the sort crashes on a length above 150 or so so just trim the size of the list,
-      // most likely a bad value in one of the first 15 or so values, but it's just debug data so oh well
+      // for some reason the sort crashes on a length above 150 or so so just trim the size of the
+      // list,
+      // most likely a bad value in one of the first 15 or so values, but it's just debug data so oh
+      // well
       // hopefully none of the fire department's values crash it
       int maxSize = 200;
 
@@ -204,7 +207,8 @@ public class MainActivity extends AppCompatActivity
               new Comparator<Incident>() {
                 @Override
                 public int compare(Incident o1, Incident o2) {
-                  // better comparison than the subtraction method which ignores differences of less than 1.0
+                  // better comparison than the subtraction method which ignores differences of less
+                  // than 1.0
                   if (o1.getDistance() > o2.getDistance()) {
                     return 1;
                   } else if (o1.getDistance() < o2.getDistance()) {
@@ -222,7 +226,8 @@ public class MainActivity extends AppCompatActivity
               new Comparator<Incident>() {
                 @Override
                 public int compare(Incident incident1, Incident incident2) {
-                  // better comparison than the subtraction method which ignores differences of less than 1.0
+                  // better comparison than the subtraction method which ignores differences of less
+                  // than 1.0
                   if (incident1.getDistance() > incident2.getDistance()) {
                     return -1;
                   } else if (incident1.getDistance() < incident2.getDistance()) {
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity
       }
     } catch (NullPointerException | IllegalArgumentException e) {
       Log.e(TAG, "sortData: could not sort the data!");
-      //e.printStackTrace();
+      // e.printStackTrace();
       message = getString(R.string.sort_error_message);
     }
 
