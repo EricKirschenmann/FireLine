@@ -7,19 +7,26 @@ import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.util.Log;
 
 /** Created by eric on 3/21/17. */
 public class SettingsFragment extends PreferenceFragmentCompat
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+  private final String LOG_TAG = SettingsFragment.class.getSimpleName();
+
   @Override
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
     // if app is in debug mode use debug settings otherwise use regular settings
-    if (getContext().getResources().getBoolean(R.bool.debug)) {
-      addPreferencesFromResource(R.xml.pref_fireline_debug);
+    if (getContext() != null) {
+      if (getContext().getResources().getBoolean(R.bool.debug)) {
+        addPreferencesFromResource(R.xml.pref_fireline_debug);
+      } else {
+        addPreferencesFromResource(R.xml.pref_fireline);
+      }
     } else {
-      addPreferencesFromResource(R.xml.pref_fireline);
+      Log.e(LOG_TAG, "Context is null");
     }
 
     SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
@@ -43,14 +50,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
   /** Removing debug from settings when the debug is disabled */
   private void resetDebugPreference() {
-    boolean debug = getContext().getResources().getBoolean(R.bool.debug);
-    SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+    if (getContext() != null) {
+      boolean debug = getContext().getResources().getBoolean(R.bool.debug);
+      SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 
-    // if the app isn't in debug and the data might be debug data reset it
-    if (!debug && sharedPreferences.contains(getString(R.string.pref_show_debug_key))) {
-      SharedPreferences.Editor editor = sharedPreferences.edit();
-      editor.putBoolean(getString(R.string.pref_show_debug_key), false);
-      editor.apply();
+      // if the app isn't in debug and the data might be debug data reset it
+      if (!debug && sharedPreferences.contains(getString(R.string.pref_show_debug_key))) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.pref_show_debug_key), false);
+        editor.apply();
+      }
+    } else {
+      Log.e(LOG_TAG, "Context is null");
     }
   }
 
