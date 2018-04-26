@@ -12,8 +12,15 @@ import org.junit.Test;
 public class ExampleUnitTest {
 
   @Test
-  public void addition_isCorrect() throws Exception {
+  public void addition_isCorrect() {
     assertEquals(4, 2 + 2);
   }
-}
 
+  @Test
+  public void stringSplit() {
+    String units = "E63, MED665, E55";
+    String[] split = units.split(", ");
+
+    assertEquals("MED665", split[1]);
+  }
+}

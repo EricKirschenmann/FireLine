@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Instrumentation test, which will execute on an Android device.
+ * Instrumented test, which will execute on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 public class ExampleInstrumentedTest {
 
   @Test
-  public void useAppContext() throws Exception {
+  public void useAppContext() {
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getTargetContext();
 

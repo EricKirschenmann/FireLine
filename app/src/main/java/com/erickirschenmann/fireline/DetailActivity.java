@@ -94,16 +94,20 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
       // by default use the location provided by the data
       LatLng location = mLatLng;
 
-      // if possible try to get a more accurate location but not necessarily
-      // intersections don't work so use that latitude and longitude
-      if (!mAddress.contains("/")) {
-        try {
-          // this is the ideal scenario as it is a more accurate location
-          // than the provided latitude and longitude
-          location = LocationUtils.getLocationFromAddress(this, mAddress);
-        } catch (IndexOutOfBoundsException e) {
-          // for some reason it does not like certain addresses, will use provided instead
-          Log.e(LOG_TAG, "onMapReady: using provided latitude and longitude");
+      // this slows down the load of the screen by a considerable amount
+      // TODO: create a setting for "accurate" map location and check that here
+      if (false) {
+        // if possible try to get a more accurate location but not necessarily
+        // intersections don't work so use that latitude and longitude
+        if (!mAddress.contains("/")) {
+          try {
+            // this is the ideal scenario as it is a more accurate location
+            // than the provided latitude and longitude
+            location = LocationUtils.getLocationFromAddress(this, mAddress);
+          } catch (IndexOutOfBoundsException e) {
+            // for some reason it does not like certain addresses, will use provided instead
+            Log.e(LOG_TAG, "onMapReady: using provided latitude and longitude");
+          }
         }
       }
 
