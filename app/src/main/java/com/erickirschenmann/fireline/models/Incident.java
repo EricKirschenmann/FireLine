@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import org.apache.commons.lang3.text.WordUtils;
 
+
 /** Created by eric on 3/4/17. */
 public class Incident implements Parcelable {
 
@@ -101,7 +102,7 @@ public class Incident implements Parcelable {
     this.distance = distance;
   }
 
-  protected Incident(Parcel in) {
+  private Incident(Parcel in) {
     this.address = in.readString();
     this.block = in.readString();
     this.city = in.readString();

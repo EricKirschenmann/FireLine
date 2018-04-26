@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -209,13 +210,7 @@ public class MainActivity extends AppCompatActivity
                 public int compare(Incident o1, Incident o2) {
                   // better comparison than the subtraction method which ignores differences of less
                   // than 1.0
-                  if (o1.getDistance() > o2.getDistance()) {
-                    return 1;
-                  } else if (o1.getDistance() < o2.getDistance()) {
-                    return -1;
-                  } else {
-                    return 0;
-                  }
+                  return Double.compare(o1.getDistance(), o2.getDistance());
                 }
               });
           message = getString(R.string.sort_distance_asc_message);
@@ -228,13 +223,7 @@ public class MainActivity extends AppCompatActivity
                 public int compare(Incident incident1, Incident incident2) {
                   // better comparison than the subtraction method which ignores differences of less
                   // than 1.0
-                  if (incident1.getDistance() > incident2.getDistance()) {
-                    return -1;
-                  } else if (incident1.getDistance() < incident2.getDistance()) {
-                    return 1;
-                  } else {
-                    return 0;
-                  }
+                  return Double.compare(incident2.getDistance(), incident1.getDistance());
                 }
               });
           message = getString(R.string.sort_distance_desc_message);
@@ -297,6 +286,7 @@ public class MainActivity extends AppCompatActivity
    * @param args Any arguments supplied by the caller.
    * @return Return a new Loader instance that is ready to start loading.
    */
+  @NonNull
   @SuppressLint("StaticFieldLeak")
   @Override
   public Loader<ArrayList<Incident>> onCreateLoader(int id, Bundle args) {
@@ -339,7 +329,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onLoadFinished(Loader<ArrayList<Incident>> loader, ArrayList<Incident> data) {
+  public void onLoadFinished(@NonNull Loader<ArrayList<Incident>> loader,
+      ArrayList<Incident> data) {
     mProgressBar.setVisibility(View.INVISIBLE);
     mIncidentAdapter.setIncidentData(data);
     if (data == null) {
@@ -350,7 +341,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onLoaderReset(Loader<ArrayList<Incident>> loader) {}
+  public void onLoaderReset(@NonNull Loader<ArrayList<Incident>> loader) {
+  }
 
   /**
    * Handles the click on one of the RecyclerView items

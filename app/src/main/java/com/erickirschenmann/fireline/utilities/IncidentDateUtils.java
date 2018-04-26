@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import com.erickirschenmann.fireline.R;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public final class IncidentDateUtils {
 
   /* Milliseconds in a day */
-  public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
+  private static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
 
   /**
    * This method returns the number of milliseconds (UTC time) for today's date at midnight in the
@@ -211,7 +212,8 @@ public final class IncidentDateUtils {
          * documentation on DateFormat#getBestDateTimePattern(Locale, String)
          * https://developer.android.com/reference/android/text/format/DateFormat.html#getBestDateTimePattern
          */
-        String localizedDayName = new SimpleDateFormat("EEEE").format(localDate);
+        String localizedDayName = new SimpleDateFormat("EEEE", Locale.getDefault())
+            .format(localDate);
         return readableDate.replace(localizedDayName, dayName);
       } else {
         return readableDate;
@@ -268,7 +270,7 @@ public final class IncidentDateUtils {
         return context.getString(R.string.tomorrow);
 
       default:
-        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         return dayFormat.format(dateInMillis);
     }
   }

@@ -1,5 +1,6 @@
 package com.erickirschenmann.fireline;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,9 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    *     android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)} for more details.
    * @return A new IncidentAdapterViewHolder that holds the View for each list item
    */
+  @NonNull
   @Override
-  public IncidentAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  public IncidentAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext())
             .inflate(R.layout.incident_list_item, parent, false);
@@ -52,7 +54,7 @@ class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentAdapt
    * @param position The position of the item within the adapter's data set.
    */
   @Override
-  public void onBindViewHolder(IncidentAdapterViewHolder holder, int position) {
+  public void onBindViewHolder(@NonNull IncidentAdapterViewHolder holder, int position) {
     DecimalFormat decimalFormat = new DecimalFormat("0.0");
     String incidentData = mIncidentData[position];
     String incidentType = mIncidentType[position];

@@ -90,6 +90,11 @@ public class NetworkUtils {
               resources.getString(R.string.pref_address_default));
       URL googleURL = getAddressUrl(address, resources.getString(R.string.google_maps_key));
 
+      // no null pointer exception, should find better default
+      if (googleURL == null) {
+        googleURL = new URL("");
+      }
+
       // get the latitude and longitude from the json
       double[] location = FirelineJsonUtils.getLatLong(getGoogleJsonUrlResponse(googleURL));
 
