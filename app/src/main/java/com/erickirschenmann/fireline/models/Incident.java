@@ -6,8 +6,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import org.apache.commons.lang3.text.WordUtils;
-
 
 /** Created by eric on 3/4/17. */
 public class Incident implements Parcelable {
@@ -384,10 +382,9 @@ public class Incident implements Parcelable {
   @Override
   public String toString() {
     if (!this.city.isEmpty()) {
-      return WordUtils.capitalizeFully(
-          this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city);
+      return (this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city);
     } else {
-      return WordUtils.capitalizeFully(this.responseDate + "\n" + this.getStreetAddress());
+      return (this.responseDate + "\n" + this.getStreetAddress());
     }
   }
 

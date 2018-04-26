@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
    * checks and resets the SharedPreferences to make sure they are not stuck on the old debug data
    * and can load actual data instead
    */
-  void resetDebug() {
+  private void resetDebug() {
     boolean debug = getResources().getBoolean(R.bool.debug);
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
    * Check if the user entered address was able to create a location, shouldn't be needed anymore
    * but kept just in case the issue persists for now
    */
-  void checkFail() {
+  private void checkFail() {
     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     if (sharedPreferences.contains(getString(R.string.pref_location_failed_key))) {
       if (sharedPreferences.getBoolean(getString(R.string.pref_location_failed_key), false)) {
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   /** Creates a Snackbar containing the error message */
-  void setupSnackbar() {
+  private void setupSnackbar() {
     View view = findViewById(R.id.rv_incident);
     String error = getString(R.string.error_message);
     int length = Snackbar.LENGTH_INDEFINITE;

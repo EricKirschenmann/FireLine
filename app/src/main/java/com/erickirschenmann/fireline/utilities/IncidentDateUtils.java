@@ -9,7 +9,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /** Created by eric on 3/27/17. */
-public final class IncidentDateUtils {
+final class IncidentDateUtils {
 
   /* Milliseconds in a day */
   private static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
