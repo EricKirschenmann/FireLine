@@ -140,8 +140,8 @@ public class Incident implements Parcelable {
    * This is better and haven't run into issues, yet...
    */
   private void getUnitsArray(String unitString) {
-    this.units = new String[unitString.split(",").length];
-    this.units = unitString.split(",");
+    this.units = new String[unitString.split("\\s*,\\s*").length];
+    this.units = unitString.trim().split("\\s*,\\s*");
   }
 
   // getters and setters which will most likely never be used but just in case
