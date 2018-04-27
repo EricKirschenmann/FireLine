@@ -375,7 +375,7 @@ public class Incident implements Parcelable {
 
   private String toTitleCase(String s) {
     final String ACTIONABLE_DELIMITERS = " '-/\n"; // these cause the character following
-    // to be capitalized
+    // to be capitalized, need new line since the string coming into this is split by new lines
 
     StringBuilder sb = new StringBuilder();
     boolean capNext = true;
