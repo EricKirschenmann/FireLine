@@ -208,7 +208,7 @@ public class Incident implements Parcelable {
   }
 
   private void setIncidentType(String incidentType) {
-    this.incidentType = incidentType;
+    this.incidentType = toTitleCase(incidentType);
   }
 
   public double getLatitude() {
