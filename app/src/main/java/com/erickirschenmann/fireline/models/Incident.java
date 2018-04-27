@@ -3,9 +3,7 @@ package com.erickirschenmann.fireline.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 /** Created by eric on 3/4/17. */
 public class Incident implements Parcelable {
@@ -138,25 +136,12 @@ public class Incident implements Parcelable {
     }
   }
 
-  /** Probably the worst way to do this */
+  /**
+   * This is better and haven't run into issues, yet...
+   */
   private void getUnitsArray(String unitString) {
-    ArrayList<String> unitsArray = new ArrayList<>();
-    Scanner scanner = new Scanner(unitString);
-    scanner.useDelimiter(",");
-
-    // go through and get every unit within the list
-    while (scanner.hasNext()) {
-      String unit = scanner.next();
-      unitsArray.add(unit.trim());
-    }
-
-    // copy contents
-    if (unitsArray.size() != 0) {
-      this.units = new String[unitsArray.size()];
-      for (int x = 0; x < this.units.length; x++) {
-        this.units[x] = unitsArray.get(x);
-      }
-    }
+    this.units = new String[unitString.split(",").length];
+    this.units = unitString.split(",");
   }
 
   // getters and setters which will most likely never be used but just in case
@@ -388,23 +373,21 @@ public class Incident implements Parcelable {
     }
   }
 
-  private String toTitleCase(String string) {
-    String[] parts = string.toLowerCase().split(" ");
+  private String toTitleCase(String s) {
+    final String ACTIONABLE_DELIMITERS = " '-/"; // these cause the character following
+    // to be capitalized
 
-    // loop through array of strings
-    for (int i = 0; i < parts.length; i++) {
-      parts[i] =
-          parts[i].replaceFirst(
-              parts[i].charAt(0) + "", Character.toTitleCase(parts[i].charAt(0)) + "");
+    StringBuilder sb = new StringBuilder();
+    boolean capNext = true;
+
+    for (char c : s.toCharArray()) {
+      c = (capNext)
+          ? Character.toUpperCase(c)
+          : Character.toLowerCase(c);
+      sb.append(c);
+      capNext = (ACTIONABLE_DELIMITERS.indexOf((int) c) >= 0); // explicit cast not needed
     }
-
-    StringBuilder builder = new StringBuilder();
-
-    for (String part : parts) {
-      builder.append(part).append(" ");
-    }
-
-    return builder.toString().trim();
+    return sb.toString();
   }
 
   public String getDetails() {
