@@ -382,10 +382,29 @@ public class Incident implements Parcelable {
   @Override
   public String toString() {
     if (!this.city.isEmpty()) {
-      return (this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city);
+      return toTitleCase(this.responseDate + "\n" + this.getStreetAddress() + ", " + this.city);
     } else {
-      return (this.responseDate + "\n" + this.getStreetAddress());
+      return toTitleCase(this.responseDate + "\n" + this.getStreetAddress());
     }
+  }
+
+  private String toTitleCase(String string) {
+    String[] parts = string.toLowerCase().split(" ");
+
+    // loop through array of strings
+    for (int i = 0; i < parts.length; i++) {
+      parts[i] =
+          parts[i].replaceFirst(
+              parts[i].charAt(0) + "", Character.toTitleCase(parts[i].charAt(0)) + "");
+    }
+
+    StringBuilder builder = new StringBuilder();
+
+    for (String part : parts) {
+      builder.append(part).append(" ");
+    }
+
+    return builder.toString().trim();
   }
 
   public String getDetails() {

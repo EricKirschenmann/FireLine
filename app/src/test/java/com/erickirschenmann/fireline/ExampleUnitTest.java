@@ -23,4 +23,27 @@ public class ExampleUnitTest {
 
     assertEquals("MED665", split[1]);
   }
+
+  @Test
+  public void toTitleCase() {
+    String string = "624 martha DRIVE";
+    String[] parts = string.toLowerCase().split(" ");
+
+    // loop through array of characters
+    for (int i = 0; i < parts.length; i++) {
+      parts[i] =
+          parts[i].replaceFirst(
+              parts[i].charAt(0) + "", Character.toTitleCase(parts[i].charAt(0)) + "");
+    }
+
+    StringBuilder builder = new StringBuilder();
+
+    for (String part : parts) {
+      builder.append(part).append(" ");
+    }
+
+    string = builder.toString().trim();
+
+    assertEquals("624 Martha Drive", string);
+  }
 }
